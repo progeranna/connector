@@ -1,0 +1,136 @@
+name: SignalGuard MP05 Candidate Builder
+
+on:
+  push:
+    paths:
+      - "signalguard-rs/phase-2/candidate-requests/P2-MP05/*.json"
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-prove:
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 20
+
+    steps:
+      - name: Checkout control repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Resolve candidate request
+        id: request
+        shell: bash
+        run: |
+          set -euo pipefail
+          request_file="$(git diff-tree --no-commit-id --name-only -r "${GITHUB_SHA}" \
+            | grep -E '^signalguard-rs/phase-2/candidate-requests/P2-MP05/.+\.json$' \
+            | tail -n 1)"
+          test -n "${request_file}"
+
+          product_repository="$(jq -r '.product_repository' "${request_file}")"
+          product_sha="$(jq -r '.product_sha' "${request_file}")"
+          mini_phase="$(jq -r '.mini_phase' "${request_file}")"
+
+          test "${product_repository}" = "progeranna/signalguard-rs"
+          test "${mini_phase}" = "P2-MP05"
+          [[ "${product_sha}" =~ ^[0-9a-f]{40}$ ]]
+
+          echo "product_repository=${product_repository}" >> "${GITHUB_OUTPUT}"
+          echo "product_sha=${product_sha}" >> "${GITHUB_OUTPUT}"
+
+      - name: Checkout exact product source
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.request.outputs.product_repository }}
+          ref: ${{ steps.request.outputs.product_sha }}
+          path: product
+
+      - name: Install stable Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Cache Cargo artifacts
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: product
+
+      - name: Confirm source commit
+        working-directory: product
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ steps.request.outputs.product_sha }}"
+          test -z "$(git status --short)"
+
+      - name: Apply canonical rustfmt
+        working-directory: product
+        run: cargo fmt --all
+
+      - name: Verify rustfmt scope
+        working-directory: product
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only)"
+          test "${changed}" = "src/storage/redis.rs"
+          git diff --check
+          git diff -- src/storage/redis.rs > ../mp05-rustfmt.patch
+
+      - name: Check formatting
+        working-directory: product
+        run: cargo fmt --all --check
+
+      - name: Run cargo check
+        working-directory: product
+        run: cargo check --all-targets --all-features
+
+      - name: Run clippy
+        working-directory: product
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: Run all tests
+        working-directory: product
+        run: cargo test --all-targets --all-features
+
+      - name: Run existing Redis integration suite
+        working-directory: product
+        env:
+          REDIS_URL: redis://127.0.0.1:6379
+        run: cargo test --test redis_cache -- --ignored --test-threads=1
+
+      - name: Run MP05 atomic Redis proof tests
+        working-directory: product
+        env:
+          REDIS_URL: redis://127.0.0.1:6379
+        run: cargo test --lib atomic_market_state_write -- --ignored --test-threads=1
+
+      - name: Prepare verified candidate artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifact/src/storage
+          cp product/src/storage/redis.rs artifact/src/storage/redis.rs
+          cp mp05-rustfmt.patch artifact/mp05-rustfmt.patch
+          printf '%s\n' "${{ steps.request.outputs.product_sha }}" > artifact/source-sha.txt
+          sha256sum artifact/src/storage/redis.rs artifact/mp05-rustfmt.patch artifact/source-sha.txt > artifact/checksums.sha256
+
+      - name: Upload verified candidate artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: signalguard-mp05-verified-candidate-${{ steps.request.outputs.product_sha }}
+          path: artifact
+          if-no-files-found: error
+          retention-days: 7
