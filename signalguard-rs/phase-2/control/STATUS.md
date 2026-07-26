@@ -40,72 +40,78 @@ Required commit:
 
 `feat(api): publish validated web console contract`
 
-Execution environment: dedicated local Codex worktree at:
+Execution environment:
 
 `/Users/anion/Desktop/work/git-signalguard-rs/worktrees/p2-mp04`
 
 Path lease:
 
-- may establish typed schema/contract definitions, deterministic checked artifact, compatibility tests, and CI drift gate;
 - must not modify `src/api/handlers.rs`, `src/storage/redis.rs`, or `tests/redis_cache.rs` while P2-MP06 is active;
 - must stop if accurate generation requires a leased MP06 path.
 
 Current status: `READY_OR_IN_PROGRESS`.
 
-### Backend lane — P2-MP06-WEB1
+### Backend lane — P2-MP06-WEB1-C2
 
 Task: `P2-MP06 — Bulk Redis market-state retrieval`
 
 Assigned branch: `p2/mp06-bulk-redis-state`
 
-Exact assigned base and last verified remote head:
+Exact assigned base and current remote head:
 
 `1447a3ccb2fa3020738cd2dd3f8d145be6cd202a`
 
-The branch began before P2-MP03 integration. Its three backend paths do not overlap the integrated frontend work. Do not rebase or rewrite it.
+Current remote state:
 
-The local Codex P2-MP06 executor is superseded by the web-worker pilot and must be stopped before the web worker begins. Its uncommitted worktree files are not an implementation source and must not be copied.
+- status: identical to base;
+- ahead: `0`;
+- behind: `0`;
+- no product commit, PR, CI run, or connector report.
 
 Binding contracts:
 
 - `signalguard-rs/phase-2/prompts/P2-MP06.md`;
 - `signalguard-rs/phase-2/repairs/P2-MP06-C1.md`;
 - `signalguard-rs/phase-2/repairs/P2-MP06-C2.md`;
-- `signalguard-rs/phase-2/repairs/P2-MP06-WEB1.md`.
+- `signalguard-rs/phase-2/repairs/P2-MP06-WEB1.md`;
+- `signalguard-rs/phase-2/repairs/P2-MP06-WEB1-C1.md`;
+- `signalguard-rs/phase-2/repairs/P2-MP06-WEB1-C2.md`.
 
-Verified web-worker bootstrap:
+Implementation and complete gate evidence are preserved in the same web-worker sandbox.
 
-- workflow run: `30220162842` — success;
-- artifact ID: `8636970817`;
-- artifact name: `signalguard-P2-MP06-WEB6-30220162842`;
-- artifact ZIP SHA-256: `ab12f92e7835dd4e5c56878c6a3fad7e1ddac8c97f8e1e9152778140792372ac`;
-- inner archive SHA-256: `8afe14a493ae1170f7fe595993e9f268c12f0d91187027257c7d056e194e96b8`;
-- artifact expiry: `2026-07-29T21:01:10Z`;
-- embedded product source: exact assigned base;
-- included: portable Rust toolchain, exact vendored Cargo dependencies, exact product source, portable Redis, manifest and checksums;
-- Docker intentionally omitted because MP06 uses direct Redis and product CI retains Docker/Compose gates.
+Verified repeated gate results:
 
-Independent Orchestrator validation of the exact artifact:
+- focused bulk-cache: `5 passed`;
+- focused dashboard handlers: `21 passed`;
+- full suite: `367 passed`, `3 ignored`;
+- complete ignored Redis suite: `8 passed`;
+- dedicated bulk-read Redis test: `1 passed`;
+- P2-MP05 atomic Lua proofs: `3 passed`;
+- exact changed paths: three authorized files;
+- forbidden paths: zero;
+- secret findings: zero;
+- P2-MP05 Lua script: byte-for-byte unchanged.
 
-- outer and inner SHA-256 values matched;
-- internal checksums passed;
-- `rustc`, `cargo`, `rustfmt`, and Clippy executed;
-- disposable crate passed fmt, offline check, Clippy, and tests;
-- portable Redis passed `PING`, ordered `MGET` with a missing middle value, and Lua `SET` plus `SADD`;
-- exact embedded SignalGuard source passed `cargo check --locked --offline --all-targets --all-features`.
+Preserved final blob identities:
 
-Known artifact note:
+- `src/storage/redis.rs`: `ffa0d0214bc7e56fe41ae8460121746808b1c774`;
+- `src/api/handlers.rs`: `b1b65ab38004642b9500abfb4eb45cc4fe6508e9`;
+- `tests/redis_cache.rs`: `289adc8de9d1b3fe3bb1b06be997312f9097ed50`.
 
-- embedded `preflight.sh` writes an intentionally unformatted disposable source and therefore must not be invoked as one opaque command;
-- P2-MP06-WEB1 contains the corrected equivalent preflight and is authoritative.
+Exact blobs independently confirmed to exist in GitHub:
 
-Current backend status: `WEB_WORKER_PILOT_READY`.
+- `src/storage/redis.rs`;
+- `tests/redis_cache.rs`.
+
+Only the exact `src/api/handlers.rs` blob remains to be created. C2 authorizes exact machine transfer through `GitHub.create_blob` with `encoding: base64`; it forbids user-visible payload transcription and any code modification.
+
+Current backend status: `BASE64_BLOB_DELIVERY_READY`.
 
 ## Completed work
 
 ### P2-MP01
 
-- task head: `18f08279a78d15ec4d1225bf3e219c63cdf517d4`;
+- accepted head: `18f08279a78d15ec4d1225bf3e219c63cdf517d4`;
 - PR: `https://github.com/progeranna/signalguard-rs/pull/15`;
 - verdict: `ACCEPT_WITH_NOTES`;
 - resulting phase SHA: `ce2ee582a370cce8bf8198d1fbb82fcb961867c3`;
@@ -131,7 +137,7 @@ Current backend status: `WEB_WORKER_PILOT_READY`.
 
 ### P2-MP05
 
-- accepted replacement head: `5a1537fdf5dd7b278e4a704283b10e511a95bef5`;
+- accepted head: `5a1537fdf5dd7b278e4a704283b10e511a95bef5`;
 - PR: `https://github.com/progeranna/signalguard-rs/pull/18`;
 - product CI: `30206111210` — success;
 - Redis proof: `30206312877` — success;
@@ -155,19 +161,19 @@ Contract/frontend lane:
 
 Backend lane:
 
-`P2-MP05 → P2-MP06-WEB1`
+`P2-MP05 → P2-MP06-WEB1-C2`
 
 Cross-lane:
 
-P2-MP07 remains blocked until P2-MP04 and P2-MP06 are integrated and their prerequisites are reviewed together.
+P2-MP07 remains blocked until P2-MP04 and P2-MP06 are integrated.
 
 ## Next actions
 
-1. Stop the local Codex P2-MP06 task without committing or pushing its worktree.
-2. Launch one fresh ChatGPT web worker with `P2-MP06-WEB1.md` and the exact bootstrap artifact.
-3. Keep P2-MP04 on its existing local Codex lane.
-4. Enforce the explicit path leases between MP04 and MP06.
-5. Do not start P2-MP07 independently.
-6. Do not merge the phase branch into `main`.
+1. Continue P2-MP06 in the same web-worker sandbox using `P2-MP06-WEB1-C2.md`.
+2. Create only the missing handlers blob through exact base64 transfer.
+3. Create and verify the tree and unreferenced commit before non-force branch update.
+4. Open a draft PR and wait for exact-head CI.
+5. Keep P2-MP04 on its existing lane and enforce path leases.
+6. Do not start P2-MP07 or merge the phase branch into `main`.
 
 Only the Orchestrator updates this file.
