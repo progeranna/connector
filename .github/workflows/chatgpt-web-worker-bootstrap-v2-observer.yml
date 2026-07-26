@@ -26,8 +26,9 @@ jobs:
           set -euo pipefail
           request="$(find signalguard-rs/phase-2/bootstrap-requests-v2 -maxdepth 1 -name '*.json' -type f -printf '%T@ %p\n' | sort -nr | head -1 | cut -d' ' -f2-)"
           request_id="$(jq -r '.request_id' "$request")"
+          run=''
           for _ in $(seq 1 30); do
-            runs="$(gh api repos/${GITHUB_REPOSITORY}/actions/workflows/chatgpt-web-worker-bootstrap-v2.yml/runs -f branch=main -f per_page=20)"
+            runs="$(gh api --method GET "repos/${GITHUB_REPOSITORY}/actions/workflows/chatgpt-web-worker-bootstrap-v2.yml/runs" -f branch=main -f per_page=20)"
             run="$(printf '%s' "$runs" | jq --arg sha "$GITHUB_SHA" '[.workflow_runs[] | select(.head_sha == $sha)] | first // empty')"
             if [[ -n "$run" ]]; then
               break
