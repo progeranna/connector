@@ -24,49 +24,72 @@ Relative to Phase 1, the phase branch is ahead by 3 commits, behind by 0 commits
 
 At most two product executors may be active.
 
-### Frontend lane — P2-MP03-R2 clean replacement
+### Frontend lane — P2-MP03-R2-R1
 
 Task:
 
 `P2-MP03 — Market DTO-to-view-model adapters`
 
-Clean replacement branch:
+Branch:
 
 `p2/mp03-market-view-models-r2`
 
-Exact clean base and verified remote branch head:
+Clean base:
 
 `1447a3ccb2fa3020738cd2dd3f8d145be6cd202a`
 
-Verified release state:
+Rejected reviewed head:
 
-- ahead by 0 commits;
-- behind by 0 commits;
-- identical to the current phase branch;
-- no product commit, PR, report, or CI run exists.
+`d2be5b35d8beb433d3bafdcd9f9986ae5a292f2d`
 
-Replacement contract:
+PR:
 
-`signalguard-rs/phase-2/repairs/P2-MP03-R2.md`
+`https://github.com/progeranna/signalguard-rs/pull/19`
 
-Required product commit:
+Verified delivery facts:
 
-`refactor(web): adapt market DTOs into view models`
+- exactly one product commit with the required original message;
+- exactly six authorized frontend paths;
+- local focused gates reported 25 tests passed;
+- local full frontend gates reported 278 tests, typecheck, lint, build, and bundle check passed;
+- exact-head CI run `30215490254` succeeded for both frontend and Rust;
+- PR is open, draft, mergeable, and unmerged.
 
-Required execution environment:
+Review verdict:
 
-- complete local Git worktree;
-- one atomic product commit;
-- full frontend gates before commit;
-- exact-head GitHub CI before delivery.
+`REJECT — REPAIR_REQUIRED`
 
-Dedicated local worktree:
+Review:
 
-`/Users/anion/Desktop/work/git-signalguard-rs/worktrees/p2-mp03-r2`
+`signalguard-rs/phase-2/reviews/P2-MP03/d2be5b35d8beb433d3bafdcd9f9986ae5a292f2d.md`
+
+Repair contract:
+
+`signalguard-rs/phase-2/repairs/P2-MP03-R2-R1.md`
+
+Blocking findings:
+
+- one popup-oriented anomaly value representation changed dedicated-route anomaly rendering;
+- partial-state success no longer preserved the route's existing latest-state empty shell;
+- missing whole-state depth-gap data could be fabricated as numeric zero;
+- production consumers did not pass expected canonical identity into the adapter;
+- the claimed connector report and connector commit did not exist remotely.
+
+Repair authorization:
+
+- continue in the same local worktree and branch;
+- preserve rejected head history;
+- append exactly one repair commit: `fix(web): preserve market view-model presentation semantics`;
+- modify only the existing six P2-MP03 paths;
+- preserve route/popup-specific existing display values through one shared view-model contract;
+- rerun all focused and full frontend gates;
+- wait for repaired exact-head CI;
+- create a real connector report only after repaired CI succeeds;
+- no amend, rebase, reset, force-push, merge, or PR recreation.
 
 Current frontend status:
 
-`R2_READY_TO_START`
+`REPAIR_READY`
 
 P2-MP04 remains serialized after successful P2-MP03 integration. P2-MP07 remains blocked.
 
@@ -84,7 +107,7 @@ Exact assigned base and current verified remote head:
 
 `1447a3ccb2fa3020738cd2dd3f8d145be6cd202a`
 
-Remote branch state after the failed C1 full gate:
+Remote branch state:
 
 - ahead by 0 commits;
 - behind by 0 commits;
@@ -105,7 +128,7 @@ Current local implementation report:
 - modified only `src/storage/redis.rs`, `src/api/handlers.rs`, and `tests/redis_cache.rs`;
 - bulk API: `get_market_states(&[Symbol]) -> Result<Vec<(Symbol, Option<MarketState>)>, CacheError>`;
 - one Redis `MGET` for all requested state keys;
-- decimal fixtures represent scale-0 values `100` and `200`, and expectations were corrected to `"100"` and `"200"` without changing production serialization;
+- decimal fixtures represent scale-0 values `100` and `200`, with expectations corrected to `"100"` and `"200"`;
 - focused gates passed: 2 bulk-cache tests and 11 dashboard handler tests;
 - full gate stopped at `cargo check --all-targets --all-features` due a type-inference error in newly added Redis integration test code;
 - real-Redis gates were not run after that failure.
@@ -157,34 +180,13 @@ Current backend status:
 
 ## Superseded frontend delivery
 
-Branch:
+- branch: `p2/mp03-market-view-models`;
+- original incomplete head: `641078b5bba452a377a5f644a70453b2fdf9c6ad`;
+- contaminated head: `416c50404dd1b9b8f62654ded9e0cb4b6da5bfc7`;
+- review: `signalguard-rs/phase-2/reviews/P2-MP03/416c50404dd1b9b8f62654ded9e0cb4b6da5bfc7.md`;
+- disposition: `REJECTED_AND_SUPERSEDED`.
 
-`p2/mp03-market-view-models`
-
-Original incomplete head:
-
-`641078b5bba452a377a5f644a70453b2fdf9c6ad`
-
-Unexpected contaminated head:
-
-`416c50404dd1b9b8f62654ded9e0cb4b6da5bfc7`
-
-Evidence:
-
-- six unexpected commits appeared after the immutable incomplete head before the authorized R1 worker's first write;
-- changed paths include market adapters/tests, both consumers, and `DashboardPage.tsx`;
-- the final patch contains unrelated copy/CSS changes and malformed source formatting;
-- no local gates, exact-head CI, PR, or delivery report exists.
-
-Review:
-
-`signalguard-rs/phase-2/reviews/P2-MP03/416c50404dd1b9b8f62654ded9e0cb4b6da5bfc7.md`
-
-Disposition:
-
-`REJECTED_AND_SUPERSEDED`
-
-Do not continue, rewrite, merge, open a PR from, cherry-pick, or mechanically copy this branch.
+Do not continue, rewrite, merge, open a PR from, cherry-pick, or mechanically copy the superseded branch.
 
 ## Superseded backend delivery
 
@@ -197,7 +199,7 @@ Do not continue, rewrite, merge, open a PR from, cherry-pick, or mechanically co
 
 Frontend lane:
 
-`P2-MP01 → P2-MP02 → P2-MP03-R2 → P2-MP04`
+`P2-MP01 → P2-MP02 → P2-MP03-R2-R1 → P2-MP04`
 
 Backend lane:
 
@@ -209,10 +211,10 @@ P2-MP07 remains blocked until P2-MP04 and the required adapter prerequisites are
 
 ## Next actions
 
-1. Start P2-MP03-R2 in a new local Codex task using the clean dedicated worktree and immutable replacement contract.
+1. Continue the existing local P2-MP03-R2 worktree using `P2-MP03-R2-R1.md`.
 2. Continue the existing local P2-MP06 worktree using `P2-MP06-C2.md`.
-3. Do not use or modify the superseded MP03 branch.
-4. Do not change MP06 production code merely to satisfy the test type-inference error.
+3. Keep PR #19 draft and unmerged until repaired exact-head review.
+4. Do not use the superseded MP03 branch.
 5. Do not start P2-MP04 or P2-MP07 independently.
 6. Do not merge the phase branch into `main`.
 
