@@ -22,21 +22,17 @@ Verified phase branch state relative to the Phase 1 base:
 
 - ahead by 1 commit;
 - behind by 0 commits;
-- contains exactly the integrated P2-MP01 paths.
+- contains the integrated P2-MP01 change only.
 
 ## Current wave
 
-Wave 1 is active.
+Wave 1 remains active.
 
 ### P2-MP01
 
 Title:
 
 Query-key factories and request identity
-
-Task branch:
-
-`p2/mp01-query-key-factories`
 
 Reviewed task head:
 
@@ -66,10 +62,6 @@ Integration record:
 
 `signalguard-rs/phase-2/integration/P2-MP01/ce2ee582a370cce8bf8198d1fbb82fcb961867c3.md`
 
-Non-blocking note:
-
-The focused query-key Vitest command was not run as a separate local invocation, but the new test file passed in the full frontend GitHub CI suite.
-
 ### P2-MP05
 
 Title:
@@ -80,29 +72,55 @@ Task branch:
 
 `p2/mp05-atomic-redis-state`
 
-Current verified remote branch state relative to the Phase 1 base:
+Rejected product head:
 
-- ahead by 1 commit;
-- behind by 0 commits;
-- current changed path observed: `src/storage/redis.rs`.
+`6f4ec2c757dc05b208f11b41cd218edb8a6aa4ce`
+
+Product PR:
+
+`https://github.com/progeranna/signalguard-rs/pull/16`
+
+Verified scope:
+
+- exactly one product commit over the original Phase 1 base;
+- only `src/storage/redis.rs` changed;
+- Lua type prevalidation and atomic script invocation are directionally correct by inspection;
+- no P2-MP06 or unrelated work was started.
+
+Review verdict:
+
+`REJECT — REPAIR_REQUIRED`
+
+Blocking evidence:
+
+- GitHub Actions run `30201414838` failed;
+- Rust job `89791871372` failed at `cargo fmt --all --check`;
+- cargo check, clippy, Rust tests, replay discovery, and real-Redis tests were not executed;
+- frontend job passed.
+
+Rejected review record:
+
+`signalguard-rs/phase-2/reviews/P2-MP05/6f4ec2c757dc05b208f11b41cd218edb8a6aa4ce.md`
+
+Repair contract:
+
+`signalguard-rs/phase-2/repairs/P2-MP05-R1.md`
+
+Repair requirements:
+
+- one explicitly authorized additional formatting-only product commit;
+- no force-push, amend, rebase, or history rewrite;
+- green product PR CI for the repaired exact head;
+- green `SignalGuard Redis Proof` workflow in `connector` against the repaired exact head;
+- new delivery report keyed by the repaired head SHA.
 
 Status:
 
-`IN_PROGRESS`
+`REPAIR_READY_TO_START`
 
-No authoritative delivery report or product PR has been validated yet.
+Integration result:
 
-Required product commit:
-
-`fix(cache): write market state atomically`
-
-Contract:
-
-`signalguard-rs/phase-2/prompts/P2-MP05.md`
-
-Critical acceptance rule:
-
-A plain Redis `MULTI`/`EXEC` pipeline does not prove rollback of an earlier successful command when a later command returns a command-level error. The accepted implementation must prove both-or-neither semantics for state payload and symbol membership under deterministic wrong-type failure.
+`NOT_INTEGRATED`
 
 ## Barrier
 
@@ -113,16 +131,18 @@ Do not release P2-MP02 or P2-MP06 until both P2-MP01 and P2-MP05 have reached:
 Current barrier state:
 
 - P2-MP01: `INTEGRATED`;
-- P2-MP05: `IN_PROGRESS`.
+- P2-MP05: `REPAIR_READY_TO_START`.
 
-## Historical handoff disposition
+## Verification infrastructure
 
-Previous ZIP-based MP01 and MP05 handoffs are not authoritative product deliveries.
+Control-repository workflow:
 
-Workers must implement from the exact Git base and must not import, reconstruct, or apply the previous ZIP payloads.
+`.github/workflows/signalguard-redis-proof.yml`
+
+The workflow checks out an exact SignalGuard product SHA, runs full Rust gates, starts isolated Redis 7, executes the existing ignored Redis integration suite, executes the MP05 atomicity proof tests, and confirms the checked commit identity.
 
 ## Next action
 
-Await P2-MP05 delivery report and PR. The Orchestrator will independently validate its exact head, Redis failure semantics, tests, CI, and scope before integration.
+Launch P2-MP05-R1 using the immutable repair contract. Do not start P2-MP02 or P2-MP06.
 
 Only the Orchestrator updates this file.
