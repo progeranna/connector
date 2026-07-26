@@ -16,94 +16,58 @@ Phase branch:
 
 Current verified phase SHA:
 
-`ce2ee582a370cce8bf8198d1fbb82fcb961867c3`
+`74dd6e3985649d05e59f1f4cb7f653e405b31cb0`
 
-The phase branch is one commit ahead of Phase 1 and contains only integrated P2-MP01.
+Relative to Phase 1, the phase branch is:
+
+- ahead by 2 commits;
+- behind by 0 commits;
+- containing integrated P2-MP01 and P2-MP02 only.
 
 ## Active parallel lanes
 
-At most two product workers may be active.
+At most two product executors may be active.
 
-### Frontend lane — P2-MP02-R1
+### Frontend lane — post-P2-MP02 inspection
 
-Task:
+P2-MP02 status:
 
-`P2-MP02 — Symbol-owned market queries`
+`INTEGRATED`
 
-Branch:
+Reviewed task head:
 
-`p2/mp02-symbol-data-queries`
-
-Exact base:
-
-`ce2ee582a370cce8bf8198d1fbb82fcb961867c3`
-
-Rejected head:
-
-`a83d63bbe5e9b0ff1add4e6d2235c00a8732a70c`
+`630ca12deba92c334632dddba58886789d2396f5`
 
 Product PR:
 
 `https://github.com/progeranna/signalguard-rs/pull/17`
 
-PR state:
+Resulting phase SHA:
 
-- open;
-- draft;
-- unmerged.
+`74dd6e3985649d05e59f1f4cb7f653e405b31cb0`
 
-Repository state:
+Review:
 
-- exactly one commit ahead of the exact base;
-- zero commits behind;
-- nine changed paths, all under `web/src/**`;
-- no dependency, lockfile, backend, Redis, PostgreSQL, or product-CI changes.
+`signalguard-rs/phase-2/reviews/P2-MP02/630ca12deba92c334632dddba58886789d2396f5.md`
 
-Review verdict:
+Integration record:
 
-`REJECT — REPAIR_REQUIRED`
+`signalguard-rs/phase-2/integration/P2-MP02/74dd6e3985649d05e59f1f4cb7f653e405b31cb0.md`
 
-Review record:
+Exact-head CI:
 
-`signalguard-rs/phase-2/reviews/P2-MP02/a83d63bbe5e9b0ff1add4e6d2235c00a8732a70c.md`
-
-Repair contract:
-
-`signalguard-rs/phase-2/repairs/P2-MP02-R1.md`
-
-Product CI evidence:
-
-- workflow run `30203823930`;
-- Rust job: success;
-- frontend `npm ci`: success;
-- frontend `npm run test:run`: failure;
-- typecheck, lint, build, and bundle checks: skipped.
-
-Orchestrator diagnostic:
-
-- workflow run `30204380568`;
-- request: `signalguard-rs/phase-2/diagnostic-requests/P2-MP02/a83d63b-diag1.json`;
-- result: `signalguard-rs/phase-2/diagnostic-results/P2-MP02/a83d63b-diag1/result.json`;
-- failure tail: `signalguard-rs/phase-2/diagnostic-results/P2-MP02/a83d63b-diag1/vitest-tail.log`.
-
-Exact diagnostic result:
-
-- 3 failed test files;
-- 8 failed tests;
-- 18 passed test files;
-- 257 passed tests.
-
-R1 scope:
-
-- test-only alignment of legacy isolation harnesses with the new symbol-owned resource families;
-- exactly three authorized test paths;
-- no production source change authorized.
+- workflow run `30205299353`;
+- frontend: success;
+- Rust: success;
+- no pending checks.
 
 Current frontend status:
 
-`REPAIR_READY_TO_START`
+`POST_MP02_PATH_INSPECTION_READY`
 
-P2-MP03, P2-MP04, and P2-MP07 remain blocked.
+Before issuing P2-MP03 or P2-MP04, the Orchestrator must inspect the exact post-MP02 tree and assign non-overlapping path leases or serialize the tasks.
+
+P2-MP07 remains blocked.
 
 ### Backend lane — P2-MP05-R2 local continuation
 
@@ -115,16 +79,16 @@ Clean replacement branch:
 
 `p2/mp05-atomic-redis-state-r2`
 
-Exact clean base:
+Exact branch base:
 
 `ce2ee582a370cce8bf8198d1fbb82fcb961867c3`
 
-Current verified remote branch state:
+Current verified remote branch state before continuation completion:
 
 - ahead by 0 commits;
 - behind by 0 commits;
-- identical to the exact phase base;
-- no product commit or PR exists for R2.
+- identical to its exact assigned base;
+- no product commit or PR exists for R2 yet.
 
 Verified candidate:
 
@@ -142,35 +106,37 @@ Candidate-builder proof:
 - clippy with warnings denied: success;
 - all Rust tests: success;
 - existing Redis integration suite against Redis 7: success;
-- atomic-market-state Redis proof suite: success.
+- atomic Redis proof suite: success.
 
-Local apply result before continuation:
-
-- dedicated worktree prepared;
-- only `src/storage/redis.rs` changed;
-- all Rust gates eventually passed;
-- real-Redis suites eventually passed: 7/7 existing and 3/3 atomic;
-- initial Redis command failed because of local sandbox permissions;
-- the original local-apply stop condition therefore prevented commit and push;
-- no commit, push, PR, proof request, or report was created.
-
-Continuation contract:
+Local continuation contract:
 
 `signalguard-rs/phase-2/repairs/P2-MP05-R2-C1.md`
 
-Continuation authorization:
-
-- continue in the same dedicated worktree;
-- verify exact branch, base, remote state, changed path, and candidate checksum;
-- rerun one complete clean Rust and real-Redis gate cycle after reading the continuation contract;
-- commit and push only after every continuation gate passes;
-- no implementation change is authorized.
-
 Current backend status:
 
-`LOCAL_CONTINUATION_READY`
+`LOCAL_CONTINUATION_IN_PROGRESS`
 
 P2-MP06 remains blocked until the clean R2 head passes product CI, connector Redis proof, review, and integration.
+
+## Completed work
+
+### P2-MP01
+
+- task head: `18f08279a78d15ec4d1225bf3e219c63cdf517d4`;
+- PR: `https://github.com/progeranna/signalguard-rs/pull/15`;
+- verdict: `ACCEPT_WITH_NOTES`;
+- resulting phase SHA: `ce2ee582a370cce8bf8198d1fbb82fcb961867c3`;
+- status: `INTEGRATED`.
+
+### P2-MP02
+
+- original head: `a83d63bbe5e9b0ff1add4e6d2235c00a8732a70c`;
+- repaired head: `630ca12deba92c334632dddba58886789d2396f5`;
+- PR: `https://github.com/progeranna/signalguard-rs/pull/17`;
+- exact-head CI: success;
+- verdict: `ACCEPT`;
+- resulting phase SHA: `74dd6e3985649d05e59f1f4cb7f653e405b31cb0`;
+- status: `INTEGRATED`.
 
 ## Superseded backend delivery
 
@@ -193,35 +159,11 @@ Disposition:
 
 The superseded PR is closed and unmerged.
 
-## Completed work
-
-### P2-MP01
-
-Task head:
-
-`18f08279a78d15ec4d1225bf3e219c63cdf517d4`
-
-PR:
-
-`https://github.com/progeranna/signalguard-rs/pull/15`
-
-Verdict:
-
-`ACCEPT_WITH_NOTES`
-
-Integration:
-
-`INTEGRATED`
-
-Resulting phase SHA:
-
-`ce2ee582a370cce8bf8198d1fbb82fcb961867c3`
-
 ## Dependency barriers
 
 Frontend lane:
 
-`P2-MP01 → P2-MP02-R1 → review/integration → post-MP02 path inspection → P2-MP03/P2-MP04`
+`P2-MP01 → P2-MP02 → post-MP02 path inspection → P2-MP03/P2-MP04`
 
 Backend lane:
 
@@ -233,9 +175,10 @@ P2-MP07 remains blocked until its prerequisites are explicitly released.
 
 ## Next actions
 
-1. Run P2-MP02-R1 in the existing frontend worker chat.
-2. Continue the existing local Codex task using `P2-MP05-R2-C1.md`.
+1. Inspect the exact post-P2-MP02 tree and issue the next frontend contract with an explicit path lease.
+2. Continue the existing local Codex P2-MP05-R2 task under `P2-MP05-R2-C1.md`.
 3. Do not continue the superseded MP05 branch or PR #16.
-4. Do not start P2-MP03, P2-MP04, P2-MP06, or P2-MP07.
+4. Do not start P2-MP06 or P2-MP07.
+5. Do not merge the phase branch into `main`.
 
 Only the Orchestrator updates this file.
