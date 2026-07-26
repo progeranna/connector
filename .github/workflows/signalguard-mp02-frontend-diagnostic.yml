@@ -1,0 +1,107 @@
+name: SignalGuard MP02 Frontend Diagnostic
+
+on:
+  push:
+    paths:
+      - "signalguard-rs/phase-2/diagnostic-requests/P2-MP02/*.json"
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout control repository
+        uses: actions/checkout@v4
+        with:
+          path: control
+          fetch-depth: 2
+
+      - name: Resolve diagnostic request
+        id: request
+        shell: bash
+        working-directory: control
+        run: |
+          set -euo pipefail
+          request_file="$(git diff-tree --no-commit-id --name-only -r "${GITHUB_SHA}" \
+            | grep -E '^signalguard-rs/phase-2/diagnostic-requests/P2-MP02/.+\.json$' \
+            | tail -n 1)"
+          test -n "${request_file}"
+
+          product_repository="$(jq -r '.product_repository' "${request_file}")"
+          product_sha="$(jq -r '.product_sha' "${request_file}")"
+          request_id="$(jq -r '.request_id' "${request_file}")"
+
+          test "${product_repository}" = "progeranna/signalguard-rs"
+          [[ "${product_sha}" =~ ^[0-9a-f]{40}$ ]]
+          test -n "${request_id}"
+
+          echo "product_repository=${product_repository}" >> "${GITHUB_OUTPUT}"
+          echo "product_sha=${product_sha}" >> "${GITHUB_OUTPUT}"
+          echo "request_id=${request_id}" >> "${GITHUB_OUTPUT}"
+
+      - name: Checkout exact product commit
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.request.outputs.product_repository }}
+          ref: ${{ steps.request.outputs.product_sha }}
+          path: product
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: product/web/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: product/web
+        run: npm ci
+
+      - name: Run frontend tests and capture complete output
+        id: tests
+        shell: bash
+        working-directory: product/web
+        run: |
+          set +e
+          npm run test:run > "${RUNNER_TEMP}/mp02-vitest.log" 2>&1
+          exit_code=$?
+          echo "exit_code=${exit_code}" >> "${GITHUB_OUTPUT}"
+          exit 0
+
+      - name: Record diagnostic result
+        shell: bash
+        working-directory: control
+        env:
+          TEST_EXIT_CODE: ${{ steps.tests.outputs.exit_code }}
+          PRODUCT_SHA: ${{ steps.request.outputs.product_sha }}
+          REQUEST_ID: ${{ steps.request.outputs.request_id }}
+        run: |
+          set -euo pipefail
+          result_dir="signalguard-rs/phase-2/diagnostic-results/P2-MP02/${REQUEST_ID}"
+          mkdir -p "${result_dir}"
+          cp "${RUNNER_TEMP}/mp02-vitest.log" "${result_dir}/vitest.log"
+          tail -n 240 "${RUNNER_TEMP}/mp02-vitest.log" > "${result_dir}/vitest-tail.log"
+          jq -n \
+            --arg mini_phase "P2-MP02" \
+            --arg request_id "${REQUEST_ID}" \
+            --arg product_sha "${PRODUCT_SHA}" \
+            --arg workflow_run_id "${GITHUB_RUN_ID}" \
+            --arg workflow_run_url "https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            --argjson test_exit_code "${TEST_EXIT_CODE}" \
+            '{mini_phase:$mini_phase,request_id:$request_id,product_sha:$product_sha,workflow_run_id:$workflow_run_id,workflow_run_url:$workflow_run_url,test_exit_code:$test_exit_code}' \
+            > "${result_dir}/result.json"
+          sha256sum "${result_dir}/vitest.log" "${result_dir}/vitest-tail.log" "${result_dir}/result.json" \
+            > "${result_dir}/checksums.sha256"
+
+          git config user.name "signalguard-orchestrator-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add "${result_dir}"
+          git commit -m "test(connector): record MP02 frontend diagnostic ${REQUEST_ID}"
+          git push origin HEAD:main
+
+      - name: Fail when frontend tests failed
+        if: ${{ steps.tests.outputs.exit_code != '0' }}
+        run: exit 1
