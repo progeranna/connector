@@ -24,57 +24,51 @@ Relative to Phase 1, the phase branch is ahead by 3 commits, behind by 0 commits
 
 At most two product executors may be active.
 
-### Frontend lane — P2-MP03-R1
+### Frontend lane — P2-MP03-R2 clean replacement
 
 Task:
 
 `P2-MP03 — Market DTO-to-view-model adapters`
 
-Assigned branch:
+Clean replacement branch:
 
-`p2/mp03-market-view-models`
+`p2/mp03-market-view-models-r2`
 
-Original exact assigned base:
+Exact clean base and verified remote branch head:
 
-`74dd6e3985649d05e59f1f4cb7f653e405b31cb0`
+`1447a3ccb2fa3020738cd2dd3f8d145be6cd202a`
 
-Incomplete immutable head:
+Verified release state:
 
-`641078b5bba452a377a5f644a70453b2fdf9c6ad`
+- ahead by 0 commits;
+- behind by 0 commits;
+- identical to the current phase branch;
+- no product commit, PR, report, or CI run exists.
 
-Incomplete head state:
+Replacement contract:
 
-- exactly one commit ahead of the assigned base;
-- exactly one added path: `web/src/features/dashboard/marketViewModel.ts`;
-- no adapter module, route/popup migration, gates, CI, PR, or report.
+`signalguard-rs/phase-2/repairs/P2-MP03-R2.md`
 
-Review verdict:
+Required product commit:
 
-`REJECT_INCOMPLETE — REPAIR_REQUIRED`
+`refactor(web): adapt market DTOs into view models`
 
-Review record:
+Required execution environment:
 
-`signalguard-rs/phase-2/reviews/P2-MP03/641078b5bba452a377a5f644a70453b2fdf9c6ad.md`
+- complete local Git worktree;
+- one atomic product commit;
+- full frontend gates before commit;
+- exact-head GitHub CI before delivery.
 
-Repair contract:
+Dedicated local worktree:
 
-`signalguard-rs/phase-2/repairs/P2-MP03-R1.md`
-
-Repair authorization:
-
-- preserve the incomplete commit;
-- continue on the same branch;
-- append at most 10 bounded completion commits;
-- no amend, rebase, reset, branch recreation, history rewrite, or force-push;
-- final PR will be squash-merged only after exact-head CI and independent review.
-
-The branch is one backend-only phase commit behind because P2-MP05 was integrated after MP03 started. Do not rebase it.
+`/Users/anion/Desktop/work/git-signalguard-rs/worktrees/p2-mp03-r2`
 
 Current frontend status:
 
-`REPAIR_READY_OR_IN_PROGRESS`
+`R2_READY_TO_START`
 
-P2-MP04 remains serialized after P2-MP03 integration. P2-MP07 remains blocked.
+P2-MP04 remains serialized after successful P2-MP03 integration. P2-MP07 remains blocked.
 
 ### Backend lane — P2-MP06-C2
 
@@ -161,6 +155,37 @@ Current backend status:
 - resulting phase SHA: `1447a3ccb2fa3020738cd2dd3f8d145be6cd202a`;
 - status: `INTEGRATED`.
 
+## Superseded frontend delivery
+
+Branch:
+
+`p2/mp03-market-view-models`
+
+Original incomplete head:
+
+`641078b5bba452a377a5f644a70453b2fdf9c6ad`
+
+Unexpected contaminated head:
+
+`416c50404dd1b9b8f62654ded9e0cb4b6da5bfc7`
+
+Evidence:
+
+- six unexpected commits appeared after the immutable incomplete head before the authorized R1 worker's first write;
+- changed paths include market adapters/tests, both consumers, and `DashboardPage.tsx`;
+- the final patch contains unrelated copy/CSS changes and malformed source formatting;
+- no local gates, exact-head CI, PR, or delivery report exists.
+
+Review:
+
+`signalguard-rs/phase-2/reviews/P2-MP03/416c50404dd1b9b8f62654ded9e0cb4b6da5bfc7.md`
+
+Disposition:
+
+`REJECTED_AND_SUPERSEDED`
+
+Do not continue, rewrite, merge, open a PR from, cherry-pick, or mechanically copy this branch.
+
 ## Superseded backend delivery
 
 - branch: `p2/mp05-atomic-redis-state`;
@@ -172,7 +197,7 @@ Current backend status:
 
 Frontend lane:
 
-`P2-MP01 → P2-MP02 → P2-MP03-R1 → P2-MP04`
+`P2-MP01 → P2-MP02 → P2-MP03-R2 → P2-MP04`
 
 Backend lane:
 
@@ -184,10 +209,10 @@ P2-MP07 remains blocked until P2-MP04 and the required adapter prerequisites are
 
 ## Next actions
 
-1. Continue P2-MP03 in the existing frontend worker using `P2-MP03-R1.md`.
+1. Start P2-MP03-R2 in a new local Codex task using the clean dedicated worktree and immutable replacement contract.
 2. Continue the existing local P2-MP06 worktree using `P2-MP06-C2.md`.
-3. Do not change MP06 production code merely to satisfy the test type-inference error.
-4. Do not rebase or rewrite the MP03 branch.
+3. Do not use or modify the superseded MP03 branch.
+4. Do not change MP06 production code merely to satisfy the test type-inference error.
 5. Do not start P2-MP04 or P2-MP07 independently.
 6. Do not merge the phase branch into `main`.
 
