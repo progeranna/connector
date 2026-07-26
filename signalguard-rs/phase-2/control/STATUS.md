@@ -16,13 +16,15 @@ Phase branch:
 
 Current verified phase SHA:
 
-`74dd6e3985649d05e59f1f4cb7f653e405b31cb0`
+`1447a3ccb2fa3020738cd2dd3f8d145be6cd202a`
 
 Relative to Phase 1, the phase branch is:
 
-- ahead by 2 commits;
+- ahead by 3 commits;
 - behind by 0 commits;
-- containing integrated P2-MP01 and P2-MP02 only.
+- containing integrated P2-MP01, P2-MP02, and P2-MP05.
+
+The phase branch is not merged into `main`.
 
 ## Active parallel lanes
 
@@ -38,15 +40,9 @@ Assigned branch:
 
 `p2/mp03-market-view-models`
 
-Exact base:
+Exact assigned base:
 
 `74dd6e3985649d05e59f1f4cb7f653e405b31cb0`
-
-Verified branch state at release:
-
-- ahead by 0 commits;
-- behind by 0 commits;
-- identical to the exact phase base.
 
 Contract:
 
@@ -62,73 +58,57 @@ Path lease:
 - route/popup consumers and tests needed for the shared view-model boundary;
 - no network schema, query, dependency, CI, or backend changes.
 
-Explicitly forbidden in P2-MP03:
-
-- `web/src/features/dashboard/api.ts`;
-- `web/src/features/dashboard/queryKeys.ts`;
-- `web/src/features/dashboard/queryKeys.test.ts`;
-- `web/src/features/dashboard/types.ts`;
-- backend files;
-- dependency/lockfile changes;
-- P2-MP04 contract generation;
-- P2-MP07 source/availability semantics.
-
 Current frontend status:
 
-`READY_TO_START`
+`READY_OR_IN_PROGRESS`
 
-P2-MP04 is serialized after P2-MP03 review/integration so that the DTO/view-model boundary is established before backend contract publication changes the wire-contract layer.
+P2-MP04 remains serialized after P2-MP03 review/integration. P2-MP07 remains blocked.
 
-P2-MP07 remains blocked.
-
-### Backend lane — P2-MP05-R2 local continuation
+### Backend lane — P2-MP06
 
 Task:
 
-`P2-MP05 — Atomic Redis latest-state registration`
+`P2-MP06 — Bulk Redis market-state retrieval`
 
-Clean replacement branch:
+Assigned branch:
 
-`p2/mp05-atomic-redis-state-r2`
+`p2/mp06-bulk-redis-state`
 
-Exact branch base:
+Exact assigned base:
 
-`ce2ee582a370cce8bf8198d1fbb82fcb961867c3`
+`1447a3ccb2fa3020738cd2dd3f8d145be6cd202a`
 
-Current verified remote branch state before continuation completion:
+Verified branch state at release:
 
 - ahead by 0 commits;
 - behind by 0 commits;
-- identical to its exact assigned base;
-- no product commit or PR exists for R2 yet.
+- identical to the exact phase base.
 
-Verified candidate:
+Contract:
 
-`signalguard-rs/phase-2/candidate-results/P2-MP05/03fa30b-ci2/src/storage/redis.rs`
+`signalguard-rs/phase-2/prompts/P2-MP06.md`
 
-Candidate SHA-256:
+Required commit:
 
-`f8ed711ae4421efadb1d9c6ad520862b58f44ae67ee49130bafb60e82f6777be`
+`perf(api): load dashboard market states in bulk`
 
-Candidate-builder proof:
+Authorized product paths:
 
-- workflow run `30203694273`;
-- canonical rustfmt: success;
-- cargo check: success;
-- clippy with warnings denied: success;
-- all Rust tests: success;
-- existing Redis integration suite against Redis 7: success;
-- atomic Redis proof suite: success.
+- `src/storage/redis.rs`;
+- `src/api/handlers.rs`;
+- `tests/redis_cache.rs`.
 
-Local continuation contract:
+Required result:
 
-`signalguard-rs/phase-2/repairs/P2-MP05-R2-C1.md`
+- one Redis bulk operation for dashboard market-state retrieval;
+- explicit symbol-to-state association;
+- stable input/response order;
+- correct missing, malformed-payload, and embedded-symbol-mismatch handling;
+- no awaited per-symbol Redis `GET` loop in the dashboard path.
 
 Current backend status:
 
-`LOCAL_CONTINUATION_IN_PROGRESS`
-
-P2-MP06 remains blocked until the clean R2 head passes product CI, connector Redis proof, review, and integration.
+`READY_TO_START`
 
 ## Completed work
 
@@ -142,12 +122,23 @@ P2-MP06 remains blocked until the clean R2 head passes product CI, connector Red
 
 ### P2-MP02
 
-- original head: `a83d63bbe5e9b0ff1add4e6d2235c00a8732a70c`;
 - repaired head: `630ca12deba92c334632dddba58886789d2396f5`;
 - PR: `https://github.com/progeranna/signalguard-rs/pull/17`;
-- exact-head CI: success;
+- product CI run: `30205299353` — success;
 - verdict: `ACCEPT`;
 - resulting phase SHA: `74dd6e3985649d05e59f1f4cb7f653e405b31cb0`;
+- status: `INTEGRATED`.
+
+### P2-MP05
+
+- clean replacement head: `5a1537fdf5dd7b278e4a704283b10e511a95bef5`;
+- PR: `https://github.com/progeranna/signalguard-rs/pull/18`;
+- product CI run: `30206111210` — success;
+- Redis proof run: `30206312877` — success;
+- review: `signalguard-rs/phase-2/reviews/P2-MP05/5a1537fdf5dd7b278e4a704283b10e511a95bef5.md`;
+- integration: `signalguard-rs/phase-2/integration/P2-MP05/1447a3ccb2fa3020738cd2dd3f8d145be6cd202a.md`;
+- verdict: `ACCEPT`;
+- resulting phase SHA: `1447a3ccb2fa3020738cd2dd3f8d145be6cd202a`;
 - status: `INTEGRATED`.
 
 ## Superseded backend delivery
@@ -169,8 +160,6 @@ Disposition:
 
 `REJECTED_AND_SUPERSEDED`
 
-The superseded PR is closed and unmerged.
-
 ## Dependency barriers
 
 Frontend lane:
@@ -179,7 +168,7 @@ Frontend lane:
 
 Backend lane:
 
-`P2-MP05-R2-C1 → product CI → Redis proof → review/integration → P2-MP06`
+`P2-MP05 → P2-MP06`
 
 Cross-lane:
 
@@ -187,10 +176,10 @@ P2-MP07 remains blocked until P2-MP04 and the required adapter prerequisites are
 
 ## Next actions
 
-1. Launch P2-MP03 in the existing frontend worker chat using its immutable contract.
-2. Continue the existing local Codex P2-MP05-R2 task under `P2-MP05-R2-C1.md`.
+1. Continue or launch P2-MP03 in the existing frontend worker chat.
+2. Launch P2-MP06 in a separate backend worker from its immutable contract.
 3. Do not continue the superseded MP05 branch or PR #16.
-4. Do not start P2-MP04, P2-MP06, or P2-MP07 independently.
+4. Do not start P2-MP04 or P2-MP07 independently.
 5. Do not merge the phase branch into `main`.
 
 Only the Orchestrator updates this file.
