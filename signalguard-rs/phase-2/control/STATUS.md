@@ -24,7 +24,7 @@ The phase branch is one commit ahead of Phase 1 and contains only integrated P2-
 
 At most two product workers may be active.
 
-### Frontend lane — P2-MP02
+### Frontend lane — P2-MP02-R1
 
 Task:
 
@@ -38,17 +38,70 @@ Exact base:
 
 `ce2ee582a370cce8bf8198d1fbb82fcb961867c3`
 
-Contract:
+Rejected head:
 
-`signalguard-rs/phase-2/prompts/P2-MP02.md`
+`a83d63bbe5e9b0ff1add4e6d2235c00a8732a70c`
 
-Status:
+Product PR:
 
-`IN_PROGRESS_OR_READY`
+`https://github.com/progeranna/signalguard-rs/pull/17`
 
-Primary path lease:
+PR state:
 
-`web/src/**`
+- open;
+- draft;
+- unmerged.
+
+Repository state:
+
+- exactly one commit ahead of the exact base;
+- zero commits behind;
+- nine changed paths, all under `web/src/**`;
+- no dependency, lockfile, backend, Redis, PostgreSQL, or product-CI changes.
+
+Review verdict:
+
+`REJECT — REPAIR_REQUIRED`
+
+Review record:
+
+`signalguard-rs/phase-2/reviews/P2-MP02/a83d63bbe5e9b0ff1add4e6d2235c00a8732a70c.md`
+
+Repair contract:
+
+`signalguard-rs/phase-2/repairs/P2-MP02-R1.md`
+
+Product CI evidence:
+
+- workflow run `30203823930`;
+- Rust job: success;
+- frontend `npm ci`: success;
+- frontend `npm run test:run`: failure;
+- typecheck, lint, build, and bundle checks: skipped.
+
+Orchestrator diagnostic:
+
+- workflow run `30204380568`;
+- request: `signalguard-rs/phase-2/diagnostic-requests/P2-MP02/a83d63b-diag1.json`;
+- result: `signalguard-rs/phase-2/diagnostic-results/P2-MP02/a83d63b-diag1/result.json`;
+- failure tail: `signalguard-rs/phase-2/diagnostic-results/P2-MP02/a83d63b-diag1/vitest-tail.log`.
+
+Exact diagnostic result:
+
+- 3 failed test files;
+- 8 failed tests;
+- 18 passed test files;
+- 257 passed tests.
+
+R1 scope:
+
+- test-only alignment of legacy isolation harnesses with the new symbol-owned resource families;
+- exactly three authorized test paths;
+- no production source change authorized.
+
+Current frontend status:
+
+`REPAIR_READY_TO_START`
 
 P2-MP03, P2-MP04, and P2-MP07 remain blocked.
 
@@ -76,17 +129,11 @@ Remote replacement-worker preflight:
 
 `BLOCKED_WITHOUT_PRODUCT_CHANGE`
 
-The remote worker environment lacked GitHub network access, Rust tooling, Docker, and Redis. No product checkout, edit, commit, push, PR, proof request, or report was created.
+No product checkout, edit, commit, push, PR, proof request, or report was created by the blocked remote worker.
 
-## MP05 candidate-builder evidence
-
-Connector workflow:
+Candidate-builder workflow:
 
 `.github/workflows/signalguard-mp05-candidate-builder.yml`
-
-Candidate request:
-
-`signalguard-rs/phase-2/candidate-requests/P2-MP05/03fa30b938b6d3d8f351581ee92785dcfdf3e207-ci2.json`
 
 Candidate result:
 
@@ -95,10 +142,8 @@ Candidate result:
 Workflow run:
 
 - run ID: `30203694273`;
-- URL: `https://github.com/progeranna/connector/actions/runs/30203694273`;
 - conclusion: `success`;
-- source product SHA: `03fa30b938b6d3d8f351581ee92785dcfdf3e207`;
-- canonical formatted file persisted: `yes`.
+- source product SHA: `03fa30b938b6d3d8f351581ee92785dcfdf3e207`.
 
 Verified candidate:
 
@@ -108,17 +153,15 @@ Candidate SHA-256:
 
 `f8ed711ae4421efadb1d9c6ad520862b58f44ae67ee49130bafb60e82f6777be`
 
-Successful candidate-builder gates:
+Successful candidate gates:
 
-- canonical `cargo fmt --all`;
-- `cargo fmt --all --check`;
-- `cargo check --all-targets --all-features`;
-- `cargo clippy --all-targets --all-features -- -D warnings`;
-- `cargo test --all-targets --all-features`;
-- existing ignored Redis integration suite against Redis 7;
-- ignored `atomic_market_state_write` proof tests against Redis 7;
-- exact source commit confirmation;
-- changed-path restriction to `src/storage/redis.rs`.
+- canonical rustfmt;
+- cargo check;
+- clippy with warnings denied;
+- all Rust tests;
+- existing Redis integration suite against Redis 7;
+- atomic-market-state Redis proof tests;
+- exact source identity and path restriction.
 
 Local apply contract:
 
@@ -126,9 +169,9 @@ Local apply contract:
 
 Current backend status:
 
-`VERIFIED_CANDIDATE_READY_FOR_LOCAL_APPLY`
+`LOCAL_CODEX_APPLY_IN_PROGRESS`
 
-P2-MP06 remains blocked until the resulting clean R2 product head passes product PR CI, connector Redis proof, review, and integration.
+P2-MP06 remains blocked until the clean R2 head passes product CI, connector Redis proof, review, and integration.
 
 ## Superseded backend delivery
 
@@ -175,26 +218,15 @@ Resulting phase SHA:
 
 `ce2ee582a370cce8bf8198d1fbb82fcb961867c3`
 
-## Acceptance infrastructure
-
-Connector proof workflow:
-
-`.github/workflows/signalguard-redis-proof.yml`
-
-Acceptance of the final P2-MP05 R2 product head requires both:
-
-1. green product PR CI for the exact product head;
-2. green connector `SignalGuard Redis Proof` run for the same exact head.
-
 ## Dependency barriers
 
 Frontend lane:
 
-`P2-MP01 → P2-MP02 → post-MP02 path inspection → P2-MP03/P2-MP04`
+`P2-MP01 → P2-MP02-R1 → review/integration → post-MP02 path inspection → P2-MP03/P2-MP04`
 
 Backend lane:
 
-`P2-MP05-R2 local apply → product CI → Redis proof → review → integration → P2-MP06`
+`P2-MP05-R2 local apply → product CI → Redis proof → review/integration → P2-MP06`
 
 Cross-lane:
 
@@ -202,8 +234,8 @@ P2-MP07 remains blocked until its prerequisites are explicitly released.
 
 ## Next actions
 
-1. Continue P2-MP02 in its frontend worker.
-2. Run the immutable P2-MP05-R2 local apply contract in local Codex.
+1. Launch P2-MP02-R1 in the existing frontend worker chat.
+2. Continue the P2-MP05-R2 local Codex apply already in progress.
 3. Do not continue the superseded MP05 branch or PR #16.
 4. Do not start P2-MP03, P2-MP04, P2-MP06, or P2-MP07.
 
