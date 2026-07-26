@@ -1,0 +1,39 @@
+name: ChatGPT Web Worker Bootstrap Receipt
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - signalguard-rs/phase-2/bootstrap-requests/*.json
+
+permissions:
+  contents: write
+
+jobs:
+  receipt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Record request receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          request="$(find signalguard-rs/phase-2/bootstrap-requests -maxdepth 1 -name '*.json' -type f -printf '%T@ %p\n' | sort -nr | head -1 | cut -d' ' -f2-)"
+          request_id="$(jq -r '.request_id' "$request")"
+          receipt="signalguard-rs/phase-2/bootstrap-receipts/${request_id}.json"
+          mkdir -p "$(dirname "$receipt")"
+          cat > "$receipt" <<JSON
+          {
+            "request_id": "$request_id",
+            "received_by_run_id": ${GITHUB_RUN_ID},
+            "request_commit_sha": "${GITHUB_SHA}"
+          }
+          JSON
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add "$receipt"
+          git commit -m "bootstrap: acknowledge ${request_id}"
+          git push origin HEAD:main
