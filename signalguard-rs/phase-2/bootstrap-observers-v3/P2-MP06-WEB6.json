@@ -1,0 +1,8 @@
+{
+  "request_id": "P2-MP06-WEB6",
+  "product_sha": "1447a3ccb2fa3020738cd2dd3f8d145be6cd202a",
+  "product_branch": "p2/mp06-bulk-redis-state",
+  "run_id": 30220162842,
+  "status": "in_progress",
+  "workflow_head_sha": "67632de0e2eb44f33d4374bc7e068e148e6ebc56"
+}
