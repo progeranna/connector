@@ -1,0 +1,250 @@
+name: ChatGPT Web Worker Bootstrap
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - signalguard-rs/phase-2/bootstrap-requests/*.json
+      - .github/workflows/chatgpt-web-worker-bootstrap.yml
+
+permissions:
+  contents: write
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout connector
+        uses: actions/checkout@v4
+        with:
+          path: connector
+
+      - name: Resolve latest bootstrap request
+        id: request
+        shell: bash
+        run: |
+          set -euo pipefail
+          request="$(find connector/signalguard-rs/phase-2/bootstrap-requests -maxdepth 1 -name '*.json' -type f -printf '%T@ %p\n' | sort -nr | head -1 | cut -d' ' -f2-)"
+          test -n "$request"
+          request_id="$(jq -r '.request_id' "$request")"
+          product_sha="$(jq -r '.product_sha' "$request")"
+          mini_phase="$(jq -r '.mini_phase' "$request")"
+          product_branch="$(jq -r '.product_branch' "$request")"
+          for value in "$request_id" "$product_sha" "$mini_phase" "$product_branch"; do
+            test -n "$value"
+            test "$value" != "null"
+          done
+          echo "request_id=$request_id" >> "$GITHUB_OUTPUT"
+          echo "product_sha=$product_sha" >> "$GITHUB_OUTPUT"
+          echo "mini_phase=$mini_phase" >> "$GITHUB_OUTPUT"
+          echo "product_branch=$product_branch" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout exact product source
+        uses: actions/checkout@v4
+        with:
+          repository: progeranna/signalguard-rs
+          ref: ${{ steps.request.outputs.product_sha }}
+          path: product
+
+      - name: Build portable worker bundle
+        shell: bash
+        env:
+          REQUEST_ID: ${{ steps.request.outputs.request_id }}
+          PRODUCT_SHA: ${{ steps.request.outputs.product_sha }}
+          MINI_PHASE: ${{ steps.request.outputs.mini_phase }}
+          PRODUCT_BRANCH: ${{ steps.request.outputs.product_branch }}
+        run: |
+          set -euo pipefail
+          bundle=/tmp/chatgpt-web-worker-bootstrap
+          mkdir -p "$bundle"/{payload,metadata}
+
+          sudo apt-get update -qq
+          sudo apt-get install -y redis-server redis-tools zstd >/dev/null
+
+          rustc_path="$(rustup which rustc)"
+          toolchain_root="$(dirname "$(dirname "$rustc_path")")"
+          tar -C "$(dirname "$toolchain_root")" -I 'zstd -19 -T0' \
+            -cf "$bundle/payload/rust-toolchain.tar.zst" "$(basename "$toolchain_root")"
+
+          mkdir -p /tmp/cargo-vendor
+          (
+            cd product
+            cargo vendor --locked /tmp/cargo-vendor >/tmp/vendor-config-snippet.toml
+          )
+          tar -C /tmp -I 'zstd -19 -T0' -cf "$bundle/payload/cargo-vendor.tar.zst" cargo-vendor
+
+          tar -C product \
+            --exclude=.git \
+            --exclude=target \
+            --exclude=web/node_modules \
+            -I 'zstd -19 -T0' \
+            -cf "$bundle/payload/product-source.tar.zst" .
+
+          mkdir -p /tmp/portable-redis/lib
+          cp "$(command -v redis-server)" /tmp/portable-redis/redis-server
+          cp "$(command -v redis-cli)" /tmp/portable-redis/redis-cli
+          cp -L /lib/x86_64-linux-gnu/liblzf.so.1 /tmp/portable-redis/lib/liblzf.so.1
+          cat > /tmp/portable-redis/run-redis-server <<'SH'
+          #!/usr/bin/env bash
+          set -euo pipefail
+          root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+          export LD_LIBRARY_PATH="$root/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+          exec "$root/redis-server" "$@"
+          SH
+          cat > /tmp/portable-redis/run-redis-cli <<'SH'
+          #!/usr/bin/env bash
+          set -euo pipefail
+          root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+          export LD_LIBRARY_PATH="$root/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+          exec "$root/redis-cli" "$@"
+          SH
+          chmod +x /tmp/portable-redis/run-redis-server /tmp/portable-redis/run-redis-cli
+          tar -C /tmp -I 'zstd -19 -T0' -cf "$bundle/payload/portable-redis.tar.zst" portable-redis
+
+          docker_path="$(command -v docker)"
+          compose_path="$(find /usr/local/lib/docker/cli-plugins /usr/libexec/docker/cli-plugins "$HOME/.docker/cli-plugins" -name docker-compose -type f 2>/dev/null | head -1)"
+          test -x "$docker_path"
+          test -x "$compose_path"
+          mkdir -p /tmp/portable-docker/cli-plugins
+          cp "$docker_path" /tmp/portable-docker/docker
+          cp "$compose_path" /tmp/portable-docker/cli-plugins/docker-compose
+          tar -C /tmp -I 'zstd -19 -T0' -cf "$bundle/payload/portable-docker-cli.tar.zst" portable-docker
+
+          cat > "$bundle/bootstrap.sh" <<'SH'
+          #!/usr/bin/env bash
+          set -euo pipefail
+          artifact_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+          install_root="${1:-/tmp/signalguard-web-worker}"
+          rm -rf "$install_root"
+          mkdir -p "$install_root"/{rust,vendor,redis,docker,workspace,cargo-home}
+          (cd "$artifact_root" && sha256sum -c SHA256SUMS)
+          tar --zstd -xf "$artifact_root/payload/rust-toolchain.tar.zst" -C "$install_root/rust"
+          tar --zstd -xf "$artifact_root/payload/cargo-vendor.tar.zst" -C "$install_root/vendor" --strip-components=1
+          tar --zstd -xf "$artifact_root/payload/portable-redis.tar.zst" -C "$install_root/redis" --strip-components=1
+          tar --zstd -xf "$artifact_root/payload/portable-docker-cli.tar.zst" -C "$install_root/docker" --strip-components=1
+          tar --zstd -xf "$artifact_root/payload/product-source.tar.zst" -C "$install_root/workspace"
+          rust_root="$(find "$install_root/rust" -mindepth 1 -maxdepth 1 -type d | head -1)"
+          mkdir -p "$install_root/cargo-home"
+          cat > "$install_root/cargo-home/config.toml" <<CFG
+          [source.crates-io]
+          replace-with = "vendored-sources"
+
+          [source.vendored-sources]
+          directory = "$install_root/vendor"
+
+          [net]
+          offline = true
+          CFG
+          cat > "$install_root/env.sh" <<ENV
+          export SIGNALGUARD_WORKER_ROOT="$install_root"
+          export SIGNALGUARD_WORKSPACE="$install_root/workspace"
+          export CARGO_HOME="$install_root/cargo-home"
+          export PATH="$rust_root/bin:$install_root/docker:\$PATH"
+          export LD_LIBRARY_PATH="$rust_root/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+          export DOCKER_CONFIG="$install_root/docker-config"
+          export REDIS_SERVER="$install_root/redis/run-redis-server"
+          export REDIS_CLI="$install_root/redis/run-redis-cli"
+          ENV
+          mkdir -p "$install_root/docker-config/cli-plugins"
+          ln -sf "$install_root/docker/cli-plugins/docker-compose" "$install_root/docker-config/cli-plugins/docker-compose"
+          echo "$install_root/env.sh"
+          SH
+          chmod +x "$bundle/bootstrap.sh"
+
+          cat > "$bundle/preflight.sh" <<'SH'
+          #!/usr/bin/env bash
+          set -euo pipefail
+          env_file="${1:?env file required}"
+          source "$env_file"
+          test "$(uname -m)" = "x86_64"
+          rustc --version
+          cargo --version
+          rustfmt --version
+          cargo clippy --version
+          docker --version
+          docker compose version
+          cd "$SIGNALGUARD_WORKSPACE"
+          test "$(git rev-parse --is-inside-work-tree 2>/dev/null || echo false)" = "false"
+          cargo metadata --locked --offline --no-deps >/dev/null
+          tmpcrate="$(mktemp -d)"
+          cargo new --quiet "$tmpcrate/probe"
+          cat > "$tmpcrate/probe/src/lib.rs" <<'RS'
+          pub fn add(left: usize, right: usize) -> usize { left + right }
+          #[cfg(test)] mod tests { use super::*; #[test] fn works() { assert_eq!(add(2, 4), 6); } }
+          RS
+          (cd "$tmpcrate/probe" && cargo fmt --all --check && cargo check --offline && cargo clippy --offline --all-targets -- -D warnings && cargo test --offline)
+          port=$((20000 + RANDOM % 20000))
+          redis_dir="$(mktemp -d)"
+          "$REDIS_SERVER" --bind 127.0.0.1 --port "$port" --save '' --appendonly no --daemonize yes --dir "$redis_dir" --pidfile "$redis_dir/redis.pid" --logfile "$redis_dir/redis.log"
+          trap '"$REDIS_CLI" -p "$port" shutdown nosave >/dev/null 2>&1 || true' EXIT
+          for _ in $(seq 1 50); do "$REDIS_CLI" -p "$port" ping >/dev/null 2>&1 && break; sleep 0.1; done
+          test "$("$REDIS_CLI" -p "$port" ping)" = "PONG"
+          "$REDIS_CLI" -p "$port" mset sg:a one sg:c three >/dev/null
+          mapfile -t values < <("$REDIS_CLI" -p "$port" --raw mget sg:a sg:b sg:c)
+          test "${values[0]}" = "one"
+          test -z "${values[1]}"
+          test "${values[2]}" = "three"
+          test "$("$REDIS_CLI" -p "$port" --raw eval "redis.call('SET', KEYS[1], ARGV[1]); redis.call('SADD', KEYS[2], ARGV[2]); return 1" 2 sg:state sg:symbols payload BTCUSDT)" = "1"
+          echo PREFLIGHT_OK
+          SH
+          chmod +x "$bundle/preflight.sh"
+
+          cat > "$bundle/metadata/MANIFEST.json" <<JSON
+          {
+            "request_id": "$REQUEST_ID",
+            "mini_phase": "$MINI_PHASE",
+            "product_repository": "progeranna/signalguard-rs",
+            "product_sha": "$PRODUCT_SHA",
+            "product_branch": "$PRODUCT_BRANCH",
+            "runner_os": "$(uname -s)",
+            "runner_arch": "$(uname -m)",
+            "rustc": "$(rustc --version)",
+            "cargo": "$(cargo --version)",
+            "rustfmt": "$(rustfmt --version)",
+            "clippy": "$(cargo clippy --version)",
+            "redis": "$(redis-server --version | sed 's/"/\\"/g')",
+            "docker": "$(docker --version | sed 's/"/\\"/g')",
+            "docker_compose": "$(docker compose version | sed 's/"/\\"/g')"
+          }
+          JSON
+          (cd "$bundle" && find payload metadata -type f -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS)
+          tar -C /tmp -I 'zstd -10 -T0' -cf /tmp/chatgpt-web-worker-bootstrap.tar.zst chatgpt-web-worker-bootstrap
+
+      - name: Upload worker bootstrap artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: signalguard-${{ steps.request.outputs.request_id }}-${{ github.run_id }}
+          path: /tmp/chatgpt-web-worker-bootstrap.tar.zst
+          if-no-files-found: error
+          retention-days: 3
+          compression-level: 0
+
+      - name: Record bootstrap result
+        shell: bash
+        env:
+          REQUEST_ID: ${{ steps.request.outputs.request_id }}
+          PRODUCT_SHA: ${{ steps.request.outputs.product_sha }}
+          MINI_PHASE: ${{ steps.request.outputs.mini_phase }}
+          PRODUCT_BRANCH: ${{ steps.request.outputs.product_branch }}
+        run: |
+          set -euo pipefail
+          result="connector/signalguard-rs/phase-2/bootstrap-results/${REQUEST_ID}.json"
+          mkdir -p "$(dirname "$result")"
+          cat > "$result" <<JSON
+          {
+            "request_id": "$REQUEST_ID",
+            "mini_phase": "$MINI_PHASE",
+            "product_sha": "$PRODUCT_SHA",
+            "product_branch": "$PRODUCT_BRANCH",
+            "run_id": ${GITHUB_RUN_ID},
+            "artifact_name": "signalguard-${REQUEST_ID}-${GITHUB_RUN_ID}",
+            "workflow_head_sha": "${GITHUB_SHA}"
+          }
+          JSON
+          cd connector
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add "signalguard-rs/phase-2/bootstrap-results/${REQUEST_ID}.json"
+          git commit -m "bootstrap: record ${REQUEST_ID} artifact ${GITHUB_RUN_ID}"
+          git push origin HEAD:main
