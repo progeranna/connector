@@ -1,0 +1,7 @@
+{
+  "request_id": "P2-MP06-WEB6",
+  "mini_phase": "P2-MP06",
+  "product_repository": "progeranna/signalguard-rs",
+  "product_sha": "1447a3ccb2fa3020738cd2dd3f8d145be6cd202a",
+  "product_branch": "p2/mp06-bulk-redis-state"
+}
