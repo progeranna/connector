@@ -6,7 +6,7 @@ Product repository:
 
 `progeranna/signalguard-rs`
 
-Merged Phase 1 / current `main` SHA:
+Phase 1 / current `main` SHA:
 
 `5e15a06169445461a9003e17fa1ae5a648d5a1a1`
 
@@ -18,39 +18,31 @@ Current verified phase SHA:
 
 `ce2ee582a370cce8bf8198d1fbb82fcb961867c3`
 
-Verified phase branch state relative to the Phase 1 base:
+Phase branch is one commit ahead of Phase 1 and contains only integrated P2-MP01.
 
-- ahead by 1 commit;
-- behind by 0 commits;
-- contains the integrated P2-MP01 change only.
+## Active parallel lanes
 
-## Active parallel work
-
-Two independent workers are authorized concurrently.
+At most two product workers may be active.
 
 ### Frontend lane — P2-MP02
 
-Title:
+Task:
 
-Symbol-owned market queries
+`P2-MP02 — Symbol-owned market queries`
 
-Task branch:
+Branch:
 
 `p2/mp02-symbol-data-queries`
 
-Exact task base:
+Exact base:
 
 `ce2ee582a370cce8bf8198d1fbb82fcb961867c3`
 
-Branch state at release:
+Verified current branch state:
 
-- created exactly from the current phase SHA;
 - ahead by 0 commits;
-- behind by 0 commits.
-
-Required commit:
-
-`refactor(web): query symbol details by market identity`
+- behind by 0 commits;
+- clean remote tree identical to the exact base.
 
 Contract:
 
@@ -64,124 +56,142 @@ Primary path lease:
 
 `web/src/**`
 
-Forbidden adjacent work:
+P2-MP03, P2-MP04, and P2-MP07 remain blocked.
 
-- P2-MP03;
-- P2-MP04;
-- P2-MP07;
-- all Rust, Redis, PostgreSQL, migration, dependency, and contract-generation changes.
+### Backend lane — P2-MP05-R2 replacement
 
-### Backend lane — P2-MP05-R1
+Task:
 
-Title:
+`P2-MP05 — Atomic Redis latest-state registration`
 
-Repair atomic Redis latest-state registration
+New replacement branch:
 
-Task branch:
+`p2/mp05-atomic-redis-state-r2`
 
-`p2/mp05-atomic-redis-state`
+Exact clean base:
 
-Rejected product head:
+`ce2ee582a370cce8bf8198d1fbb82fcb961867c3`
 
-`6f4ec2c757dc05b208f11b41cd218edb8a6aa4ce`
+Verified current branch state:
 
-Product PR:
+- ahead by 0 commits;
+- behind by 0 commits;
+- clean remote tree identical to the exact base.
 
-`https://github.com/progeranna/signalguard-rs/pull/16`
+Replacement contract:
 
-Review verdict:
-
-`REJECT — REPAIR_REQUIRED`
-
-Repair contract:
-
-`signalguard-rs/phase-2/repairs/P2-MP05-R1.md`
+`signalguard-rs/phase-2/repairs/P2-MP05-R2.md`
 
 Status:
 
-`REPAIR_READY_TO_START`
+`REPLACEMENT_READY_TO_START`
 
-Repair requirements:
+Primary path lease:
 
-- one explicitly authorized additional formatting-only product commit;
-- no force-push, amend, rebase, or history rewrite;
-- green product PR CI for the repaired exact head;
-- green `SignalGuard Redis Proof` workflow in `connector` against the repaired exact head;
-- new delivery report keyed by the repaired head SHA.
+`src/storage/redis.rs`
+
+Mandatory environment:
+
+- complete product checkout;
+- cargo;
+- rustfmt;
+- clippy;
+- isolated Redis 7;
+- local full Rust and real-Redis gates before the first product commit.
+
+P2-MP06 remains blocked until this replacement is accepted and integrated.
+
+## Superseded backend delivery
+
+Superseded branch:
+
+`p2/mp05-atomic-redis-state`
+
+Superseded PR:
+
+`https://github.com/progeranna/signalguard-rs/pull/16`
+
+First rejected head:
+
+`6f4ec2c757dc05b208f11b41cd218edb8a6aa4ce`
+
+Second rejected head:
+
+`03fa30b938b6d3d8f351581ee92785dcfdf3e207`
+
+Second failed CI:
+
+- run `30202891531`;
+- Rust job `89795827955`;
+- formatting failed;
+- check, clippy, Rust tests, replay discovery, and Docker validation skipped;
+- frontend passed.
+
+Reviews:
+
+- `signalguard-rs/phase-2/reviews/P2-MP05/6f4ec2c757dc05b208f11b41cd218edb8a6aa4ce.md`
+- `signalguard-rs/phase-2/reviews/P2-MP05/03fa30b938b6d3d8f351581ee92785dcfdf3e207.md`
+
+Disposition:
+
+`REJECTED_AND_SUPERSEDED`
+
+No proof request, Redis-proof run, accepted report, or integration exists for either rejected head.
 
 ## Completed work
 
 ### P2-MP01
 
-Title:
-
-Query-key factories and request identity
-
-Reviewed task head:
+Task head:
 
 `18f08279a78d15ec4d1225bf3e219c63cdf517d4`
 
-Product PR:
+PR:
 
 `https://github.com/progeranna/signalguard-rs/pull/15`
 
-Review verdict:
+Verdict:
 
 `ACCEPT_WITH_NOTES`
 
-Integration result:
+Integration:
 
 `INTEGRATED`
 
-Resulting phase commit:
+Resulting phase SHA:
 
 `ce2ee582a370cce8bf8198d1fbb82fcb961867c3`
 
-Review record:
+## Verification infrastructure
 
-`signalguard-rs/phase-2/reviews/P2-MP01/18f08279a78d15ec4d1225bf3e219c63cdf517d4.md`
+Connector workflow:
 
-Integration record:
+`.github/workflows/signalguard-redis-proof.yml`
 
-`signalguard-rs/phase-2/integration/P2-MP01/ce2ee582a370cce8bf8198d1fbb82fcb961867c3.md`
+Acceptance of P2-MP05 requires both:
+
+1. green product PR CI for the exact product head;
+2. green connector `SignalGuard Redis Proof` run for the same exact head.
 
 ## Dependency barriers
 
 Frontend lane:
 
-- P2-MP01: `INTEGRATED`;
-- P2-MP02: `READY_TO_START`;
-- P2-MP03/P2-MP04: blocked until P2-MP02 review and integration plus post-MP02 path inspection.
+`P2-MP01 → P2-MP02 → post-MP02 path inspection → P2-MP03/P2-MP04`
 
 Backend lane:
 
-- P2-MP05: `REPAIR_READY_TO_START`;
-- P2-MP06: blocked until P2-MP05 is accepted and integrated.
+`P2-MP05-R2 → P2-MP06`
 
 Cross-lane:
 
-- P2-MP07 remains blocked until its frontend and backend prerequisites are stable and the Orchestrator releases an immutable contract.
-
-## Concurrency boundary
-
-P2-MP02 and P2-MP05-R1 may run in parallel because their primary path leases are disjoint.
-
-P2-MP02 must not read from, merge, rebase onto, cherry-pick from, or modify `p2/mp05-atomic-redis-state`.
-
-P2-MP05-R1 must not read from, merge, rebase onto, cherry-pick from, or modify `p2/mp02-symbol-data-queries`.
-
-## Verification infrastructure
-
-Control-repository workflow:
-
-`.github/workflows/signalguard-redis-proof.yml`
-
-This workflow is dedicated to MP05 repair proof and is unrelated to P2-MP02.
+P2-MP07 remains blocked until its prerequisites are explicitly released.
 
 ## Next actions
 
-1. Launch P2-MP02 from its immutable contract commit.
-2. Continue P2-MP05-R1 in the existing backend worker chat.
-3. Do not start P2-MP03, P2-MP04, P2-MP06, or P2-MP07.
+1. Continue or launch P2-MP02 using its immutable contract.
+2. Launch P2-MP05-R2 in a new worker environment with full local execution capability.
+3. Do not continue the superseded MP05 branch or PR #16.
+4. Do not start P2-MP03, P2-MP04, P2-MP06, or P2-MP07.
 
 Only the Orchestrator updates this file.
