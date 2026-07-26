@@ -16,82 +16,61 @@ Phase branch:
 
 Current verified phase SHA:
 
-`1447a3ccb2fa3020738cd2dd3f8d145be6cd202a`
+`4f3a179ab56fb0f68f7b67f997508f3a21b89c37`
 
-Relative to Phase 1, the phase branch is ahead by 3 commits, behind by 0 commits, and contains integrated P2-MP01, P2-MP02, and P2-MP05. It is not merged into `main`.
+Relative to Phase 1, the phase branch is ahead by 4 commits, behind by 0 commits, and contains integrated P2-MP01, P2-MP02, P2-MP03, and P2-MP05. It is not merged into `main`.
 
 ## Active parallel lanes
 
 At most two product executors may be active.
 
-### Frontend lane — P2-MP03-R2-R1
+### Contract/frontend lane — P2-MP04
 
 Task:
 
-`P2-MP03 — Market DTO-to-view-model adapters`
+`P2-MP04 — Publish a validated web console API contract`
 
-Branch:
+Assigned branch:
 
-`p2/mp03-market-view-models-r2`
+`p2/mp04-api-contract`
 
-Clean base:
+Exact assigned base and verified initial remote head:
 
-`1447a3ccb2fa3020738cd2dd3f8d145be6cd202a`
+`4f3a179ab56fb0f68f7b67f997508f3a21b89c37`
 
-Rejected reviewed head:
+Verified release state:
 
-`d2be5b35d8beb433d3bafdcd9f9986ae5a292f2d`
+- ahead by 0 commits;
+- behind by 0 commits;
+- identical to the current phase branch;
+- no product commit, PR, report, or CI run exists.
 
-PR:
+Immutable contract:
 
-`https://github.com/progeranna/signalguard-rs/pull/19`
+`signalguard-rs/phase-2/prompts/P2-MP04.md`
 
-Verified delivery facts:
+Contract connector commit:
 
-- exactly one product commit with the required original message;
-- exactly six authorized frontend paths;
-- local focused gates reported 25 tests passed;
-- local full frontend gates reported 278 tests, typecheck, lint, build, and bundle check passed;
-- exact-head CI run `30215490254` succeeded for both frontend and Rust;
-- PR is open, draft, mergeable, and unmerged.
+`177290c887ce7b09eb1cc38c9967f071fb2adb25`
 
-Review verdict:
+Required product commit:
 
-`REJECT — REPAIR_REQUIRED`
+`feat(api): publish validated web console contract`
 
-Review:
+Dedicated local worktree:
 
-`signalguard-rs/phase-2/reviews/P2-MP03/d2be5b35d8beb433d3bafdcd9f9986ae5a292f2d.md`
+`/Users/anion/Desktop/work/git-signalguard-rs/worktrees/p2-mp04`
 
-Repair contract:
+Path lease:
 
-`signalguard-rs/phase-2/repairs/P2-MP03-R2-R1.md`
+- may establish typed backend schema/contract definitions, deterministic checked artifact, compatibility tests, and CI drift gate;
+- must not modify `src/api/handlers.rs`, `src/storage/redis.rs`, or `tests/redis_cache.rs` while P2-MP06 is active;
+- must stop if accurate generation requires a leased MP06 path;
+- no generated-client migration or runtime endpoint redesign.
 
-Blocking findings:
+Current contract-lane status:
 
-- one popup-oriented anomaly value representation changed dedicated-route anomaly rendering;
-- partial-state success no longer preserved the route's existing latest-state empty shell;
-- missing whole-state depth-gap data could be fabricated as numeric zero;
-- production consumers did not pass expected canonical identity into the adapter;
-- the claimed connector report and connector commit did not exist remotely.
-
-Repair authorization:
-
-- continue in the same local worktree and branch;
-- preserve rejected head history;
-- append exactly one repair commit: `fix(web): preserve market view-model presentation semantics`;
-- modify only the existing six P2-MP03 paths;
-- preserve route/popup-specific existing display values through one shared view-model contract;
-- rerun all focused and full frontend gates;
-- wait for repaired exact-head CI;
-- create a real connector report only after repaired CI succeeds;
-- no amend, rebase, reset, force-push, merge, or PR recreation.
-
-Current frontend status:
-
-`REPAIR_READY`
-
-P2-MP04 remains serialized after successful P2-MP03 integration. P2-MP07 remains blocked.
+`READY_TO_START`
 
 ### Backend lane — P2-MP06-C2
 
@@ -103,16 +82,17 @@ Assigned branch:
 
 `p2/mp06-bulk-redis-state`
 
-Exact assigned base and current verified remote head:
+Exact assigned base and last verified remote head:
 
 `1447a3ccb2fa3020738cd2dd3f8d145be6cd202a`
 
-Remote branch state:
+The branch began before P2-MP03 integration. Its allowed backend paths do not overlap the integrated frontend work. Do not rebase or rewrite it.
+
+Last verified remote state:
 
 - ahead by 0 commits;
-- behind by 0 commits;
-- identical to the exact phase base;
-- no product commit, push, PR, report, or CI run exists.
+- no product commit, push, PR, report, or CI run exists;
+- local uncommitted implementation is preserved in the dedicated worktree.
 
 Original contract:
 
@@ -145,7 +125,7 @@ C2 authorization:
 
 Current backend status:
 
-`C2_CONTINUATION_READY`
+`C2_CONTINUATION_READY_OR_IN_PROGRESS`
 
 ## Completed work
 
@@ -166,6 +146,20 @@ Current backend status:
 - resulting phase SHA: `74dd6e3985649d05e59f1f4cb7f653e405b31cb0`;
 - status: `INTEGRATED`.
 
+### P2-MP03
+
+- clean replacement branch: `p2/mp03-market-view-models-r2`;
+- rejected intermediate head: `d2be5b35d8beb433d3bafdcd9f9986ae5a292f2d`;
+- accepted repaired head: `9174f5797b5d21bd917497a668f0cd7e1c3e35aa`;
+- PR: `https://github.com/progeranna/signalguard-rs/pull/19`;
+- product CI run: `30216901488` — success;
+- delivery report: `signalguard-rs/phase-2/reports/P2-MP03/9174f5797b5d21bd917497a668f0cd7e1c3e35aa.md`;
+- review: `signalguard-rs/phase-2/reviews/P2-MP03/9174f5797b5d21bd917497a668f0cd7e1c3e35aa.md`;
+- integration: `signalguard-rs/phase-2/integration/P2-MP03/4f3a179ab56fb0f68f7b67f997508f3a21b89c37.md`;
+- verdict: `ACCEPT`;
+- resulting phase SHA: `4f3a179ab56fb0f68f7b67f997508f3a21b89c37`;
+- status: `INTEGRATED`.
+
 ### P2-MP05
 
 - clean replacement head: `5a1537fdf5dd7b278e4a704283b10e511a95bef5`;
@@ -178,28 +172,29 @@ Current backend status:
 - resulting phase SHA: `1447a3ccb2fa3020738cd2dd3f8d145be6cd202a`;
 - status: `INTEGRATED`.
 
-## Superseded frontend delivery
+## Superseded deliveries
+
+Frontend:
 
 - branch: `p2/mp03-market-view-models`;
 - original incomplete head: `641078b5bba452a377a5f644a70453b2fdf9c6ad`;
 - contaminated head: `416c50404dd1b9b8f62654ded9e0cb4b6da5bfc7`;
-- review: `signalguard-rs/phase-2/reviews/P2-MP03/416c50404dd1b9b8f62654ded9e0cb4b6da5bfc7.md`;
 - disposition: `REJECTED_AND_SUPERSEDED`.
 
-Do not continue, rewrite, merge, open a PR from, cherry-pick, or mechanically copy the superseded branch.
-
-## Superseded backend delivery
+Backend:
 
 - branch: `p2/mp05-atomic-redis-state`;
 - PR: `https://github.com/progeranna/signalguard-rs/pull/16`;
 - rejected heads: `6f4ec2c757dc05b208f11b41cd218edb8a6aa4ce`, `03fa30b938b6d3d8f351581ee92785dcfdf3e207`;
 - disposition: `REJECTED_AND_SUPERSEDED`.
 
+Do not continue, rewrite, merge, open a PR from, cherry-pick, or mechanically copy superseded branches.
+
 ## Dependency barriers
 
-Frontend lane:
+Contract/frontend lane:
 
-`P2-MP01 → P2-MP02 → P2-MP03-R2-R1 → P2-MP04`
+`P2-MP01 → P2-MP02 → P2-MP03 → P2-MP04`
 
 Backend lane:
 
@@ -207,15 +202,14 @@ Backend lane:
 
 Cross-lane:
 
-P2-MP07 remains blocked until P2-MP04 and the required adapter prerequisites are integrated.
+P2-MP07 remains blocked until P2-MP04 is integrated and the backend/frontend prerequisites are reviewed together.
 
 ## Next actions
 
-1. Continue the existing local P2-MP03-R2 worktree using `P2-MP03-R2-R1.md`.
+1. Start P2-MP04 in a new local Codex task using the clean dedicated worktree and immutable contract.
 2. Continue the existing local P2-MP06 worktree using `P2-MP06-C2.md`.
-3. Keep PR #19 draft and unmerged until repaired exact-head review.
-4. Do not use the superseded MP03 branch.
-5. Do not start P2-MP04 or P2-MP07 independently.
-6. Do not merge the phase branch into `main`.
+3. Enforce the explicit path leases between MP04 and MP06.
+4. Do not start P2-MP07 independently.
+5. Do not merge the phase branch into `main`.
 
 Only the Orchestrator updates this file.
