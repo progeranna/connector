@@ -6,7 +6,7 @@ on:
       - "signalguard-rs/phase-2/proof-requests/**/*.json"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   verify:
@@ -42,14 +42,17 @@ jobs:
           product_repository="$(jq -r '.product_repository' "${request_file}")"
           product_sha="$(jq -r '.product_sha' "${request_file}")"
           mini_phase="$(jq -r '.mini_phase' "${request_file}")"
+          request_id="$(basename "${request_file}" .json)"
 
           test "${product_repository}" = "progeranna/signalguard-rs"
           [[ "${product_sha}" =~ ^[0-9a-f]{40}$ ]]
           test -n "${mini_phase}"
+          test -n "${request_id}"
 
           echo "product_repository=${product_repository}" >> "${GITHUB_OUTPUT}"
           echo "product_sha=${product_sha}" >> "${GITHUB_OUTPUT}"
           echo "mini_phase=${mini_phase}" >> "${GITHUB_OUTPUT}"
+          echo "request_id=${request_id}" >> "${GITHUB_OUTPUT}"
 
       - name: Checkout exact product commit
         uses: actions/checkout@v4
@@ -103,3 +106,42 @@ jobs:
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "${{ steps.request.outputs.product_sha }}"
           git status --short
+
+      - name: Persist proof result in connector
+        if: always() && steps.request.outcome == 'success'
+        shell: bash
+        env:
+          JOB_STATUS: ${{ job.status }}
+          MINI_PHASE: ${{ steps.request.outputs.mini_phase }}
+          PRODUCT_SHA: ${{ steps.request.outputs.product_sha }}
+          REQUEST_ID: ${{ steps.request.outputs.request_id }}
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git rebase origin/main
+
+          output_dir="signalguard-rs/phase-2/proof-results/P2-MP05/${REQUEST_ID}"
+          mkdir -p "${output_dir}"
+
+          jq -n \
+            --arg mini_phase "${MINI_PHASE}" \
+            --arg request_id "${REQUEST_ID}" \
+            --arg product_sha "${PRODUCT_SHA}" \
+            --arg workflow_run_id "${GITHUB_RUN_ID}" \
+            --arg workflow_run_url "https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            --arg conclusion "${JOB_STATUS}" \
+            '{
+              mini_phase: $mini_phase,
+              request_id: $request_id,
+              product_sha: $product_sha,
+              workflow_run_id: $workflow_run_id,
+              workflow_run_url: $workflow_run_url,
+              conclusion: $conclusion
+            }' > "${output_dir}/result.json"
+
+          git add "${output_dir}/result.json"
+          git commit -m "ci: record MP05 Redis proof ${REQUEST_ID}"
+          git push origin HEAD:main
