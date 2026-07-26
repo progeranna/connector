@@ -18,13 +18,7 @@ Current verified phase SHA:
 
 `1447a3ccb2fa3020738cd2dd3f8d145be6cd202a`
 
-Relative to Phase 1, the phase branch is:
-
-- ahead by 3 commits;
-- behind by 0 commits;
-- containing integrated P2-MP01, P2-MP02, and P2-MP05.
-
-The phase branch is not merged into `main`.
+Relative to Phase 1, the phase branch is ahead by 3 commits, behind by 0 commits, and contains integrated P2-MP01, P2-MP02, and P2-MP05. It is not merged into `main`.
 
 ## Active parallel lanes
 
@@ -52,11 +46,7 @@ Incomplete head state:
 
 - exactly one commit ahead of the assigned base;
 - exactly one added path: `web/src/features/dashboard/marketViewModel.ts`;
-- no adapter module;
-- no route/popup migration;
-- no focused or full gates;
-- no exact-head CI;
-- no PR or connector report.
+- no adapter module, route/popup migration, gates, CI, PR, or report.
 
 Review verdict:
 
@@ -72,22 +62,21 @@ Repair contract:
 
 Repair authorization:
 
-- keep the incomplete commit immutable;
+- preserve the incomplete commit;
 - continue on the same branch;
 - append at most 10 bounded completion commits;
-- no amend, rebase, reset, history rewrite, branch recreation, or force-push;
-- contents-API writes are allowed only under the repair's one-path-per-commit rules;
-- final PR will be squash-merged after exact-head CI and independent review.
+- no amend, rebase, reset, branch recreation, history rewrite, or force-push;
+- final PR will be squash-merged only after exact-head CI and independent review.
 
-The task branch is one backend-only phase commit behind because P2-MP05 was integrated after MP03 started. Do not rebase it. The Orchestrator will validate merge compatibility against the current phase branch.
+The branch is one backend-only phase commit behind because P2-MP05 was integrated after MP03 started. Do not rebase it.
 
 Current frontend status:
 
-`REPAIR_READY_TO_START`
+`REPAIR_READY_OR_IN_PROGRESS`
 
-P2-MP04 remains serialized after P2-MP03 review/integration. P2-MP07 remains blocked.
+P2-MP04 remains serialized after P2-MP03 integration. P2-MP07 remains blocked.
 
-### Backend lane — P2-MP06
+### Backend lane — P2-MP06-C1
 
 Task:
 
@@ -97,41 +86,46 @@ Assigned branch:
 
 `p2/mp06-bulk-redis-state`
 
-Exact assigned base:
+Exact assigned base and current verified remote head:
 
 `1447a3ccb2fa3020738cd2dd3f8d145be6cd202a`
 
-Verified branch state at release:
+Remote branch state after the failed local focused gate:
 
 - ahead by 0 commits;
 - behind by 0 commits;
-- identical to the exact phase base.
+- identical to the exact phase base;
+- no product commit, push, PR, report, or CI run exists.
 
-Contract:
+Original contract:
 
 `signalguard-rs/phase-2/prompts/P2-MP06.md`
 
-Required commit:
+Continuation contract:
 
-`perf(api): load dashboard market states in bulk`
+`signalguard-rs/phase-2/repairs/P2-MP06-C1.md`
 
-Authorized product paths:
+Current local implementation report:
 
-- `src/storage/redis.rs`;
-- `src/api/handlers.rs`;
-- `tests/redis_cache.rs`.
+- modified only `src/storage/redis.rs`, `src/api/handlers.rs`, and `tests/redis_cache.rs`;
+- bulk API: `get_market_states(&[Symbol]) -> Result<Vec<(Symbol, Option<MarketState>)>, CacheError>`;
+- one Redis `MGET` for all requested state keys;
+- focused cache tests: 2/2 passed;
+- focused dashboard test stopped on a fixture/assertion scale mismatch: expected `"1.00"`, actual serialized value `"100"`;
+- full Rust and real-Redis gates were not run.
 
-Required result:
+Continuation authorization:
 
-- one Redis bulk operation for dashboard market-state retrieval;
-- explicit symbol-to-state association;
-- stable input/response order;
-- correct missing, malformed-payload, and embedded-symbol-mismatch handling;
-- no awaited per-symbol Redis `GET` loop in the dashboard path.
+- continue in the same dedicated local worktree;
+- inspect and correct only the test fixture/expectation inconsistency according to the intended decimal value and scale;
+- do not change production DTO serialization or Redis payload encoding to satisfy the test;
+- rerun one complete focused, full Rust, and real-Redis gate cycle;
+- commit and push only if every continuation gate passes;
+- retain the original exactly-one-product-commit requirement.
 
 Current backend status:
 
-`READY_OR_IN_PROGRESS`
+`CONTINUATION_READY`
 
 ## Completed work
 
@@ -166,22 +160,10 @@ Current backend status:
 
 ## Superseded backend delivery
 
-Superseded branch:
-
-`p2/mp05-atomic-redis-state`
-
-Superseded PR:
-
-`https://github.com/progeranna/signalguard-rs/pull/16`
-
-Rejected heads:
-
-- `6f4ec2c757dc05b208f11b41cd218edb8a6aa4ce`;
-- `03fa30b938b6d3d8f351581ee92785dcfdf3e207`.
-
-Disposition:
-
-`REJECTED_AND_SUPERSEDED`
+- branch: `p2/mp05-atomic-redis-state`;
+- PR: `https://github.com/progeranna/signalguard-rs/pull/16`;
+- rejected heads: `6f4ec2c757dc05b208f11b41cd218edb8a6aa4ce`, `03fa30b938b6d3d8f351581ee92785dcfdf3e207`;
+- disposition: `REJECTED_AND_SUPERSEDED`.
 
 ## Dependency barriers
 
@@ -191,7 +173,7 @@ Frontend lane:
 
 Backend lane:
 
-`P2-MP05 → P2-MP06`
+`P2-MP05 → P2-MP06-C1`
 
 Cross-lane:
 
@@ -199,11 +181,10 @@ P2-MP07 remains blocked until P2-MP04 and the required adapter prerequisites are
 
 ## Next actions
 
-1. Continue P2-MP03 in the existing frontend worker chat using `P2-MP03-R1.md`.
-2. Continue P2-MP06 in the separate backend local Codex task.
-3. Do not rebase or rewrite the incomplete MP03 branch.
-4. Do not continue the superseded MP05 branch or PR #16.
-5. Do not start P2-MP04 or P2-MP07 independently.
-6. Do not merge the phase branch into `main`.
+1. Continue P2-MP03 in the existing frontend worker using `P2-MP03-R1.md`.
+2. Continue the existing local P2-MP06 worktree using `P2-MP06-C1.md`.
+3. Do not rebase or rewrite the MP03 branch.
+4. Do not start P2-MP04 or P2-MP07 independently.
+5. Do not merge the phase branch into `main`.
 
 Only the Orchestrator updates this file.
