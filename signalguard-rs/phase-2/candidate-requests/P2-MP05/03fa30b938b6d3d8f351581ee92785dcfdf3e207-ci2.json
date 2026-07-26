@@ -1,0 +1,7 @@
+{
+  "mini_phase": "P2-MP05",
+  "request_id": "03fa30b-ci2",
+  "product_repository": "progeranna/signalguard-rs",
+  "product_sha": "03fa30b938b6d3d8f351581ee92785dcfdf3e207",
+  "purpose": "Apply canonical rustfmt, execute full Rust and real-Redis proof, and persist the verified candidate in connector"
+}
