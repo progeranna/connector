@@ -1,0 +1,7 @@
+{
+  "mini_phase": "P2-MP05-R2",
+  "product_repository": "progeranna/signalguard-rs",
+  "product_sha": "5a1537fdf5dd7b278e4a704283b10e511a95bef5",
+  "product_pr": "https://github.com/progeranna/signalguard-rs/pull/18",
+  "product_ci_run_id": 30206111210
+}
