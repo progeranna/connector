@@ -28,44 +28,56 @@ Relative to Phase 1, the phase branch is:
 
 At most two product executors may be active.
 
-### Frontend lane — post-P2-MP02 inspection
+### Frontend lane — P2-MP03
 
-P2-MP02 status:
+Task:
 
-`INTEGRATED`
+`P2-MP03 — Market DTO-to-view-model adapters`
 
-Reviewed task head:
+Assigned branch:
 
-`630ca12deba92c334632dddba58886789d2396f5`
+`p2/mp03-market-view-models`
 
-Product PR:
-
-`https://github.com/progeranna/signalguard-rs/pull/17`
-
-Resulting phase SHA:
+Exact base:
 
 `74dd6e3985649d05e59f1f4cb7f653e405b31cb0`
 
-Review:
+Verified branch state at release:
 
-`signalguard-rs/phase-2/reviews/P2-MP02/630ca12deba92c334632dddba58886789d2396f5.md`
+- ahead by 0 commits;
+- behind by 0 commits;
+- identical to the exact phase base.
 
-Integration record:
+Contract:
 
-`signalguard-rs/phase-2/integration/P2-MP02/74dd6e3985649d05e59f1f4cb7f653e405b31cb0.md`
+`signalguard-rs/phase-2/prompts/P2-MP03.md`
 
-Exact-head CI:
+Required commit:
 
-- workflow run `30205299353`;
-- frontend: success;
-- Rust: success;
-- no pending checks.
+`refactor(web): adapt market DTOs into view models`
+
+Path lease:
+
+- narrowly scoped market-detail view-model/adapters under `web/src/features/dashboard/**`;
+- route/popup consumers and tests needed for the shared view-model boundary;
+- no network schema, query, dependency, CI, or backend changes.
+
+Explicitly forbidden in P2-MP03:
+
+- `web/src/features/dashboard/api.ts`;
+- `web/src/features/dashboard/queryKeys.ts`;
+- `web/src/features/dashboard/queryKeys.test.ts`;
+- `web/src/features/dashboard/types.ts`;
+- backend files;
+- dependency/lockfile changes;
+- P2-MP04 contract generation;
+- P2-MP07 source/availability semantics.
 
 Current frontend status:
 
-`POST_MP02_PATH_INSPECTION_READY`
+`READY_TO_START`
 
-Before issuing P2-MP03 or P2-MP04, the Orchestrator must inspect the exact post-MP02 tree and assign non-overlapping path leases or serialize the tasks.
+P2-MP04 is serialized after P2-MP03 review/integration so that the DTO/view-model boundary is established before backend contract publication changes the wire-contract layer.
 
 P2-MP07 remains blocked.
 
@@ -163,7 +175,7 @@ The superseded PR is closed and unmerged.
 
 Frontend lane:
 
-`P2-MP01 → P2-MP02 → post-MP02 path inspection → P2-MP03/P2-MP04`
+`P2-MP01 → P2-MP02 → P2-MP03 → P2-MP04`
 
 Backend lane:
 
@@ -171,14 +183,14 @@ Backend lane:
 
 Cross-lane:
 
-P2-MP07 remains blocked until its prerequisites are explicitly released.
+P2-MP07 remains blocked until P2-MP04 and the required adapter prerequisites are integrated.
 
 ## Next actions
 
-1. Inspect the exact post-P2-MP02 tree and issue the next frontend contract with an explicit path lease.
+1. Launch P2-MP03 in the existing frontend worker chat using its immutable contract.
 2. Continue the existing local Codex P2-MP05-R2 task under `P2-MP05-R2-C1.md`.
 3. Do not continue the superseded MP05 branch or PR #16.
-4. Do not start P2-MP06 or P2-MP07.
+4. Do not start P2-MP04, P2-MP06, or P2-MP07 independently.
 5. Do not merge the phase branch into `main`.
 
 Only the Orchestrator updates this file.
