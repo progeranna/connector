@@ -30,7 +30,7 @@ The phase branch is not merged into `main`.
 
 At most two product executors may be active.
 
-### Frontend lane — P2-MP03
+### Frontend lane — P2-MP03-R1
 
 Task:
 
@@ -40,27 +40,50 @@ Assigned branch:
 
 `p2/mp03-market-view-models`
 
-Exact assigned base:
+Original exact assigned base:
 
 `74dd6e3985649d05e59f1f4cb7f653e405b31cb0`
 
-Contract:
+Incomplete immutable head:
 
-`signalguard-rs/phase-2/prompts/P2-MP03.md`
+`641078b5bba452a377a5f644a70453b2fdf9c6ad`
 
-Required commit:
+Incomplete head state:
 
-`refactor(web): adapt market DTOs into view models`
+- exactly one commit ahead of the assigned base;
+- exactly one added path: `web/src/features/dashboard/marketViewModel.ts`;
+- no adapter module;
+- no route/popup migration;
+- no focused or full gates;
+- no exact-head CI;
+- no PR or connector report.
 
-Path lease:
+Review verdict:
 
-- narrowly scoped market-detail view-model/adapters under `web/src/features/dashboard/**`;
-- route/popup consumers and tests needed for the shared view-model boundary;
-- no network schema, query, dependency, CI, or backend changes.
+`REJECT_INCOMPLETE — REPAIR_REQUIRED`
+
+Review record:
+
+`signalguard-rs/phase-2/reviews/P2-MP03/641078b5bba452a377a5f644a70453b2fdf9c6ad.md`
+
+Repair contract:
+
+`signalguard-rs/phase-2/repairs/P2-MP03-R1.md`
+
+Repair authorization:
+
+- keep the incomplete commit immutable;
+- continue on the same branch;
+- append at most 10 bounded completion commits;
+- no amend, rebase, reset, history rewrite, branch recreation, or force-push;
+- contents-API writes are allowed only under the repair's one-path-per-commit rules;
+- final PR will be squash-merged after exact-head CI and independent review.
+
+The task branch is one backend-only phase commit behind because P2-MP05 was integrated after MP03 started. Do not rebase it. The Orchestrator will validate merge compatibility against the current phase branch.
 
 Current frontend status:
 
-`READY_OR_IN_PROGRESS`
+`REPAIR_READY_TO_START`
 
 P2-MP04 remains serialized after P2-MP03 review/integration. P2-MP07 remains blocked.
 
@@ -108,7 +131,7 @@ Required result:
 
 Current backend status:
 
-`READY_TO_START`
+`READY_OR_IN_PROGRESS`
 
 ## Completed work
 
@@ -164,7 +187,7 @@ Disposition:
 
 Frontend lane:
 
-`P2-MP01 → P2-MP02 → P2-MP03 → P2-MP04`
+`P2-MP01 → P2-MP02 → P2-MP03-R1 → P2-MP04`
 
 Backend lane:
 
@@ -176,10 +199,11 @@ P2-MP07 remains blocked until P2-MP04 and the required adapter prerequisites are
 
 ## Next actions
 
-1. Continue or launch P2-MP03 in the existing frontend worker chat.
-2. Launch P2-MP06 in a separate backend worker from its immutable contract.
-3. Do not continue the superseded MP05 branch or PR #16.
-4. Do not start P2-MP04 or P2-MP07 independently.
-5. Do not merge the phase branch into `main`.
+1. Continue P2-MP03 in the existing frontend worker chat using `P2-MP03-R1.md`.
+2. Continue P2-MP06 in the separate backend local Codex task.
+3. Do not rebase or rewrite the incomplete MP03 branch.
+4. Do not continue the superseded MP05 branch or PR #16.
+5. Do not start P2-MP04 or P2-MP07 independently.
+6. Do not merge the phase branch into `main`.
 
 Only the Orchestrator updates this file.
