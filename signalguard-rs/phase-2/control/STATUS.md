@@ -76,7 +76,7 @@ Current frontend status:
 
 P2-MP04 remains serialized after P2-MP03 integration. P2-MP07 remains blocked.
 
-### Backend lane — P2-MP06-C1
+### Backend lane — P2-MP06-C2
 
 Task:
 
@@ -90,7 +90,7 @@ Exact assigned base and current verified remote head:
 
 `1447a3ccb2fa3020738cd2dd3f8d145be6cd202a`
 
-Remote branch state after the failed local focused gate:
+Remote branch state after the failed C1 full gate:
 
 - ahead by 0 commits;
 - behind by 0 commits;
@@ -101,31 +101,34 @@ Original contract:
 
 `signalguard-rs/phase-2/prompts/P2-MP06.md`
 
-Continuation contract:
+Continuation contracts:
 
-`signalguard-rs/phase-2/repairs/P2-MP06-C1.md`
+- `signalguard-rs/phase-2/repairs/P2-MP06-C1.md`;
+- `signalguard-rs/phase-2/repairs/P2-MP06-C2.md`.
 
 Current local implementation report:
 
 - modified only `src/storage/redis.rs`, `src/api/handlers.rs`, and `tests/redis_cache.rs`;
 - bulk API: `get_market_states(&[Symbol]) -> Result<Vec<(Symbol, Option<MarketState>)>, CacheError>`;
 - one Redis `MGET` for all requested state keys;
-- focused cache tests: 2/2 passed;
-- focused dashboard test stopped on a fixture/assertion scale mismatch: expected `"1.00"`, actual serialized value `"100"`;
-- full Rust and real-Redis gates were not run.
+- decimal fixtures represent scale-0 values `100` and `200`, and expectations were corrected to `"100"` and `"200"` without changing production serialization;
+- focused gates passed: 2 bulk-cache tests and 11 dashboard handler tests;
+- full gate stopped at `cargo check --all-targets --all-features` due a type-inference error in newly added Redis integration test code;
+- real-Redis gates were not run after that failure.
 
-Continuation authorization:
+C2 authorization:
 
-- continue in the same dedicated local worktree;
-- inspect and correct only the test fixture/expectation inconsistency according to the intended decimal value and scale;
-- do not change production DTO serialization or Redis payload encoding to satisfy the test;
-- rerun one complete focused, full Rust, and real-Redis gate cycle;
-- commit and push only if every continuation gate passes;
+- continue in the same local worktree with the uncommitted implementation preserved;
+- capture the complete compiler diagnostic before editing;
+- apply only the smallest explicit type annotation or generic type argument required inside `tests/redis_cache.rs`;
+- do not change production behavior or production code to satisfy test type inference;
+- rerun one completely new focused, full Rust, and isolated Redis gate cycle;
+- commit and push only if every gate passes;
 - retain the original exactly-one-product-commit requirement.
 
 Current backend status:
 
-`CONTINUATION_READY`
+`C2_CONTINUATION_READY`
 
 ## Completed work
 
@@ -173,7 +176,7 @@ Frontend lane:
 
 Backend lane:
 
-`P2-MP05 → P2-MP06-C1`
+`P2-MP05 → P2-MP06-C1 → P2-MP06-C2`
 
 Cross-lane:
 
@@ -182,9 +185,10 @@ P2-MP07 remains blocked until P2-MP04 and the required adapter prerequisites are
 ## Next actions
 
 1. Continue P2-MP03 in the existing frontend worker using `P2-MP03-R1.md`.
-2. Continue the existing local P2-MP06 worktree using `P2-MP06-C1.md`.
-3. Do not rebase or rewrite the MP03 branch.
-4. Do not start P2-MP04 or P2-MP07 independently.
-5. Do not merge the phase branch into `main`.
+2. Continue the existing local P2-MP06 worktree using `P2-MP06-C2.md`.
+3. Do not change MP06 production code merely to satisfy the test type-inference error.
+4. Do not rebase or rewrite the MP03 branch.
+5. Do not start P2-MP04 or P2-MP07 independently.
+6. Do not merge the phase branch into `main`.
 
 Only the Orchestrator updates this file.
