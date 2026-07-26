@@ -1,0 +1,16 @@
+diff --git a/src/storage/redis.rs b/src/storage/redis.rs
+index a96e023..f6ee7e9 100644
+--- a/src/storage/redis.rs
++++ b/src/storage/redis.rs
+@@ -754,10 +754,7 @@ mod tests {
+         let client = redis::Client::open(redis_url.as_str()).unwrap();
+         let mut connection = client.get_multiplexed_async_connection().await.unwrap();
+         let invalid_index = "not-a-set";
+-        let (): () = connection
+-            .set(SYMBOL_SET_KEY, invalid_index)
+-            .await
+-            .unwrap();
++        let (): () = connection.set(SYMBOL_SET_KEY, invalid_index).await.unwrap();
+ 
+         let error = cache.set_market_state(&state).await.unwrap_err();
+ 

@@ -1,0 +1,9 @@
+{
+  "mini_phase": "P2-MP05",
+  "request_id": "03fa30b-ci2",
+  "product_sha": "03fa30b938b6d3d8f351581ee92785dcfdf3e207",
+  "workflow_run_id": "30203694273",
+  "workflow_run_url": "https://github.com/progeranna/connector/actions/runs/30203694273",
+  "job_status": "success",
+  "formatted_file_present": true
+}
