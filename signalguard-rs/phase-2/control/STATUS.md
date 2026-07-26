@@ -105,7 +105,7 @@ Current frontend status:
 
 P2-MP03, P2-MP04, and P2-MP07 remain blocked.
 
-### Backend lane — P2-MP05-R2 verified candidate apply
+### Backend lane — P2-MP05-R2 local continuation
 
 Task:
 
@@ -119,31 +119,12 @@ Exact clean base:
 
 `ce2ee582a370cce8bf8198d1fbb82fcb961867c3`
 
-Verified branch state before apply:
+Current verified remote branch state:
 
 - ahead by 0 commits;
 - behind by 0 commits;
-- identical to the exact phase base.
-
-Remote replacement-worker preflight:
-
-`BLOCKED_WITHOUT_PRODUCT_CHANGE`
-
-No product checkout, edit, commit, push, PR, proof request, or report was created by the blocked remote worker.
-
-Candidate-builder workflow:
-
-`.github/workflows/signalguard-mp05-candidate-builder.yml`
-
-Candidate result:
-
-`signalguard-rs/phase-2/candidate-results/P2-MP05/03fa30b-ci2/result.json`
-
-Workflow run:
-
-- run ID: `30203694273`;
-- conclusion: `success`;
-- source product SHA: `03fa30b938b6d3d8f351581ee92785dcfdf3e207`.
+- identical to the exact phase base;
+- no product commit or PR exists for R2.
 
 Verified candidate:
 
@@ -153,23 +134,41 @@ Candidate SHA-256:
 
 `f8ed711ae4421efadb1d9c6ad520862b58f44ae67ee49130bafb60e82f6777be`
 
-Successful candidate gates:
+Candidate-builder proof:
 
-- canonical rustfmt;
-- cargo check;
-- clippy with warnings denied;
-- all Rust tests;
-- existing Redis integration suite against Redis 7;
-- atomic-market-state Redis proof tests;
-- exact source identity and path restriction.
+- workflow run `30203694273`;
+- canonical rustfmt: success;
+- cargo check: success;
+- clippy with warnings denied: success;
+- all Rust tests: success;
+- existing Redis integration suite against Redis 7: success;
+- atomic-market-state Redis proof suite: success.
 
-Local apply contract:
+Local apply result before continuation:
 
-`signalguard-rs/phase-2/repairs/P2-MP05-R2-LOCAL-APPLY.md`
+- dedicated worktree prepared;
+- only `src/storage/redis.rs` changed;
+- all Rust gates eventually passed;
+- real-Redis suites eventually passed: 7/7 existing and 3/3 atomic;
+- initial Redis command failed because of local sandbox permissions;
+- the original local-apply stop condition therefore prevented commit and push;
+- no commit, push, PR, proof request, or report was created.
+
+Continuation contract:
+
+`signalguard-rs/phase-2/repairs/P2-MP05-R2-C1.md`
+
+Continuation authorization:
+
+- continue in the same dedicated worktree;
+- verify exact branch, base, remote state, changed path, and candidate checksum;
+- rerun one complete clean Rust and real-Redis gate cycle after reading the continuation contract;
+- commit and push only after every continuation gate passes;
+- no implementation change is authorized.
 
 Current backend status:
 
-`LOCAL_CODEX_APPLY_IN_PROGRESS`
+`LOCAL_CONTINUATION_READY`
 
 P2-MP06 remains blocked until the clean R2 head passes product CI, connector Redis proof, review, and integration.
 
@@ -226,7 +225,7 @@ Frontend lane:
 
 Backend lane:
 
-`P2-MP05-R2 local apply → product CI → Redis proof → review/integration → P2-MP06`
+`P2-MP05-R2-C1 → product CI → Redis proof → review/integration → P2-MP06`
 
 Cross-lane:
 
@@ -234,8 +233,8 @@ P2-MP07 remains blocked until its prerequisites are explicitly released.
 
 ## Next actions
 
-1. Launch P2-MP02-R1 in the existing frontend worker chat.
-2. Continue the P2-MP05-R2 local Codex apply already in progress.
+1. Run P2-MP02-R1 in the existing frontend worker chat.
+2. Continue the existing local Codex task using `P2-MP05-R2-C1.md`.
 3. Do not continue the superseded MP05 branch or PR #16.
 4. Do not start P2-MP03, P2-MP04, P2-MP06, or P2-MP07.
 
