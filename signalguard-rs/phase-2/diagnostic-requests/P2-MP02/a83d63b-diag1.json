@@ -1,0 +1,8 @@
+{
+  "mini_phase": "P2-MP02",
+  "request_id": "a83d63b-diag1",
+  "product_repository": "progeranna/signalguard-rs",
+  "product_sha": "a83d63bbe5e9b0ff1add4e6d2235c00a8732a70c",
+  "product_pr": "https://github.com/progeranna/signalguard-rs/pull/17",
+  "purpose": "Capture the exact failing Vitest output for P2-MP02 without changing the product branch"
+}
