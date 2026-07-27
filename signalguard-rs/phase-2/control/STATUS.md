@@ -20,30 +20,32 @@ The phase branch is ahead of Phase 1 by six commits, behind by zero, contains in
 
 ## Active lane
 
-### Cross-lane completion — P2-MP07-R1
+### Cross-lane completion — P2-MP07 repaired candidate
 
 - task: expose explicit public market-data source and availability;
 - original contract: `signalguard-rs/phase-2/prompts/P2-MP07.md`;
 - original contract commit: `2701189895eaf4748f47190be29e618732143c93`;
-- branch: `p2/mp07-market-availability`;
-- parent / required future PR base: `refactor/data-boundaries`;
-- exact assigned phase base: `856b58177d30772bc691ec870fe537c05aab3dba`;
-- rejected candidate head: `9ed0d1e12fc385b19aabe0cbf32b0d4b726dd8fb`;
-- rejected candidate commit: `feat(api): expose market data availability`;
-- independent review: `signalguard-rs/phase-2/reviews/P2-MP07/9ed0d1e12fc385b19aabe0cbf32b0d4b726dd8fb.md`;
-- review commit: `91479562352ccf0d8c947b6ca6ea09d66cb72204`;
-- verdict: `REJECT — NARROW REPAIR REQUIRED`;
 - repair contract: `signalguard-rs/phase-2/repairs/P2-MP07-R1.md`;
 - repair contract commit: `eac1da487b13a642b32e71587935cebe76532889`;
-- required repair commit: `fix(ui): honor market availability states`;
-- expected final branch comparison: ahead `2`, behind `0`;
-- dedicated worktree: `/Users/anion/Desktop/work/git-signalguard-rs/worktrees/p2-mp07`;
-- product PR: not created; PR creation remains blocked until repaired-head acceptance;
-- status: `REPAIR_REQUIRED`.
+- branch: `p2/mp07-market-availability`;
+- parent / required PR base: `refactor/data-boundaries`;
+- exact assigned phase base: `856b58177d30772bc691ec870fe537c05aab3dba`;
+- rejected first head: `9ed0d1e12fc385b19aabe0cbf32b0d4b726dd8fb`;
+- repaired candidate head: `1b874f7051b0618e3b6318444f46d3e5c4fc2408`;
+- exact branch comparison: ahead `2`, behind `0`;
+- commits: `feat(api): expose market data availability` and `fix(ui): honor market availability states`;
+- product PR: `https://github.com/progeranna/signalguard-rs/pull/22`;
+- PR state: open draft;
+- exact PR base SHA: `856b58177d30772bc691ec870fe537c05aab3dba`;
+- exact PR head SHA: `1b874f7051b0618e3b6318444f46d3e5c4fc2408`;
+- exact-head CI: run `30284876894` — queued;
+- local visual acceptance: pending;
+- final independent verdict: pending exact-head CI and local visual acceptance;
+- status: `DRAFT_PR_VALIDATION`.
 
-Accepted foundations at the rejected head include the typed source/availability DTOs, backend Live configured+registered union, deterministic derivation matrix, one bulk Redis state read, and generated OpenAPI schemas.
+Independent repaired-head code review confirms that R1 closes the recorded rejection findings: the OpenAPI compatibility validator covers source/availability required references and mutation drift; the header remains neutral with no observed symbols; dashboard timeline and metric surfaces are disabled for non-observed entries; route and popup suppress metrics and anomaly surfaces for non-observed entries; no pipeline-age freshness fallback remains; and no absent source defaults to Demo.
 
-Blocking defects are incomplete frontend OpenAPI mutation validation, false healthy header status when no symbol is observed, timeline/metric/anomaly leakage for non-observed symbols, incorrect route source fallback, and two changed test-support paths outside the original lease. The R1 contract explicitly authorizes only the narrow repair and those two existing test-support paths; history rewriting remains forbidden.
+The accepted backend candidate foundations remain the typed source/availability DTOs, backend Live configured+registered union, deterministic derivation matrix, one bulk Redis state read, generated OpenAPI schemas, and strict Demo/Live separation. Integration remains forbidden until exact-head CI succeeds and the user completes localhost visual acceptance on the exact PR head.
 
 ## Completed work
 
@@ -144,15 +146,15 @@ Backend lane:
 
 Cross-lane:
 
-`P2-MP07-R1` — required before Phase 2 completion. The phase branch remains at `856b58177d30772bc691ec870fe537c05aab3dba`.
+`P2-MP07` — draft PR validation at exact head `1b874f7051b0618e3b6318444f46d3e5c4fc2408`. The phase branch remains at `856b58177d30772bc691ec870fe537c05aab3dba`.
 
 ## Next actions
 
-1. Continue the same P2-MP07 branch/worktree from immutable rejected head `9ed0d1e12fc385b19aabe0cbf32b0d4b726dd8fb`.
-2. Apply exactly one additional normal repair commit under `P2-MP07-R1`; do not rewrite the first commit.
-3. Run every complete gate and push normally with final branch comparison ahead `2`, behind `0`.
-4. Independently review the exact repaired head and only then create a product PR.
-5. Require exact-head CI and local visual acceptance before squash integration.
-6. Do not merge the Phase 2 branch into `main` yet.
+1. Require exact-head PR CI run `30284876894` to complete successfully.
+2. Run local backend/frontend visual acceptance on exact head `1b874f7051b0618e3b6318444f46d3e5c4fc2408`.
+3. If both gates pass, publish the final independent review for the exact head.
+4. Mark PR #22 ready only as part of guarded integration and squash merge it into `refactor/data-boundaries` with an exact-head guard.
+5. Record the resulting phase SHA and update the Phase 2 integration ledger.
+6. Do not merge the Phase 2 branch into `main` until final Phase 2 tree/UI review is complete.
 
 Only the Orchestrator updates this file.
