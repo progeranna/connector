@@ -20,17 +20,23 @@ The phase branch is ahead of Phase 1 by six commits, behind by zero, contains in
 
 ## Active lane
 
-### Cross-lane completion — P2-MP07 ready
+### Cross-lane completion — P2-MP07
 
-P2-MP04 is accepted and integrated. The contract/frontend and backend prerequisite lanes are complete.
+- task: expose explicit public market-data source and availability;
+- exact contract: `signalguard-rs/phase-2/prompts/P2-MP07.md`;
+- contract commit: `2701189895eaf4748f47190be29e618732143c93`;
+- branch: `p2/mp07-market-availability`;
+- parent / required PR base: `refactor/data-boundaries`;
+- exact assigned base: `856b58177d30772bc691ec870fe537c05aab3dba`;
+- initial remote branch SHA: `856b58177d30772bc691ec870fe537c05aab3dba`;
+- dedicated worktree: `/Users/anion/Desktop/work/git-signalguard-rs/worktrees/p2-mp07`;
+- required commit: `feat(api): expose market data availability`;
+- product PR: not created; the Orchestrator owns PR creation after independent candidate review;
+- status: `EXECUTION_AUTHORIZED`.
 
-P2-MP07 is unblocked and must start from exact phase SHA:
+The contract requires additive `source=demo|live` identity and typed `availability=observed|configured|awaiting|unavailable`. The backend must own the Live configured+registered catalog and deterministic availability matrix while preserving one bulk Redis state read. The frontend must stop synthesizing availability from `/runtime/mode`, placeholders, null state, or 404 responses.
 
-`856b58177d30772bc691ec870fe537c05aab3dba`
-
-No P2-MP07 execution branch, candidate head, or product PR is authoritative until the Orchestrator publishes its exact execution contract and path lease from this phase SHA.
-
-Status: `READY_FOR_ORCHESTRATOR_START`.
+No P2-MP07 candidate head is authoritative until an executor returns one exact pushed commit with complete gates and evidence.
 
 ## Completed work
 
@@ -131,14 +137,15 @@ Backend lane:
 
 Cross-lane:
 
-`P2-MP07` — unblocked from exact phase SHA `856b58177d30772bc691ec870fe537c05aab3dba`.
+`P2-MP07` — active from exact phase SHA `856b58177d30772bc691ec870fe537c05aab3dba`.
 
 ## Next actions
 
-1. Publish the exact P2-MP07 execution contract and path lease from `856b58177d30772bc691ec870fe537c05aab3dba`.
-2. Create the dedicated P2-MP07 branch/worktree only after that contract is authoritative.
-3. Require one atomic conventional commit, exact changed-path proof, forbidden-path proof, complete local gates, and exact-head CI.
-4. Independently review P2-MP07 before any integration.
-5. Do not merge the Phase 2 branch into `main` yet.
+1. Execute only the immutable P2-MP07 contract on `p2/mp07-market-availability` from the exact assigned base.
+2. Require one atomic commit, exact path/forbidden-path proof, complete local gates, and a normal push.
+3. Do not allow the executor to create the PR or merge.
+4. Independently review the exact candidate diff and exact-head CI before PR/integration.
+5. Require local visual acceptance before final squash merge if the candidate passes code review.
+6. Do not merge the Phase 2 branch into `main` yet.
 
 Only the Orchestrator updates this file.
