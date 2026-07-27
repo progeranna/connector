@@ -51,7 +51,7 @@ Path lease:
 
 Current status: `READY_OR_IN_PROGRESS`.
 
-### Backend lane — P2-MP06-WEB1-C2
+### Backend lane — P2-MP06-WEB2
 
 Task: `P2-MP06 — Bulk Redis market-state retrieval`
 
@@ -63,49 +63,57 @@ Exact assigned base and current remote head:
 
 Current remote state:
 
-- status: identical to base;
-- ahead: `0`;
-- behind: `0`;
-- no product commit, PR, CI run, or connector report.
+- identical to base;
+- ahead `0`;
+- behind `0`;
+- no product commit, PR, CI run, or delivery report.
 
-Binding contracts:
+WEB1 outcome:
 
-- `signalguard-rs/phase-2/prompts/P2-MP06.md`;
-- `signalguard-rs/phase-2/repairs/P2-MP06-C1.md`;
-- `signalguard-rs/phase-2/repairs/P2-MP06-C2.md`;
-- `signalguard-rs/phase-2/repairs/P2-MP06-WEB1.md`;
-- `signalguard-rs/phase-2/repairs/P2-MP06-WEB1-C1.md`;
-- `signalguard-rs/phase-2/repairs/P2-MP06-WEB1-C2.md`.
+- implementation and complete focused/full/Redis gates were reported and formally repeated;
+- product publication did not occur;
+- required `/mnt/data` workspace and evidence later disappeared;
+- two attempted unreferenced handlers blobs were independently analyzed as irrecoverable 17-byte and 22-byte binary garbage;
+- no product ref points to any WEB1 blob, tree, or commit;
+- disposition: `EXECUTION_VALIDATED_BUT_DELIVERY_LOST`.
 
-Implementation and complete gate evidence are preserved in the same web-worker sandbox.
+WEB2 replacement contract:
 
-Verified repeated gate results:
+`signalguard-rs/phase-2/repairs/P2-MP06-WEB2.md`
 
-- focused bulk-cache: `5 passed`;
-- focused dashboard handlers: `21 passed`;
-- full suite: `367 passed`, `3 ignored`;
-- complete ignored Redis suite: `8 passed`;
-- dedicated bulk-read Redis test: `1 passed`;
-- P2-MP05 atomic Lua proofs: `3 passed`;
-- exact changed paths: three authorized files;
-- forbidden paths: zero;
-- secret findings: zero;
-- P2-MP05 Lua script: byte-for-byte unchanged.
+Contract connector commit:
 
-Preserved final blob identities:
+`89c262b09c1cfaea277fb88665e682fc138f7ebe`
 
-- `src/storage/redis.rs`: `ffa0d0214bc7e56fe41ae8460121746808b1c774`;
-- `src/api/handlers.rs`: `b1b65ab38004642b9500abfb4eb45cc4fe6508e9`;
-- `tests/redis_cache.rs`: `289adc8de9d1b3fe3bb1b06be997312f9097ed50`.
+WEB2 delivery design:
 
-Exact blobs independently confirmed to exist in GitHub:
+- fresh web worker reimplements from the exact verified bootstrap source;
+- after all gates pass, it creates a deterministic archive containing exactly the three authorized files;
+- the archive is base64-split into 8192-character chunks and durably stored in `progeranna/connector`;
+- `MANIFEST.json` is written last and pins every chunk/file/archive hash;
+- the worker performs no product-repository write;
+- a product-side relay independently reconstructs escrow, repeats full Rust and real-Redis gates, creates one commit, non-force pushes the assigned branch, and opens a draft PR.
 
-- `src/storage/redis.rs`;
-- `tests/redis_cache.rs`.
+Temporary relay branch:
 
-Only the exact `src/api/handlers.rs` blob remains to be created. C2 authorizes exact machine transfer through `GitHub.create_blob` with `encoding: base64`; it forbids user-visible payload transcription and any code modification.
+`infra/p2-mp06-web-relay`
 
-Current backend status: `BASE64_BLOB_DELIVERY_READY`.
+Relay workflow commit:
+
+`867cae81b042d564cbc0d3207193d618d18e083a`
+
+The relay branch is infrastructure-only and is not part of `main`, the phase branch, or the MP06 product branch. The Orchestrator alone creates its immutable relay request after inspecting WEB2 escrow.
+
+Verified bootstrap remains:
+
+- run `30220162842` — success;
+- artifact ID `8636970817`;
+- ZIP SHA-256 `ab12f92e7835dd4e5c56878c6a3fad7e1ddac8c97f8e1e9152778140792372ac`;
+- inner archive SHA-256 `8afe14a493ae1170f7fe595993e9f268c12f0d91187027257c7d056e194e96b8`;
+- embedded product SHA `1447a3ccb2fa3020738cd2dd3f8d145be6cd202a`;
+- expiry `2026-07-29T21:01:10Z`.
+
+Current backend status: `WEB2_DURABLE_ESCROW_READY_TO_START`.
 
 ## Completed work
 
@@ -145,13 +153,14 @@ Current backend status: `BASE64_BLOB_DELIVERY_READY`.
 - resulting phase SHA: `1447a3ccb2fa3020738cd2dd3f8d145be6cd202a`;
 - status: `INTEGRATED`.
 
-## Superseded deliveries
+## Superseded or failed execution sources
 
 - frontend branch `p2/mp03-market-view-models`: `REJECTED_AND_SUPERSEDED`;
 - backend branch `p2/mp05-atomic-redis-state`, PR #16: `REJECTED_AND_SUPERSEDED`;
-- local uncommitted P2-MP06 Codex execution: `SUPERSEDED_AS_EXECUTION_SOURCE_BY_WEB1`.
+- local uncommitted P2-MP06 Codex execution: `SUPERSEDED_AS_EXECUTION_SOURCE`;
+- P2-MP06-WEB1 ephemeral sandbox delivery: `EXECUTION_VALIDATED_BUT_DELIVERY_LOST`.
 
-Do not continue, rewrite, merge, open a PR from, cherry-pick, or mechanically copy superseded work.
+Do not continue, reconstruct, merge, or mechanically copy superseded or lost execution sources.
 
 ## Dependency barriers
 
@@ -161,7 +170,7 @@ Contract/frontend lane:
 
 Backend lane:
 
-`P2-MP05 → P2-MP06-WEB1-C2`
+`P2-MP05 → P2-MP06-WEB2 → durable relay → independent review`
 
 Cross-lane:
 
@@ -169,11 +178,12 @@ P2-MP07 remains blocked until P2-MP04 and P2-MP06 are integrated.
 
 ## Next actions
 
-1. Continue P2-MP06 in the same web-worker sandbox using `P2-MP06-WEB1-C2.md`.
-2. Create only the missing handlers blob through exact base64 transfer.
-3. Create and verify the tree and unreferenced commit before non-force branch update.
-4. Open a draft PR and wait for exact-head CI.
-5. Keep P2-MP04 on its existing lane and enforce path leases.
-6. Do not start P2-MP07 or merge the phase branch into `main`.
+1. Launch one fresh ChatGPT web worker using `P2-MP06-WEB2.md`.
+2. Require durable connector escrow and immutable `MANIFEST.json`; no product write by the worker.
+3. Orchestrator independently validates chunks, manifest, hashes, and gates.
+4. Orchestrator creates one relay request on `infra/p2-mp06-web-relay`.
+5. Relay repeats gates, commits, non-force pushes, and opens the draft PR.
+6. Keep P2-MP04 on its existing lane and enforce path leases.
+7. Do not start P2-MP07 or merge the phase branch into `main`.
 
 Only the Orchestrator updates this file.
