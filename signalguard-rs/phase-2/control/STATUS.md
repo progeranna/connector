@@ -14,52 +14,23 @@ Phase branch:
 
 Current verified phase SHA:
 
-`1a226b5b5661a2b99dabec579aeeecf8b0e4be85`
+`856b58177d30772bc691ec870fe537c05aab3dba`
 
-The phase branch is ahead of Phase 1 by five commits, behind by zero, contains integrated P2-MP01, P2-MP02, P2-MP03, P2-MP05, and P2-MP06, and is not merged into `main`.
+The phase branch is ahead of Phase 1 by six commits, behind by zero, contains integrated P2-MP01, P2-MP02, P2-MP03, P2-MP04, P2-MP05, and P2-MP06, and is not merged into `main`.
 
 ## Active lane
 
-### Contract/frontend lane — P2-MP04-R1
+### Cross-lane completion — P2-MP07 ready
 
-- task: publish a validated deterministic web-console API contract and drift gate;
-- branch: `p2/mp04-api-contract`;
-- parent: `refactor/data-boundaries`;
-- exact phase base: `1a226b5b5661a2b99dabec579aeeecf8b0e4be85`;
-- current product candidate head: `0a02f5bbb7b30bec96a5137c328169d857894150`;
-- current branch comparison: ahead `1`, behind `0`;
-- draft PR: `https://github.com/progeranna/signalguard-rs/pull/21`;
-- original contract: `signalguard-rs/phase-2/prompts/P2-MP04.md`;
-- continuation contract: `signalguard-rs/phase-2/repairs/P2-MP04-C1.md`;
-- repair contract: `signalguard-rs/phase-2/repairs/P2-MP04-R1.md`;
-- repair contract commit: `1a4ae7e01d51c15072e9b2d19bd5dfe756eb9308`;
-- initial implementation commit: `feat(api): publish validated web console contract`;
-- required repair commit: `fix(api): validate generated contract compatibility`;
-- execution environment: local Codex in `/Users/anion/Desktop/work/git-signalguard-rs/worktrees/p2-mp04`;
-- failed exact-head CI: `30268071440` — Rust success, frontend tests/typecheck success, frontend lint failure;
-- status: `REPAIR_REQUIRED`.
+P2-MP04 is accepted and integrated. The contract/frontend and backend prerequisite lanes are complete.
 
-Independent review found the candidate incomplete beyond the lint failure:
+P2-MP07 is unblocked and must start from exact phase SHA:
 
-- frontend test uses forbidden explicit `any`;
-- mutation fixtures do not exercise a compatibility validator and cannot prove failure on incompatible drift;
-- component schemas are manually duplicated as free-form JSON rather than mechanically coupled to backend DTO/query types;
-- OpenAPI 3.0 nullable `$ref` siblings are not a valid nullable-reference representation;
-- optional request `Option<T>` null semantics are not represented;
-- actual API error responses/statuses are absent;
-- route/method inventory proof and intentional stale-artifact test are incomplete.
+`856b58177d30772bc691ec870fe537c05aab3dba`
 
-The repair contract authorizes exactly one additional normal commit. Amend, rebase, reset, force-push, replacement branch, and PR replacement remain forbidden.
+No P2-MP07 execution branch, candidate head, or product PR is authoritative until the Orchestrator publishes its exact execution contract and path lease from this phase SHA.
 
-P2-MP04 may read the integrated current handlers to inventory the actual API, but it must not modify:
-
-- `src/api/handlers.rs`;
-- `src/storage/redis.rs`;
-- `tests/redis_cache.rs`;
-- `web/src/features/dashboard/types.ts`;
-- frontend query/query-key implementation;
-- view models or presentation components;
-- runtime endpoint, serialization, status-code, cache, database, Docker, or deployment behavior.
+Status: `READY_FOR_ORCHESTRATOR_START`.
 
 ## Completed work
 
@@ -88,6 +59,25 @@ P2-MP04 may read the integrated current handlers to inventory the actual API, bu
 - verdict: `ACCEPT`;
 - resulting phase SHA: `4f3a179ab56fb0f68f7b67f997508f3a21b89c37`;
 - status: `INTEGRATED`.
+
+### P2-MP04
+
+- accepted repaired head: `9fa114466e4b90d916277e8db9039bb68e49b216`;
+- PR: `https://github.com/progeranna/signalguard-rs/pull/21`;
+- exact-head product CI: `30277459548` — success;
+- verdict: `ACCEPT`;
+- merge method: squash;
+- resulting phase SHA: `856b58177d30772bc691ec870fe537c05aab3dba`;
+- local visual acceptance: completed on the exact accepted head;
+- status: `INTEGRATED`.
+
+P2-MP04 publishes the deterministic generated OpenAPI 3.0.3 web-console contract, validates it independently through `openapiv3` 2.2.0, and enforces backend/frontend drift compatibility. The final repair distinguishes handler JSON errors from actual Axum extractor text rejections and proves exact status/media/body behavior through the real router.
+
+Evidence:
+
+- report: `signalguard-rs/phase-2/reports/P2-MP04/9fa114466e4b90d916277e8db9039bb68e49b216.md`;
+- review: `signalguard-rs/phase-2/reviews/P2-MP04/9fa114466e4b90d916277e8db9039bb68e49b216.md`;
+- integration: `signalguard-rs/phase-2/integration/P2-MP04/856b58177d30772bc691ec870fe537c05aab3dba.md`.
 
 ### P2-MP05
 
@@ -133,7 +123,7 @@ Temporary infrastructure branch `infra/p2-mp06-web-relay` is not part of `main`,
 
 Contract/frontend lane:
 
-`P2-MP01 → P2-MP02 → P2-MP03 → P2-MP04-R1`
+`P2-MP01 → P2-MP02 → P2-MP03 → P2-MP04` — complete.
 
 Backend lane:
 
@@ -141,15 +131,14 @@ Backend lane:
 
 Cross-lane:
 
-P2-MP07 remains blocked until P2-MP04-R1 is accepted and integrated. It must start from the then-current phase SHA, not from an older task branch.
+`P2-MP07` — unblocked from exact phase SHA `856b58177d30772bc691ec870fe537c05aab3dba`.
 
 ## Next actions
 
-1. Continue the same local Codex worktree under P2-MP04-R1 without resetting or discarding the reported uncommitted lint fix.
-2. Create exactly one additional repair commit after every required local gate passes.
-3. Independently review the final typed schema coupling, error inventory, OpenAPI semantics, route/method proofs, compatibility mutation failures, exact diff, and exact-head CI.
-4. Integrate P2-MP04 only after green CI and complete contract evidence.
-5. Release P2-MP07 from the resulting current phase SHA.
-6. Do not merge the phase branch into `main` yet.
+1. Publish the exact P2-MP07 execution contract and path lease from `856b58177d30772bc691ec870fe537c05aab3dba`.
+2. Create the dedicated P2-MP07 branch/worktree only after that contract is authoritative.
+3. Require one atomic conventional commit, exact changed-path proof, forbidden-path proof, complete local gates, and exact-head CI.
+4. Independently review P2-MP07 before any integration.
+5. Do not merge the Phase 2 branch into `main` yet.
 
 Only the Orchestrator updates this file.
