@@ -20,100 +20,96 @@ The phase branch is ahead of Phase 1 by four commits, behind by zero, contains i
 
 ## Active parallel lanes
 
-At most two product executors may be active.
-
 ### Contract/frontend lane — P2-MP04
 
-Task: `P2-MP04 — Publish a validated web console API contract`
-
-Assigned branch: `p2/mp04-api-contract`
-
-Exact assigned base and verified initial remote head:
-
-`4f3a179ab56fb0f68f7b67f997508f3a21b89c37`
-
-Contract:
-
-`signalguard-rs/phase-2/prompts/P2-MP04.md`
-
-Required commit:
-
-`feat(api): publish validated web console contract`
-
-Execution environment:
-
-`/Users/anion/Desktop/work/git-signalguard-rs/worktrees/p2-mp04`
-
-Path lease:
-
-- must not modify `src/api/handlers.rs`, `src/storage/redis.rs`, or `tests/redis_cache.rs` while P2-MP06 is active;
-- must stop if accurate generation requires a leased MP06 path.
-
-Current status: `READY_OR_IN_PROGRESS`.
+- branch: `p2/mp04-api-contract`;
+- exact base: `4f3a179ab56fb0f68f7b67f997508f3a21b89c37`;
+- contract: `signalguard-rs/phase-2/prompts/P2-MP04.md`;
+- required commit: `feat(api): publish validated web console contract`;
+- execution environment: `/Users/anion/Desktop/work/git-signalguard-rs/worktrees/p2-mp04`;
+- must not modify `src/api/handlers.rs`, `src/storage/redis.rs`, or `tests/redis_cache.rs` while P2-MP06 remains under review;
+- status: `READY_OR_IN_PROGRESS`.
 
 ### Backend lane — P2-MP06-WEB2
 
 Task: `P2-MP06 — Bulk Redis market-state retrieval`
 
-Assigned branch: `p2/mp06-bulk-redis-state`
+Product branch:
 
-Exact assigned base and current remote head:
+`p2/mp06-bulk-redis-state`
+
+Exact assigned base:
 
 `1447a3ccb2fa3020738cd2dd3f8d145be6cd202a`
 
-Current remote state:
+Published candidate head:
 
-- identical to base;
-- ahead `0`;
-- behind `0`;
-- no product commit, PR, CI run, or delivery report.
+`bcd3c77d8493c10062ad6db1f016fab375607918`
 
-WEB1 outcome:
+Current product-branch comparison:
 
-- implementation and complete focused/full/Redis gates were reported and formally repeated;
-- product publication did not occur;
-- required `/mnt/data` workspace and evidence later disappeared;
-- two attempted unreferenced handlers blobs were independently analyzed as irrecoverable 17-byte and 22-byte binary garbage;
-- no product ref points to any WEB1 blob, tree, or commit;
-- disposition: `EXECUTION_VALIDATED_BUT_DELIVERY_LOST`.
+- ahead: `1`;
+- behind: `0`;
+- commits: `1`;
+- changed paths: exactly `src/api/handlers.rs`, `src/storage/redis.rs`, and `tests/redis_cache.rs`;
+- commit message: `perf(api): load dashboard market states in bulk`.
 
-WEB2 replacement contract:
+Durable WEB2 escrow:
 
-`signalguard-rs/phase-2/repairs/P2-MP06-WEB2.md`
+- final connector commit: `9d87f9d3847291baafc74a4a10af3e442040f4c9`;
+- chunks: `0000.b64`, `0001.b64`, `0002.b64`;
+- archive size: `13507` bytes;
+- archive SHA-256: `7e82e62b6da5d1e085dff5492f518898e5246da381720c17639318a78476ad78`;
+- `GATES.md`: `signalguard-rs/phase-2/web-deliveries/P2-MP06-WEB2/GATES.md`;
+- `MANIFEST.json`: `signalguard-rs/phase-2/web-deliveries/P2-MP06-WEB2/MANIFEST.json`;
+- web worker performed no product-repository write.
 
-Contract connector commit:
+WEB2 worker gates:
 
-`89c262b09c1cfaea277fb88665e682fc138f7ebe`
+- focused bulk cache: `8 passed`;
+- focused dashboard handlers: `12 passed`;
+- Demo compatibility: `1 passed`;
+- full Rust suite: library `369 passed`, `3 ignored`; other non-ignored targets passed;
+- real Redis integration: `8 passed`;
+- dedicated bulk-read proof: `1 passed`, with one `MGET` and zero `GET` commands;
+- P2-MP05 atomic Lua proofs: `3 passed`;
+- changed paths: exactly three authorized paths;
+- forbidden paths and secret findings: zero;
+- P2-MP05 Lua script unchanged.
 
-WEB2 delivery design:
+Relay publication:
 
-- fresh web worker reimplements from the exact verified bootstrap source;
-- after all gates pass, it creates a deterministic archive containing exactly the three authorized files;
-- the archive is base64-split into 8192-character chunks and durably stored in `progeranna/connector`;
-- `MANIFEST.json` is written last and pins every chunk/file/archive hash;
-- the worker performs no product-repository write;
-- a product-side relay independently reconstructs escrow, repeats full Rust and real-Redis gates, creates one commit, non-force pushes the assigned branch, and opens a draft PR.
+- relay run: `30264068470`;
+- escrow verification: PASS;
+- exact target-head verification: PASS;
+- candidate application: PASS;
+- full Rust gates: PASS;
+- real Redis gates: PASS;
+- commit and non-force push: PASS;
+- run conclusion was `failure` only because its final draft-PR creation command failed;
+- the Orchestrator recovered that step directly.
 
-Temporary relay branch:
+Draft PR:
 
-`infra/p2-mp06-web-relay`
+- PR: `https://github.com/progeranna/signalguard-rs/pull/20`;
+- head: `bcd3c77d8493c10062ad6db1f016fab375607918`;
+- base: `refactor/data-boundaries`;
+- draft: yes;
+- commits: `1`;
+- changed files: `3`.
 
-Relay workflow commit:
+Exact-head product CI:
 
-`867cae81b042d564cbc0d3207193d618d18e083a`
+- run: `30264648607`;
+- current state: `IN_PROGRESS`;
+- Rust formatting: PASS;
+- Rust `cargo check`: PASS;
+- Rust Clippy: in progress at last verification;
+- frontend dependencies: installing at last verification.
 
-The relay branch is infrastructure-only and is not part of `main`, the phase branch, or the MP06 product branch. The Orchestrator alone creates its immutable relay request after inspecting WEB2 escrow.
+Current backend status: `CANDIDATE_PUBLISHED_PR20_CI_IN_PROGRESS`.
 
-Verified bootstrap remains:
-
-- run `30220162842` — success;
-- artifact ID `8636970817`;
-- ZIP SHA-256 `ab12f92e7835dd4e5c56878c6a3fad7e1ddac8c97f8e1e9152778140792372ac`;
-- inner archive SHA-256 `8afe14a493ae1170f7fe595993e9f268c12f0d91187027257c7d056e194e96b8`;
-- embedded product SHA `1447a3ccb2fa3020738cd2dd3f8d145be6cd202a`;
-- expiry `2026-07-29T21:01:10Z`.
-
-Current backend status: `WEB2_DURABLE_ESCROW_READY_TO_START`.
+The WEB2 chat worker can be stopped. Its durable escrow is complete and no further worker action is required.
 
 ## Completed work
 
@@ -170,7 +166,7 @@ Contract/frontend lane:
 
 Backend lane:
 
-`P2-MP05 → P2-MP06-WEB2 → durable relay → independent review`
+`P2-MP05 → P2-MP06-WEB2 → PR #20 → independent review → integration`
 
 Cross-lane:
 
@@ -178,12 +174,11 @@ P2-MP07 remains blocked until P2-MP04 and P2-MP06 are integrated.
 
 ## Next actions
 
-1. Launch one fresh ChatGPT web worker using `P2-MP06-WEB2.md`.
-2. Require durable connector escrow and immutable `MANIFEST.json`; no product write by the worker.
-3. Orchestrator independently validates chunks, manifest, hashes, and gates.
-4. Orchestrator creates one relay request on `infra/p2-mp06-web-relay`.
-5. Relay repeats gates, commits, non-force pushes, and opens the draft PR.
-6. Keep P2-MP04 on its existing lane and enforce path leases.
-7. Do not start P2-MP07 or merge the phase branch into `main`.
+1. Wait only for exact-head CI run `30264648607` to complete.
+2. Independently review PR #20 and its exact diff.
+3. Create the final connector report/review evidence.
+4. Accept and integrate only after green CI and independent review.
+5. Keep P2-MP04 isolated from the three leased backend paths.
+6. Do not start P2-MP07 or merge the phase branch into `main`.
 
 Only the Orchestrator updates this file.
