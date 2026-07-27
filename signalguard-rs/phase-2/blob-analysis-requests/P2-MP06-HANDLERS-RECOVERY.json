@@ -1,0 +1,9 @@
+{
+  "request_id": "P2-MP06-HANDLERS-RECOVERY",
+  "expected_sha256": "7a4ce8dfd3e4c9209398327ba923a3dab75b6e324ba4a6dc897316b04d509d73",
+  "expected_git_blob": "b1b65ab38004642b9500abfb4eb45cc4fe6508e9",
+  "blobs": [
+    "6bd2de8fc039b8bc8031466da00c9930083429a6",
+    "c33a536c22733f50b52735e968403998930c029e"
+  ]
+}
