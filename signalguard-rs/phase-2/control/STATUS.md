@@ -20,21 +20,36 @@ The phase branch is ahead of Phase 1 by five commits, behind by zero, contains i
 
 ## Active lane
 
-### Contract/frontend lane — P2-MP04-C1
+### Contract/frontend lane — P2-MP04-R1
 
 - task: publish a validated deterministic web-console API contract and drift gate;
 - branch: `p2/mp04-api-contract`;
 - parent: `refactor/data-boundaries`;
-- exact current base and verified remote branch head: `1a226b5b5661a2b99dabec579aeeecf8b0e4be85`;
-- branch comparison to base: identical, ahead `0`, behind `0`;
+- exact phase base: `1a226b5b5661a2b99dabec579aeeecf8b0e4be85`;
+- current product candidate head: `0a02f5bbb7b30bec96a5137c328169d857894150`;
+- current branch comparison: ahead `1`, behind `0`;
+- draft PR: `https://github.com/progeranna/signalguard-rs/pull/21`;
 - original contract: `signalguard-rs/phase-2/prompts/P2-MP04.md`;
 - continuation contract: `signalguard-rs/phase-2/repairs/P2-MP04-C1.md`;
-- continuation contract commit: `5d0950bf1f6cbcb30e637773c7c273a291586001`;
-- required commit: `feat(api): publish validated web console contract`;
+- repair contract: `signalguard-rs/phase-2/repairs/P2-MP04-R1.md`;
+- repair contract commit: `1a4ae7e01d51c15072e9b2d19bd5dfe756eb9308`;
+- initial implementation commit: `feat(api): publish validated web console contract`;
+- required repair commit: `fix(api): validate generated contract compatibility`;
 - execution environment: local Codex in `/Users/anion/Desktop/work/git-signalguard-rs/worktrees/p2-mp04`;
-- status: `READY_FOR_LOCAL_CODEX`.
+- failed exact-head CI: `30268071440` — Rust success, frontend tests/typecheck success, frontend lint failure;
+- status: `REPAIR_REQUIRED`.
 
-The old MP04 base was fast-forwarded before any remote MP04 implementation commit existed. Codex must inspect the local worktree before changing anything and stop without reset/stash/clean if local uncommitted work is present.
+Independent review found the candidate incomplete beyond the lint failure:
+
+- frontend test uses forbidden explicit `any`;
+- mutation fixtures do not exercise a compatibility validator and cannot prove failure on incompatible drift;
+- component schemas are manually duplicated as free-form JSON rather than mechanically coupled to backend DTO/query types;
+- OpenAPI 3.0 nullable `$ref` siblings are not a valid nullable-reference representation;
+- optional request `Option<T>` null semantics are not represented;
+- actual API error responses/statuses are absent;
+- route/method inventory proof and intentional stale-artifact test are incomplete.
+
+The repair contract authorizes exactly one additional normal commit. Amend, rebase, reset, force-push, replacement branch, and PR replacement remain forbidden.
 
 P2-MP04 may read the integrated current handlers to inventory the actual API, but it must not modify:
 
@@ -118,7 +133,7 @@ Temporary infrastructure branch `infra/p2-mp06-web-relay` is not part of `main`,
 
 Contract/frontend lane:
 
-`P2-MP01 → P2-MP02 → P2-MP03 → P2-MP04-C1`
+`P2-MP01 → P2-MP02 → P2-MP03 → P2-MP04-R1`
 
 Backend lane:
 
@@ -126,14 +141,15 @@ Backend lane:
 
 Cross-lane:
 
-P2-MP07 remains blocked only until P2-MP04 is accepted and integrated. It must start from the then-current phase SHA, not from an older task branch.
+P2-MP07 remains blocked until P2-MP04-R1 is accepted and integrated. It must start from the then-current phase SHA, not from an older task branch.
 
 ## Next actions
 
-1. Run one local Codex executor for P2-MP04-C1.
-2. Independently review the resulting exact diff, generated artifact, drift behavior, compatibility tests, and exact-head CI.
-3. Integrate P2-MP04 only after green CI and complete contract evidence.
-4. Release P2-MP07 from the resulting current phase SHA.
-5. Do not merge the phase branch into `main` yet.
+1. Continue the same local Codex worktree under P2-MP04-R1 without resetting or discarding the reported uncommitted lint fix.
+2. Create exactly one additional repair commit after every required local gate passes.
+3. Independently review the final typed schema coupling, error inventory, OpenAPI semantics, route/method proofs, compatibility mutation failures, exact diff, and exact-head CI.
+4. Integrate P2-MP04 only after green CI and complete contract evidence.
+5. Release P2-MP07 from the resulting current phase SHA.
+6. Do not merge the phase branch into `main` yet.
 
 Only the Orchestrator updates this file.
