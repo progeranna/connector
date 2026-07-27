@@ -1,0 +1,80 @@
+{
+  "delivery_id": "P2-MP06-WEB2",
+  "gate_status": "PASS",
+  "product_repository": "progeranna/signalguard-rs",
+  "product_branch": "p2/mp06-bulk-redis-state",
+  "product_base_sha": "1447a3ccb2fa3020738cd2dd3f8d145be6cd202a",
+  "commit_message": "perf(api): load dashboard market states in bulk",
+  "archive_path": "/mnt/data/P2-MP06-WEB2-product-files.tar.zst",
+  "archive_size_bytes": 13507,
+  "archive_sha256": "7e82e62b6da5d1e085dff5492f518898e5246da381720c17639318a78476ad78",
+  "archive_base64_length": 18012,
+  "chunk_size": 8192,
+  "chunk_count": 3,
+  "chunk_prefix": "signalguard-rs/phase-2/web-deliveries/P2-MP06-WEB2/chunks",
+  "chunks": [
+    {
+      "name": "0000.b64",
+      "length": 8192,
+      "sha256": "f99a3dc59d9ab8c3fb991ed18ca55ae8cf4401f123b3a97cabae5dd3b91d9ff4",
+      "git_blob": "ccf00f43f9426d0180c3bdfb3fb932cb0a3e0f50",
+      "connector_commit_sha": "90f9b01758bff98b1c9b2193bdb6eef29acce076"
+    },
+    {
+      "name": "0001.b64",
+      "length": 8192,
+      "sha256": "88cfaef8bf7b907a4249af860cb760ee3b8331192fe1b826dea2264760ec0362",
+      "git_blob": "65d732614e58bc549722935e5684b61a5f1f0868",
+      "connector_commit_sha": "b2d1b481f9e6eb44d3ce8ed9a91fe7f6fbdc029e"
+    },
+    {
+      "name": "0002.b64",
+      "length": 1628,
+      "sha256": "aa1ccd316a46c5f9f0331879bc288f56757fc686d83807aa5bc8e8077f712ed4",
+      "git_blob": "bd2efc052ec9f84de8b6653e822e1c4c8aa2cfe9",
+      "connector_commit_sha": "ac25d2265d1352ca477056a903da0e1b701806c1"
+    }
+  ],
+  "gates_path": "signalguard-rs/phase-2/web-deliveries/P2-MP06-WEB2/GATES.md",
+  "gates_commit_sha": "04bc22240a5eb7cd9e242cc1d1fc960dc2db7121",
+  "gates_sha256": "2daace0950bb7e9c22389b393d7c314d657582ea2c427ebf4946328e7987addf",
+  "gates_git_blob": "e47b551b7c7b5c7b706fd7349dfd9382ddae7bcf",
+  "files": [
+    {
+      "path": "src/storage/redis.rs",
+      "size_bytes": 37175,
+      "sha256": "48496243034215f591b2a8739588b053d3a3c5bdada096dbc535e9315ee7bb61",
+      "git_blob": "f50fcf461fbaa7b1c6c05e965a1e84ed886e7121"
+    },
+    {
+      "path": "src/api/handlers.rs",
+      "size_bytes": 51454,
+      "sha256": "5afbdab22382021e01660b9d3b77ddac8b2a44df97e530053d64110987c89bd4",
+      "git_blob": "fd031058c4eb8048e808251743435d5f3f5a87b5"
+    },
+    {
+      "path": "tests/redis_cache.rs",
+      "size_bytes": 11716,
+      "sha256": "cc5894d379c5be371406bb2a588d671d071e94dd388fe2336286445d6436b7d7",
+      "git_blob": "f66ba9a225ddc7c4f97dda6fff2c6e0a121576cc"
+    }
+  ],
+  "bootstrap": {
+    "connector_repository": "progeranna/connector",
+    "contract_commit": "802280ba9ed5cfd7c9eb591a03bac69e2f4e5f70",
+    "workflow_run_id": 30220162842,
+    "artifact_id": 8636970817,
+    "artifact_name": "signalguard-P2-MP06-WEB6-30220162842",
+    "zip_sha256": "ab12f92e7835dd4e5c56878c6a3fad7e1ddac8c97f8e1e9152778140792372ac",
+    "inner_archive_sha256": "8afe14a493ae1170f7fe595993e9f268c12f0d91187027257c7d056e194e96b8",
+    "embedded_product_sha": "1447a3ccb2fa3020738cd2dd3f8d145be6cd202a"
+  },
+  "web_worker": {
+    "os": "Linux",
+    "architecture": "x86_64",
+    "kernel_release": "6.12.13",
+    "uname": "Linux 5f95108dac85 6.12.13 #1 SMP Wed Jul 22 00:33:13 UTC 2026 x86_64 GNU/Linux"
+  },
+  "no_product_repository_write": true,
+  "relay_triggered": false
+}
