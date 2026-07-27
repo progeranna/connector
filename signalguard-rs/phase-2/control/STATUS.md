@@ -20,16 +20,31 @@ The phase branch is ahead of Phase 1 by five commits, behind by zero, contains i
 
 ## Active lane
 
-### Contract/frontend lane — P2-MP04
+### Contract/frontend lane — P2-MP04-C1
 
+- task: publish a validated deterministic web-console API contract and drift gate;
 - branch: `p2/mp04-api-contract`;
-- exact assigned base: `4f3a179ab56fb0f68f7b67f997508f3a21b89c37`;
-- contract: `signalguard-rs/phase-2/prompts/P2-MP04.md`;
+- parent: `refactor/data-boundaries`;
+- exact current base and verified remote branch head: `1a226b5b5661a2b99dabec579aeeecf8b0e4be85`;
+- branch comparison to base: identical, ahead `0`, behind `0`;
+- original contract: `signalguard-rs/phase-2/prompts/P2-MP04.md`;
+- continuation contract: `signalguard-rs/phase-2/repairs/P2-MP04-C1.md`;
+- continuation contract commit: `5d0950bf1f6cbcb30e637773c7c273a291586001`;
 - required commit: `feat(api): publish validated web console contract`;
-- execution environment: `/Users/anion/Desktop/work/git-signalguard-rs/worktrees/p2-mp04`;
-- status: `READY_OR_IN_PROGRESS`.
+- execution environment: local Codex in `/Users/anion/Desktop/work/git-signalguard-rs/worktrees/p2-mp04`;
+- status: `READY_FOR_LOCAL_CODEX`.
 
-P2-MP06 is integrated, so its temporary path lease is released. P2-MP04 must still obey its own immutable scope and may not absorb unrelated backend work.
+The old MP04 base was fast-forwarded before any remote MP04 implementation commit existed. Codex must inspect the local worktree before changing anything and stop without reset/stash/clean if local uncommitted work is present.
+
+P2-MP04 may read the integrated current handlers to inventory the actual API, but it must not modify:
+
+- `src/api/handlers.rs`;
+- `src/storage/redis.rs`;
+- `tests/redis_cache.rs`;
+- `web/src/features/dashboard/types.ts`;
+- frontend query/query-key implementation;
+- view models or presentation components;
+- runtime endpoint, serialization, status-code, cache, database, Docker, or deployment behavior.
 
 ## Completed work
 
@@ -103,7 +118,7 @@ Temporary infrastructure branch `infra/p2-mp06-web-relay` is not part of `main`,
 
 Contract/frontend lane:
 
-`P2-MP01 → P2-MP02 → P2-MP03 → P2-MP04`
+`P2-MP01 → P2-MP02 → P2-MP03 → P2-MP04-C1`
 
 Backend lane:
 
@@ -115,9 +130,10 @@ P2-MP07 remains blocked only until P2-MP04 is accepted and integrated. It must s
 
 ## Next actions
 
-1. Complete and independently review P2-MP04.
-2. Integrate P2-MP04 only after green exact-head CI and contract-drift evidence.
-3. Release P2-MP07 from the resulting current phase SHA.
-4. Do not merge the phase branch into `main` yet.
+1. Run one local Codex executor for P2-MP04-C1.
+2. Independently review the resulting exact diff, generated artifact, drift behavior, compatibility tests, and exact-head CI.
+3. Integrate P2-MP04 only after green CI and complete contract evidence.
+4. Release P2-MP07 from the resulting current phase SHA.
+5. Do not merge the phase branch into `main` yet.
 
 Only the Orchestrator updates this file.
