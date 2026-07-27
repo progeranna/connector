@@ -14,39 +14,23 @@ Phase branch:
 
 Current verified phase SHA:
 
-`856b58177d30772bc691ec870fe537c05aab3dba`
+`ce45c60b954de7e3b8b4f9dd6899d6839f65e2fb`
 
-The phase branch is ahead of Phase 1 by six commits, behind by zero, contains integrated P2-MP01, P2-MP02, P2-MP03, P2-MP04, P2-MP05, and P2-MP06, and is not merged into `main`.
+The phase branch is ahead of Phase 1 by seven commits, behind by zero, contains integrated P2-MP01 through P2-MP07, and is not merged into `main`.
 
 ## Active lane
 
-### Cross-lane completion — P2-MP07 repaired candidate
+### Phase 2 final integrated-tree review
 
-- task: expose explicit public market-data source and availability;
-- original contract: `signalguard-rs/phase-2/prompts/P2-MP07.md`;
-- original contract commit: `2701189895eaf4748f47190be29e618732143c93`;
-- repair contract: `signalguard-rs/phase-2/repairs/P2-MP07-R1.md`;
-- repair contract commit: `eac1da487b13a642b32e71587935cebe76532889`;
-- branch: `p2/mp07-market-availability`;
-- parent / required PR base: `refactor/data-boundaries`;
-- exact assigned phase base: `856b58177d30772bc691ec870fe537c05aab3dba`;
-- rejected first head: `9ed0d1e12fc385b19aabe0cbf32b0d4b726dd8fb`;
-- repaired candidate head: `1b874f7051b0618e3b6318444f46d3e5c4fc2408`;
-- exact branch comparison: ahead `2`, behind `0`;
-- commits: `feat(api): expose market data availability` and `fix(ui): honor market availability states`;
-- product PR: `https://github.com/progeranna/signalguard-rs/pull/22`;
-- PR state: open draft;
-- exact PR base SHA: `856b58177d30772bc691ec870fe537c05aab3dba`;
-- exact PR head SHA: `1b874f7051b0618e3b6318444f46d3e5c4fc2408`;
-- exact-head CI: run `30284876894` — success;
-- CI jobs: Rust and frontend — success;
-- local visual acceptance: pending;
-- final independent verdict: pending local visual acceptance;
-- status: `VISUAL_ACCEPTANCE_REQUIRED`.
+- implementation microphases P2-MP01 through P2-MP07: complete and integrated;
+- exact integrated phase SHA: `ce45c60b954de7e3b8b4f9dd6899d6839f65e2fb`;
+- branch comparison against `main`: ahead `7`, behind `0`;
+- product implementation PRs: #15, #17, #19, #21, #18, #20, and #22 merged into the phase branch;
+- final Phase 2-to-main PR: not created;
+- Phase 2-to-main merge: not authorized;
+- status: `FINAL_INTEGRATED_TREE_REVIEW_REQUIRED`.
 
-Independent repaired-head code review confirms that R1 closes the recorded rejection findings: the OpenAPI compatibility validator covers source/availability required references and mutation drift; the header remains neutral with no observed symbols; dashboard timeline and metric surfaces are disabled for non-observed entries; route and popup suppress metrics and anomaly surfaces for non-observed entries; no pipeline-age freshness fallback remains; and no absent source defaults to Demo.
-
-The accepted backend candidate foundations remain the typed source/availability DTOs, backend Live configured+registered union, deterministic derivation matrix, one bulk Redis state read, generated OpenAPI schemas, and strict Demo/Live separation. Exact-head PR CI is green. Integration remains forbidden until the user completes localhost visual acceptance on the exact PR head.
+The next activity is read-only verification of the complete Phase 2 branch as one integrated tree: architecture boundaries, forbidden-scope review, generated-contract determinism, Rust/frontend regression gates, Demo/Live identity isolation, popup/route parity, and final UI acceptance. No additional product implementation should begin unless that review finds a blocker requiring an explicit repair contract.
 
 ## Completed work
 
@@ -124,6 +108,30 @@ Evidence:
 - review: `signalguard-rs/phase-2/reviews/P2-MP06/bcd3c77d8493c10062ad6db1f016fab375607918.md`;
 - integration: `signalguard-rs/phase-2/integration/P2-MP06/1a226b5b5661a2b99dabec579aeeecf8b0e4be85.md`.
 
+### P2-MP07
+
+- original contract: `signalguard-rs/phase-2/prompts/P2-MP07.md`;
+- original contract commit: `2701189895eaf4748f47190be29e618732143c93`;
+- rejected first head: `9ed0d1e12fc385b19aabe0cbf32b0d4b726dd8fb`;
+- repair contract: `signalguard-rs/phase-2/repairs/P2-MP07-R1.md`;
+- repair contract commit: `eac1da487b13a642b32e71587935cebe76532889`;
+- accepted repaired head: `1b874f7051b0618e3b6318444f46d3e5c4fc2408`;
+- PR: `https://github.com/progeranna/signalguard-rs/pull/22`;
+- exact-head product CI: `30284876894` — success;
+- local API and visual acceptance: completed on the exact accepted head;
+- final verdict: `ACCEPT`;
+- merge method: guarded squash;
+- resulting phase SHA: `ce45c60b954de7e3b8b4f9dd6899d6839f65e2fb`;
+- status: `INTEGRATED`.
+
+P2-MP07 exposes typed `source=demo|live` and `availability=observed|configured|awaiting|unavailable`, makes the backend authoritative for the Live configured+registered catalog, preserves one bulk Redis state read, prevents Demo fallback and fabricated non-observed metrics, and carries the explicit model through OpenAPI, frontend validation, dashboard, popup, and route.
+
+Evidence:
+
+- rejected review: `signalguard-rs/phase-2/reviews/P2-MP07/9ed0d1e12fc385b19aabe0cbf32b0d4b726dd8fb.md`;
+- final review: `signalguard-rs/phase-2/reviews/P2-MP07/1b874f7051b0618e3b6318444f46d3e5c4fc2408.md`;
+- integration: `signalguard-rs/phase-2/integration/P2-MP07/ce45c60b954de7e3b8b4f9dd6899d6839f65e2fb.md`.
+
 ## Superseded or failed execution sources
 
 - frontend branch `p2/mp03-market-view-models`: `REJECTED_AND_SUPERSEDED`;
@@ -147,14 +155,17 @@ Backend lane:
 
 Cross-lane:
 
-`P2-MP07` — exact-head CI passed at `1b874f7051b0618e3b6318444f46d3e5c4fc2408`; local visual acceptance remains pending. The phase branch remains at `856b58177d30772bc691ec870fe537c05aab3dba`.
+`P2-MP07` — complete.
+
+Phase 2 implementation is complete at `ce45c60b954de7e3b8b4f9dd6899d6839f65e2fb`. Phase 3 remains blocked until Phase 2 final integrated-tree review and explicit Phase 2-to-main merge complete.
 
 ## Next actions
 
-1. Run local backend/frontend visual acceptance on exact head `1b874f7051b0618e3b6318444f46d3e5c4fc2408`.
-2. If visual acceptance passes, publish the final independent review for the exact head.
-3. Mark PR #22 ready only as part of guarded integration and squash merge it into `refactor/data-boundaries` with an exact-head guard.
-4. Record the resulting phase SHA and update the Phase 2 integration ledger.
-5. Do not merge the Phase 2 branch into `main` until final Phase 2 tree/UI review is complete.
+1. Perform the final read-only integrated-tree review at exact phase SHA `ce45c60b954de7e3b8b4f9dd6899d6839f65e2fb`.
+2. Verify complete Phase 2 Rust/frontend gates, generated-contract determinism, architecture boundaries, and forbidden scope as one tree.
+3. Run final integrated UI acceptance for Demo/Live, route/popup parity, symbol switching, stale/late-response isolation, and non-observed availability states.
+4. Publish a Phase 2 final review with `ACCEPT`, `ACCEPT_WITH_NOTES`, or `REJECT`.
+5. Only after `ACCEPT` or an explicitly merge-authorizing `ACCEPT_WITH_NOTES`, create the Phase 2-to-main PR and require exact-head CI.
+6. Do not start Phase 3 implementation before Phase 2 is merged into `main` and its resulting main SHA is recorded.
 
 Only the Orchestrator updates this file.
