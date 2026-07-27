@@ -20,23 +20,30 @@ The phase branch is ahead of Phase 1 by six commits, behind by zero, contains in
 
 ## Active lane
 
-### Cross-lane completion — P2-MP07
+### Cross-lane completion — P2-MP07-R1
 
 - task: expose explicit public market-data source and availability;
-- exact contract: `signalguard-rs/phase-2/prompts/P2-MP07.md`;
-- contract commit: `2701189895eaf4748f47190be29e618732143c93`;
+- original contract: `signalguard-rs/phase-2/prompts/P2-MP07.md`;
+- original contract commit: `2701189895eaf4748f47190be29e618732143c93`;
 - branch: `p2/mp07-market-availability`;
-- parent / required PR base: `refactor/data-boundaries`;
-- exact assigned base: `856b58177d30772bc691ec870fe537c05aab3dba`;
-- initial remote branch SHA: `856b58177d30772bc691ec870fe537c05aab3dba`;
+- parent / required future PR base: `refactor/data-boundaries`;
+- exact assigned phase base: `856b58177d30772bc691ec870fe537c05aab3dba`;
+- rejected candidate head: `9ed0d1e12fc385b19aabe0cbf32b0d4b726dd8fb`;
+- rejected candidate commit: `feat(api): expose market data availability`;
+- independent review: `signalguard-rs/phase-2/reviews/P2-MP07/9ed0d1e12fc385b19aabe0cbf32b0d4b726dd8fb.md`;
+- review commit: `91479562352ccf0d8c947b6ca6ea09d66cb72204`;
+- verdict: `REJECT — NARROW REPAIR REQUIRED`;
+- repair contract: `signalguard-rs/phase-2/repairs/P2-MP07-R1.md`;
+- repair contract commit: `eac1da487b13a642b32e71587935cebe76532889`;
+- required repair commit: `fix(ui): honor market availability states`;
+- expected final branch comparison: ahead `2`, behind `0`;
 - dedicated worktree: `/Users/anion/Desktop/work/git-signalguard-rs/worktrees/p2-mp07`;
-- required commit: `feat(api): expose market data availability`;
-- product PR: not created; the Orchestrator owns PR creation after independent candidate review;
-- status: `EXECUTION_AUTHORIZED`.
+- product PR: not created; PR creation remains blocked until repaired-head acceptance;
+- status: `REPAIR_REQUIRED`.
 
-The contract requires additive `source=demo|live` identity and typed `availability=observed|configured|awaiting|unavailable`. The backend must own the Live configured+registered catalog and deterministic availability matrix while preserving one bulk Redis state read. The frontend must stop synthesizing availability from `/runtime/mode`, placeholders, null state, or 404 responses.
+Accepted foundations at the rejected head include the typed source/availability DTOs, backend Live configured+registered union, deterministic derivation matrix, one bulk Redis state read, and generated OpenAPI schemas.
 
-No P2-MP07 candidate head is authoritative until an executor returns one exact pushed commit with complete gates and evidence.
+Blocking defects are incomplete frontend OpenAPI mutation validation, false healthy header status when no symbol is observed, timeline/metric/anomaly leakage for non-observed symbols, incorrect route source fallback, and two changed test-support paths outside the original lease. The R1 contract explicitly authorizes only the narrow repair and those two existing test-support paths; history rewriting remains forbidden.
 
 ## Completed work
 
@@ -137,15 +144,15 @@ Backend lane:
 
 Cross-lane:
 
-`P2-MP07` — active from exact phase SHA `856b58177d30772bc691ec870fe537c05aab3dba`.
+`P2-MP07-R1` — required before Phase 2 completion. The phase branch remains at `856b58177d30772bc691ec870fe537c05aab3dba`.
 
 ## Next actions
 
-1. Execute only the immutable P2-MP07 contract on `p2/mp07-market-availability` from the exact assigned base.
-2. Require one atomic commit, exact path/forbidden-path proof, complete local gates, and a normal push.
-3. Do not allow the executor to create the PR or merge.
-4. Independently review the exact candidate diff and exact-head CI before PR/integration.
-5. Require local visual acceptance before final squash merge if the candidate passes code review.
+1. Continue the same P2-MP07 branch/worktree from immutable rejected head `9ed0d1e12fc385b19aabe0cbf32b0d4b726dd8fb`.
+2. Apply exactly one additional normal repair commit under `P2-MP07-R1`; do not rewrite the first commit.
+3. Run every complete gate and push normally with final branch comparison ahead `2`, behind `0`.
+4. Independently review the exact repaired head and only then create a product PR.
+5. Require exact-head CI and local visual acceptance before squash integration.
 6. Do not merge the Phase 2 branch into `main` yet.
 
 Only the Orchestrator updates this file.
