@@ -38,14 +38,15 @@ The phase branch is ahead of Phase 1 by six commits, behind by zero, contains in
 - PR state: open draft;
 - exact PR base SHA: `856b58177d30772bc691ec870fe537c05aab3dba`;
 - exact PR head SHA: `1b874f7051b0618e3b6318444f46d3e5c4fc2408`;
-- exact-head CI: run `30284876894` — queued;
+- exact-head CI: run `30284876894` — success;
+- CI jobs: Rust and frontend — success;
 - local visual acceptance: pending;
-- final independent verdict: pending exact-head CI and local visual acceptance;
-- status: `DRAFT_PR_VALIDATION`.
+- final independent verdict: pending local visual acceptance;
+- status: `VISUAL_ACCEPTANCE_REQUIRED`.
 
 Independent repaired-head code review confirms that R1 closes the recorded rejection findings: the OpenAPI compatibility validator covers source/availability required references and mutation drift; the header remains neutral with no observed symbols; dashboard timeline and metric surfaces are disabled for non-observed entries; route and popup suppress metrics and anomaly surfaces for non-observed entries; no pipeline-age freshness fallback remains; and no absent source defaults to Demo.
 
-The accepted backend candidate foundations remain the typed source/availability DTOs, backend Live configured+registered union, deterministic derivation matrix, one bulk Redis state read, generated OpenAPI schemas, and strict Demo/Live separation. Integration remains forbidden until exact-head CI succeeds and the user completes localhost visual acceptance on the exact PR head.
+The accepted backend candidate foundations remain the typed source/availability DTOs, backend Live configured+registered union, deterministic derivation matrix, one bulk Redis state read, generated OpenAPI schemas, and strict Demo/Live separation. Exact-head PR CI is green. Integration remains forbidden until the user completes localhost visual acceptance on the exact PR head.
 
 ## Completed work
 
@@ -146,15 +147,14 @@ Backend lane:
 
 Cross-lane:
 
-`P2-MP07` — draft PR validation at exact head `1b874f7051b0618e3b6318444f46d3e5c4fc2408`. The phase branch remains at `856b58177d30772bc691ec870fe537c05aab3dba`.
+`P2-MP07` — exact-head CI passed at `1b874f7051b0618e3b6318444f46d3e5c4fc2408`; local visual acceptance remains pending. The phase branch remains at `856b58177d30772bc691ec870fe537c05aab3dba`.
 
 ## Next actions
 
-1. Require exact-head PR CI run `30284876894` to complete successfully.
-2. Run local backend/frontend visual acceptance on exact head `1b874f7051b0618e3b6318444f46d3e5c4fc2408`.
-3. If both gates pass, publish the final independent review for the exact head.
-4. Mark PR #22 ready only as part of guarded integration and squash merge it into `refactor/data-boundaries` with an exact-head guard.
-5. Record the resulting phase SHA and update the Phase 2 integration ledger.
-6. Do not merge the Phase 2 branch into `main` until final Phase 2 tree/UI review is complete.
+1. Run local backend/frontend visual acceptance on exact head `1b874f7051b0618e3b6318444f46d3e5c4fc2408`.
+2. If visual acceptance passes, publish the final independent review for the exact head.
+3. Mark PR #22 ready only as part of guarded integration and squash merge it into `refactor/data-boundaries` with an exact-head guard.
+4. Record the resulting phase SHA and update the Phase 2 integration ledger.
+5. Do not merge the Phase 2 branch into `main` until final Phase 2 tree/UI review is complete.
 
 Only the Orchestrator updates this file.
