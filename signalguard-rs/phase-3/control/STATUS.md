@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `WAVE_1_WEB_WORKERS_AUTHORIZED`
+Current state: `WAVE_1_WEB_WORKERS_AUTHORIZED_WITH_MP09_REPLACEMENT`
 
 ## Authoritative identity
 
@@ -68,11 +68,9 @@ Current state: `WAVE_1_WEB_WORKERS_AUTHORIZED`
 
 ## Wave 1 — AUTHORIZED PARALLEL WEB-WORKER FAN-OUT
 
-Common exact assigned base for all active Wave 1 workers:
+Common exact assigned base for active Wave 1 workers:
 
 `3587ec9b70b677121aa796467d5bb359ffb4d174`
-
-All four assigned branches were verified identical to the phase branch with ahead `0`, behind `0` before execution authorization.
 
 ### P3-MP05 — Timeline normalization
 
@@ -109,14 +107,30 @@ All four assigned branches were verified identical to the phase branch with ahea
 
 ### P3-MP09 — Dashboard resource-state mapping
 
+#### Rejected WEB1 execution
+
 - Branch: `p3/mp09-dashboard-resource-state`
 - Contract: `signalguard-rs/phase-3/prompts/P3-MP09-WEB1.md`
-- Contract commit: `d14189b4db50f03183a2d2bc1a471cd8eeea476a`
+- Rejected head: `b7dfebd10a8ec90b0e4f9a957b8368f6a4f06ee9`
+- Status: `REJECTED_AND_QUARANTINED`
+- Reason: committed remote test blob `2d0822f5b91378182a3729465f5dc37d9ad759ef` is corrupted and syntactically invalid.
+- PR: none.
+- Merge authorization: none.
+- Review: `signalguard-rs/phase-3/reviews/P3-MP09/b7dfebd10a8ec90b0e4f9a957b8368f6a4f06ee9.md`
+
+#### Authorized WEB2 replacement
+
+- Replacement branch: `p3/mp09-dashboard-resource-state-r1`
+- Contract: `signalguard-rs/phase-3/prompts/P3-MP09-WEB2.md`
+- Contract commit: `0cbbcaf2d292690fa0f7754c8b12fc847d1fc39a`
+- Exact assigned base: `3587ec9b70b677121aa796467d5bb359ffb4d174`
 - Required commit: `feat(ui): extract dashboard resource states`
 - Lease:
   - `web/src/features/dashboard/dashboardResourceState.ts`
   - `web/src/features/dashboard/dashboardResourceState.test.ts`
+- Replacement branch verified identical to assigned base: ahead `0`, behind `0`.
 - Status: `WEB_WORKER_EXECUTION_AUTHORIZED`
+- Recovery control: `signalguard-rs/phase-3/control/P3-MP09-RECOVERY.md`
 
 ### P3-MP06 — BLOCKED
 
