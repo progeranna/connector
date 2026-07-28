@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `WAVE_2_REPLACEMENT_WORKERS_AUTHORIZED`
+Current state: `WAVE_2_REPLACEMENT_WORKERS_ACTIVE_OR_AWAITING_DELIVERY`
 
 ## Authoritative identity
 
@@ -30,9 +30,26 @@ P3-MP05, P3-MP06, P3-MP07, P3-MP08, and accepted replacement P3-MP09-WEB2 are in
 
 ### P3-MP10 — Timeline panel
 
-- Status: `WEB1_EXECUTION_ACTIVE_OR_AWAITING_DELIVERY`
+#### WEB1
+
+- Status: `REJECTED_AND_QUARANTINED`
 - Branch: `p3/mp10-timeline-panel`
-- Contract: `signalguard-rs/phase-3/prompts/P3-MP10-WEB1.md`
+- Head: `9bddc301d32c51bbb54dc5058d8d33320c144ff7`
+- PR: `#36` — closed, unmerged.
+- CI: `30367741374` — frontend tests failed; Rust/global job passed; remaining frontend gates were skipped.
+- Reason: focused test expects `[99.84, 102.16]` for prices `100` and `102`, but accepted P3-MP06 magnitude-aware padding yields `[99.796, 102.204]`.
+- Delivery report: absent.
+- Review: `signalguard-rs/phase-3/reviews/P3-MP10/9bddc301d32c51bbb54dc5058d8d33320c144ff7.md`
+- Recovery: `signalguard-rs/phase-3/control/P3-MP10-RECOVERY.md`
+
+#### WEB2
+
+- Status: `AUTHORIZED`
+- Replacement branch: `p3/mp10-timeline-panel-r1`
+- Exact assigned base: `93a870010730c458417ccfff392cb97aff23d6c9`
+- Initial divergence: `0 0`
+- Contract: `signalguard-rs/phase-3/prompts/P3-MP10-WEB2.md`
+- Contract commit: `0439f09bc468c1a391fdf77ebd2269433b62be16`
 
 ### P3-MP11 — Market Health desktop
 
@@ -48,7 +65,7 @@ P3-MP05, P3-MP06, P3-MP07, P3-MP08, and accepted replacement P3-MP09-WEB2 are in
 
 #### WEB2
 
-- Status: `AUTHORIZED`
+- Status: `AUTHORIZED_USER_CONFIRMED_PROMPT_SENT_REMOTE_DELIVERY_PENDING`
 - Replacement branch: `p3/mp11-market-health-desktop-r1`
 - Exact assigned base: `93a870010730c458417ccfff392cb97aff23d6c9`
 - Initial divergence: `0 0`
@@ -69,7 +86,7 @@ P3-MP05, P3-MP06, P3-MP07, P3-MP08, and accepted replacement P3-MP09-WEB2 are in
 
 #### WEB2
 
-- Status: `AUTHORIZED`
+- Status: `AUTHORIZED_USER_CONFIRMED_PROMPT_SENT_REMOTE_DELIVERY_PENDING`
 - Replacement branch: `p3/mp12-market-health-mobile-r1`
 - Exact assigned base: `93a870010730c458417ccfff392cb97aff23d6c9`
 - Initial divergence: `0 0`
@@ -87,10 +104,11 @@ P3-MP05, P3-MP06, P3-MP07, P3-MP08, and accepted replacement P3-MP09-WEB2 are in
 
 #### WEB2
 
-- Status: `AUTHORIZED`
+- Status: `AUTHORIZED_USER_CONFIRMED_PROMPT_SENT_REMOTE_BRANCH_STILL_0_0`
 - Replacement branch: `p3/mp13-recent-anomalies-desktop-r1`
 - Exact assigned base: `93a870010730c458417ccfff392cb97aff23d6c9`
-- Initial divergence: `0 0`
+- Current remote divergence: `0 0`
+- Product commit, PR, and connector report: not yet published at latest check.
 - Contract: `signalguard-rs/phase-3/prompts/P3-MP13-WEB2.md`
 - Contract commit: `03c9d90d06054a4eb84e136a1ad58bc0c664d3c3`
 
@@ -106,7 +124,7 @@ P3-MP05, P3-MP06, P3-MP07, P3-MP08, and accepted replacement P3-MP09-WEB2 are in
 
 ## Wave 2 closure condition
 
-P3-MP10, accepted WEB2 replacements for P3-MP11/P3-MP12/P3-MP13, and P3-MP14 must all be independently accepted and integrated. Then P3-MP15 compositor wiring may start. Visual Checkpoint 1 occurs only after P3-MP15 integration and combined-tree CI.
+Accepted WEB2 replacements for P3-MP10/P3-MP11/P3-MP12/P3-MP13 and integrated P3-MP14 must all be independently accepted and integrated. Then P3-MP15 compositor wiring may start. Visual Checkpoint 1 occurs only after P3-MP15 integration and combined-tree CI.
 
 ## Binding invariants
 
