@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `WAVE_1_MP06_AND_MP09_REPLACEMENT_AUTHORIZED`
+Current state: `WAVE_1_MP06_AND_MP09_REPLACEMENT_AWAITING_DELIVERY`
 
 ## Authoritative identity
 
@@ -8,7 +8,7 @@ Current state: `WAVE_1_MP06_AND_MP09_REPLACEMENT_AUTHORIZED`
 - Plan commit: `8787f58d0d7b9fc64e8678af83ac2933bcf44b5b`
 - Phase 3 starting `main` SHA: `6b57938d87e05d3b4fa4858f9c34c27739877821`
 - Phase branch: `refactor/dashboard-modules`
-- Current accepted Phase 3 SHA: `773b110816d10d31e65a36ce2ed76a1b37beca01`
+- Current accepted Phase 3 SHA: `f3a44e5adb3a43c7bae62e8c46f65d7bd5e90b8f`
 - `main` remains unchanged by Phase 3.
 
 ## Execution model
@@ -35,45 +35,43 @@ Current state: `WAVE_1_MP06_AND_MP09_REPLACEMENT_AUTHORIZED`
 ### P3-MP05 — Timeline normalization
 
 - Status: `INTEGRATED`
-- Contract: `signalguard-rs/phase-3/prompts/P3-MP05-WEB1.md`
-- Contract commit: `058457bdfc59cc02e064aa7f542074effd586eaa`
 - Accepted head: `8f8298456d82b91c433132b2778e18d6697524c7`
 - PR: `#28`
-- Exact-head CI: `30358841104` — success.
+- CI: `30358841104` — success.
 - Resulting Phase 3 SHA: `773b110816d10d31e65a36ce2ed76a1b37beca01`
 - Review: `signalguard-rs/phase-3/reviews/P3-MP05/8f8298456d82b91c433132b2778e18d6697524c7.md`
 - Integration: `signalguard-rs/phase-3/integration/P3-MP05/773b110816d10d31e65a36ce2ed76a1b37beca01.md`
 
-### P3-MP06 — Timeline chart domains
+### P3-MP08 — Recent Anomalies preview model
 
-- Status: `WEB_WORKER_EXECUTION_AUTHORIZED`
-- Branch: `p3/mp06-timeline-domains`
-- Exact assigned base: `773b110816d10d31e65a36ce2ed76a1b37beca01`
-- Contract: `signalguard-rs/phase-3/prompts/P3-MP06-WEB1.md`
-- Contract commit: `5e77962988969bd2f4598d5817f7328ef4ccb3a2`
-- Required commit: `feat(ui): extract timeline chart domains`
-- Lease:
-  - `web/src/features/dashboard/timelineDomains.ts`
-  - `web/src/features/dashboard/timelineDomains.test.ts`
-- Dependency: consumes accepted P3-MP05 normalized point type; P3-MP05 paths are read-only.
+- Status: `INTEGRATED`
+- Accepted head: `b4d47a7797b0c505e37f344d2979dfc1f3612f51`
+- PR: `#30`
+- Combined-tree CI: `30359693386` — success.
+- Resulting Phase 3 SHA: `b7be9b2efc6ab3e0b4b71ec4b1c064b61de56671`
+- Review: `signalguard-rs/phase-3/reviews/P3-MP08/b4d47a7797b0c505e37f344d2979dfc1f3612f51.md`
+- Integration: `signalguard-rs/phase-3/integration/P3-MP08/b7be9b2efc6ab3e0b4b71ec4b1c064b61de56671.md`
 
 ### P3-MP07 — Market Health preview model
 
-- Status: `WEB_WORKER_EXECUTION_IN_PROGRESS_OR_AWAITING_DELIVERY`
-- Branch: `p3/mp07-market-health-preview`
-- Immutable assigned base: `3587ec9b70b677121aa796467d5bb359ffb4d174`
-- Contract: `signalguard-rs/phase-3/prompts/P3-MP07-WEB1.md`
-- Contract commit: `cd57b748198acc5ec53f7c8e50c78117aa5c9d2d`
-- Expected current moving-base divergence after MP05 integration: ahead `1`, behind `1` before integration review.
+- Status: `INTEGRATED`
+- Accepted head: `ec53cb1f3cf04a4473fcf5fe02d37fb6ca4a270e`
+- PR: `#29`
+- Original CI: `30359507425` — success.
+- Refreshed combined-tree CI after MP05+MP08: `30360552639` — success.
+- Resulting Phase 3 SHA: `f3a44e5adb3a43c7bae62e8c46f65d7bd5e90b8f`
+- Review: `signalguard-rs/phase-3/reviews/P3-MP07/ec53cb1f3cf04a4473fcf5fe02d37fb6ca4a270e.md`
+- Integration: `signalguard-rs/phase-3/integration/P3-MP07/f3a44e5adb3a43c7bae62e8c46f65d7bd5e90b8f.md`
 
-### P3-MP08 — Recent Anomalies preview model
+### P3-MP06 — Timeline chart domains
 
-- Status: `WEB_WORKER_EXECUTION_IN_PROGRESS_OR_AWAITING_DELIVERY`
-- Branch: `p3/mp08-recent-anomalies-preview`
-- Immutable assigned base: `3587ec9b70b677121aa796467d5bb359ffb4d174`
-- Contract: `signalguard-rs/phase-3/prompts/P3-MP08-WEB1.md`
-- Contract commit: `ef6854caf331c576d6de98ae21410dc5052b1272`
-- Expected current moving-base divergence after MP05 integration: ahead `1`, behind `1` before integration review.
+- Status: `WEB_WORKER_EXECUTION_AUTHORIZED_OR_AWAITING_DELIVERY`
+- Branch: `p3/mp06-timeline-domains`
+- Immutable assigned base: `773b110816d10d31e65a36ce2ed76a1b37beca01`
+- Contract: `signalguard-rs/phase-3/prompts/P3-MP06-WEB1.md`
+- Contract commit: `5e77962988969bd2f4598d5817f7328ef4ccb3a2`
+- Required commit: `feat(ui): extract timeline chart domains`
+- Moving-base divergence after MP08 and MP07 integrations is expected; the worker branch must not be rebased or rewritten.
 
 ### P3-MP09 — Dashboard resource-state mapping
 
@@ -89,13 +87,17 @@ Current state: `WAVE_1_MP06_AND_MP09_REPLACEMENT_AUTHORIZED`
 
 #### Authorized WEB2 replacement
 
-- Status: `WEB_WORKER_EXECUTION_AUTHORIZED`
+- Status: `WEB_WORKER_EXECUTION_AUTHORIZED_OR_AWAITING_DELIVERY`
 - Replacement branch: `p3/mp09-dashboard-resource-state-r1`
 - Immutable assigned base: `3587ec9b70b677121aa796467d5bb359ffb4d174`
 - Contract: `signalguard-rs/phase-3/prompts/P3-MP09-WEB2.md`
 - Contract commit: `0cbbcaf2d292690fa0f7754c8b12fc847d1fc39a`
 - Recovery control: `signalguard-rs/phase-3/control/P3-MP09-RECOVERY.md`
-- Expected moving-base divergence after MP05 integration is acceptable and must not be repaired by rebase/history rewrite.
+- Moving-base divergence is expected and must not be repaired by rebase or history rewrite.
+
+## Wave 1 closure condition
+
+Wave 1 remains open until P3-MP06 and the accepted P3-MP09 replacement are independently reviewed and integrated, followed by successful combined-tree gates. Wave 2 remains blocked.
 
 ## Common Wave 1 forbidden scope
 
