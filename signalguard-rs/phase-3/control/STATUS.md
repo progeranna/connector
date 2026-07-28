@@ -86,12 +86,24 @@ P3-MP05, P3-MP06, P3-MP07, P3-MP08, and accepted replacement P3-MP09-WEB2 are in
 
 #### WEB2
 
-- Status: `AUTHORIZED_USER_CONFIRMED_PROMPT_SENT_REMOTE_DELIVERY_PENDING`
-- Replacement branch: `p3/mp12-market-health-mobile-r1`
+- Status: `REJECTED_AND_QUARANTINED`
+- Branch: `p3/mp12-market-health-mobile-r1`
+- Head: `ae19b372943f890c9f0ec18bc85143e366dadef1`
+- PR: `#39` — closed, unmerged.
+- CI: `30369207184` — frontend tests passed, typecheck failed, lint/build/bundle skipped; Rust/global job passed.
+- Reason: committed test fixture uses invalid `healthStatus: "info"`; accepted type permits only `healthy`, `degraded`, `unhealthy`, or `null`.
+- Review: `signalguard-rs/phase-3/reviews/P3-MP12/ae19b372943f890c9f0ec18bc85143e366dadef1.md`
+- Recovery: `signalguard-rs/phase-3/control/P3-MP12-WEB2-RECOVERY.md`
+- Report: `signalguard-rs/phase-3/reports/P3-MP12/ae19b372943f890c9f0ec18bc85143e366dadef1.md`
+
+#### WEB3
+
+- Status: `AUTHORIZED`
+- Replacement branch: `p3/mp12-market-health-mobile-r2`
 - Exact assigned base: `93a870010730c458417ccfff392cb97aff23d6c9`
 - Initial divergence: `0 0`
-- Contract: `signalguard-rs/phase-3/prompts/P3-MP12-WEB2.md`
-- Contract commit: `8e7f86201d2de1db4dd7c22bae3d5945095d2d61`
+- Contract: `signalguard-rs/phase-3/prompts/P3-MP12-WEB3.md`
+- Contract commit: `48d78ed5d6fa6f62354d00a690bf9ea3185cc953`
 
 ### P3-MP13 — Recent Anomalies desktop
 
@@ -129,7 +141,7 @@ P3-MP05, P3-MP06, P3-MP07, P3-MP08, and accepted replacement P3-MP09-WEB2 are in
 
 ## Wave 2 closure condition
 
-Accepted WEB2 replacements for P3-MP10/P3-MP11/P3-MP12/P3-MP13 and integrated P3-MP14 must all be independently accepted and integrated. Then P3-MP15 compositor wiring may start. Visual Checkpoint 1 occurs only after P3-MP15 integration and combined-tree CI.
+Accepted WEB2 replacements for P3-MP10/P3-MP11/P3-MP13, accepted WEB3 replacement for P3-MP12, and integrated P3-MP14 must all be independently accepted and integrated. Then P3-MP15 compositor wiring may start. Visual Checkpoint 1 occurs only after P3-MP15 integration and combined-tree CI.
 
 ## Binding invariants
 
