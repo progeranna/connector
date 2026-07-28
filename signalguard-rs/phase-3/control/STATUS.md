@@ -97,9 +97,14 @@ P3-MP05, P3-MP06, P3-MP07, P3-MP08, and accepted replacement P3-MP09-WEB2 are in
 
 #### WEB1
 
-- Original branch: `p3/mp13-recent-anomalies-desktop`
-- Remote state: identical to original assigned base; no product commit, PR, or connector report.
-- Status: `STALLED_NO_REMOTE_DELIVERY_SUPERSEDED`
+- Status: `LATE_DELIVERY_REJECTED_AND_QUARANTINED`
+- Branch: `p3/mp13-recent-anomalies-desktop`
+- Head: `138a7cd39334755a1e45e61ef5d45ac61d6703d5`
+- PR: `#37` — closed, unmerged.
+- CI: `30368142923` — success on merge ref `4cbb4f672ff1a666c68aa8c905b2e52d5cb3b9ae`.
+- Report: `signalguard-rs/phase-3/reports/P3-MP13/138a7cd39334755a1e45e61ef5d45ac61d6703d5.md` — explicitly identifies the superseded WEB1 contract and original branch.
+- Rejection reason: WEB1 had already been superseded; authoritative WEB2 forbids use or modification of the original branch and requires a PR only from `p3/mp13-recent-anomalies-desktop-r1` on exact base `93a870010730c458417ccfff392cb97aff23d6c9`.
+- Review: `signalguard-rs/phase-3/reviews/P3-MP13/138a7cd39334755a1e45e61ef5d45ac61d6703d5.md`
 - Recovery: `signalguard-rs/phase-3/control/P3-MP13-RECOVERY.md`
 
 #### WEB2
