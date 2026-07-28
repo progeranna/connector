@@ -7,9 +7,9 @@ Current state: `WAVE_2_REPLACEMENT_EXECUTIONS_REQUIRED`
 - Execution plan: `signalguard-rs/phase-3/control/EXECUTION_PLAN.md`
 - Plan commit: `8787f58d0d7b9fc64e8678af83ac2933bcf44b5b`
 - Phase 3 starting `main` SHA: `6b57938d87e05d3b4fa4858f9c34c27739877821`
+- Product `main` has two administrative no-net-diff incident commits recorded in `ORCHESTRATION_INCIDENT_2026-07-28.md`; exact compare to the pre-Phase-3 main tree reports zero changed files.
 - Phase branch: `refactor/dashboard-modules`
 - Current accepted Phase 3 SHA: `93a870010730c458417ccfff392cb97aff23d6c9`
-- `main` remains unchanged by Phase 3.
 
 ## Execution model
 
@@ -41,9 +41,10 @@ P3-MP05, P3-MP06, P3-MP07, P3-MP08, and accepted replacement P3-MP09-WEB2 are in
 - Status: `REJECTED_AND_QUARANTINED`
 - Branch: `p3/mp11-market-health-desktop`
 - Head: `3b5e3e0b5efd1ca5291c08cb0d7f9e3ab36ea596`
-- PR: `#33` — must remain unmerged/closed.
+- PR: `#33` — rejected; must remain unmerged.
 - Reason: authored focused test falsely rejects harmless `value.slice(1)`; frontend CI `30365146917` failed and remaining frontend gates were skipped.
 - Review: `signalguard-rs/phase-3/reviews/P3-MP11/3b5e3e0b5efd1ca5291c08cb0d7f9e3ab36ea596.md`
+- Recovery: `signalguard-rs/phase-3/control/P3-MP11-RECOVERY.md`
 
 #### WEB2
 
@@ -56,9 +57,10 @@ P3-MP05, P3-MP06, P3-MP07, P3-MP08, and accepted replacement P3-MP09-WEB2 are in
 - Status: `REJECTED_AND_QUARANTINED`
 - Branch: `p3/mp12-market-health-mobile`
 - Head: `e2b13831be4bda00c4d6a554e583abfc877b82c9`
-- PR: `#35` — must remain unmerged/closed.
+- PR: `#35` — rejected; must remain unmerged.
 - Reason: authored focused test expects amber for `healthStatus=degraded` and `healthScore=95`, contrary to binding score-first precedence; frontend CI `30365316817` failed and remaining frontend gates were skipped.
 - Review: `signalguard-rs/phase-3/reviews/P3-MP12/e2b13831be4bda00c4d6a554e583abfc877b82c9.md`
+- Recovery: `signalguard-rs/phase-3/control/P3-MP12-RECOVERY.md`
 
 #### WEB2
 
@@ -68,6 +70,7 @@ P3-MP05, P3-MP06, P3-MP07, P3-MP08, and accepted replacement P3-MP09-WEB2 are in
 
 - WEB1 branch `p3/mp13-recent-anomalies-desktop` remains identical to its assigned base with no product commit, PR, or report.
 - Status: `WEB1_SESSION_STALLED_NO_REMOTE_DELIVERY`
+- Recovery: `signalguard-rs/phase-3/control/P3-MP13-RECOVERY.md`
 - Replacement execution required to avoid a race with the stalled session.
 
 ### P3-MP14 — Recent Anomalies mobile
