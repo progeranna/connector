@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `WAVE_0_WEB_WORKERS_AUTHORIZED`
+Current state: `WAVE_0_PARTIAL_INTEGRATION`
 
 ## Authoritative inputs
 
@@ -34,11 +34,15 @@ Phase 3 branch:
 
 `refactor/dashboard-modules`
 
-Initial and current Phase 3 branch SHA:
+Initial Phase 3 branch SHA:
 
 `6b57938d87e05d3b4fa4858f9c34c27739877821`
 
-The branch was created directly from the final merged Phase 2 main SHA and contains no Phase 3 product commit yet.
+Current verified Phase 3 branch SHA:
+
+`3988205007c35c77037eb758a21b2728b90c2943`
+
+The phase branch contains integrated P3-MP01 and no other Phase 3 product microphase yet.
 
 Required preview model:
 
@@ -49,12 +53,14 @@ Visible changes require:
 
 `CODE_ACCEPTED → INTEGRATED_TO_PREVIEW → USER_UI_ACCEPTED`
 
+P3-MP01 is presentation-neutral and requires no separate user-visible acceptance.
+
 ## Binding execution model
 
 - implementation microphases and parallel waves are executed by isolated GitHub web workers;
 - each web worker reads one immutable prompt from `progeranna/connector`;
 - each web worker works only on its assigned remote product branch;
-- each web worker creates exactly one normal product commit, pushes normally, opens one draft PR to the exact phase branch, and writes one immutable connector delivery report;
+- each web worker creates exactly one normal product commit, pushes normally, opens one draft PR to the phase branch, and writes one immutable connector delivery report;
 - web workers never merge;
 - the Orchestrator independently reviews exact heads, PR diffs, CI, path leases, semantics, and delivery reports before integration;
 - local Codex is not the implementation executor for Wave 0; it may be used later only for local preview/integration/compositor duties when explicitly authorized;
@@ -74,23 +80,13 @@ Visible changes require:
 
 ## P3-MP00 — Complete
 
-Task:
+- task: post-Phase-2 route, component, visual, responsive, test, dialog, and high-conflict path inventory;
+- verdict: `ACCEPT`;
+- inventory: `signalguard-rs/phase-3/inventory/P3-MP00/6b57938d87e05d3b4fa4858f9c34c27739877821.md`;
+- inventory commit: `1a6668b47b5bce1dd04fd6aed40560311543ad62`;
+- product changes: none.
 
-Post-Phase-2 route, component, visual, responsive, test, dialog, and high-conflict path inventory.
-
-Result:
-
-`ACCEPT`
-
-Inventory:
-
-`signalguard-rs/phase-3/inventory/P3-MP00/6b57938d87e05d3b4fa4858f9c34c27739877821.md`
-
-Inventory commit:
-
-`1a6668b47b5bce1dd04fd6aed40560311543ad62`
-
-P3-MP00 made no product change and no product commit. It confirmed the exact starting tree, permanently forbade ticker paths/behavior, reserved router/AppShell/DashboardPage as high-conflict paths, and published non-overlapping Wave 0 leases.
+P3-MP00 confirmed the exact starting tree, permanently forbade ticker paths and behavior, reserved router/AppShell/DashboardPage as high-conflict paths, and published non-overlapping Wave 0 leases.
 
 ## Superseded execution contracts
 
@@ -106,47 +102,62 @@ Status for all three:
 
 They remain immutable historical artifacts and are replaced by the WEB1 contracts below.
 
-## Active Wave 0 web workers
+## Wave 0 microphases
 
-P3-MP01, P3-MP02, and P3-MP03 are independently executable in parallel from the same exact base. No candidate is authoritative until independently reviewed at its exact pushed head.
+### P3-MP01-WEB1 — Integrated
 
-### P3-MP01-WEB1 — Reusable UI smoke matrix
-
-- authoritative web-worker contract: `signalguard-rs/phase-3/prompts/P3-MP01-WEB1.md`;
+- authoritative contract: `signalguard-rs/phase-3/prompts/P3-MP01-WEB1.md`;
 - contract commit: `a7f426388f3ee7f334320a632924cc0d61cf1947`;
-- product branch: `p3/mp01-ui-smoke-matrix`;
-- required PR base: `refactor/dashboard-modules`;
-- exact initial remote SHA: `6b57938d87e05d3b4fa4858f9c34c27739877821`;
-- required commit: `test(ui): define reusable smoke matrix`;
-- authorized files: new `web/src/test/uiSmokeMatrix.ts`, new `web/src/test/uiSmokeMatrix.test.ts`, optional `web/src/test/marketFixtures.ts` only when strictly necessary;
-- required worker delivery: one product commit, one draft PR, one connector report under `signalguard-rs/phase-3/reports/P3-MP01/<HEAD>.md`;
-- status: `WEB_WORKER_EXECUTION_AUTHORIZED`.
+- assigned product base: `6b57938d87e05d3b4fa4858f9c34c27739877821`;
+- accepted head: `a5f67245ba4b70a28bb751d6e40b8bedb428bed8`;
+- product commit: `test(ui): define reusable smoke matrix`;
+- PR: `https://github.com/progeranna/signalguard-rs/pull/24`;
+- exact-head CI: `30352221605` — success;
+- verdict: `ACCEPT`;
+- merge method: guarded squash;
+- resulting Phase 3 SHA: `3988205007c35c77037eb758a21b2728b90c2943`;
+- status: `INTEGRATED`.
 
-### P3-MP02-WEB1 — Accessible tooltip primitive
+Integrated paths:
 
-- authoritative web-worker contract: `signalguard-rs/phase-3/prompts/P3-MP02-WEB1.md`;
+- `web/src/test/uiSmokeMatrix.ts`;
+- `web/src/test/uiSmokeMatrix.test.ts`.
+
+Evidence:
+
+- report: `signalguard-rs/phase-3/reports/P3-MP01/a5f67245ba4b70a28bb751d6e40b8bedb428bed8.md`;
+- review: `signalguard-rs/phase-3/reviews/P3-MP01/a5f67245ba4b70a28bb751d6e40b8bedb428bed8.md`;
+- integration: `signalguard-rs/phase-3/integration/P3-MP01/3988205007c35c77037eb758a21b2728b90c2943.md`.
+
+### P3-MP02-WEB1 — Web worker active or awaiting delivery
+
+- authoritative contract: `signalguard-rs/phase-3/prompts/P3-MP02-WEB1.md`;
 - contract commit: `ae0960f71553b64b1ee11e29500601214fd71162`;
 - product branch: `p3/mp02-tooltip-primitive`;
 - required PR base: `refactor/dashboard-modules`;
-- exact initial remote SHA: `6b57938d87e05d3b4fa4858f9c34c27739877821`;
+- immutable assigned base: `6b57938d87e05d3b4fa4858f9c34c27739877821`;
 - required commit: `feat(ui): add accessible tooltip primitive`;
 - authorized files: new `web/src/shared/components/Tooltip.tsx`, new `web/src/shared/components/Tooltip.test.tsx`;
 - no caller migration, global CSS, package, or dependency change;
-- required worker delivery: one product commit, one draft PR, one connector report under `signalguard-rs/phase-3/reports/P3-MP02/<HEAD>.md`;
+- required delivery: one product commit, one draft PR, one connector report under `signalguard-rs/phase-3/reports/P3-MP02/<HEAD>.md`;
 - status: `WEB_WORKER_EXECUTION_AUTHORIZED`.
 
-### P3-MP03-WEB1 — Pure status descriptor model
+Because P3-MP01 is now integrated, a delivered P3-MP02 PR may show the phase branch advanced by one commit. Review must still validate its candidate against immutable assigned base `6b57938…`, then confirm mergeability and non-overlap against the current phase SHA before guarded integration.
 
-- authoritative web-worker contract: `signalguard-rs/phase-3/prompts/P3-MP03-WEB1.md`;
+### P3-MP03-WEB1 — Web worker active or awaiting delivery
+
+- authoritative contract: `signalguard-rs/phase-3/prompts/P3-MP03-WEB1.md`;
 - contract commit: `18396d1572e69337a5a7ca6c72790c07decf5cfe`;
 - product branch: `p3/mp03-status-descriptors`;
 - required PR base: `refactor/dashboard-modules`;
-- exact initial remote SHA: `6b57938d87e05d3b4fa4858f9c34c27739877821`;
+- immutable assigned base: `6b57938d87e05d3b4fa4858f9c34c27739877821`;
 - required commit: `feat(ui): define status descriptor model`;
 - authorized files: new `web/src/features/dashboard/statusDescriptors.ts`, new `web/src/features/dashboard/statusDescriptors.test.ts`;
 - no JSX, caller wiring, shared tone-palette edit, or P3-MP04 fixture work;
-- required worker delivery: one product commit, one draft PR, one connector report under `signalguard-rs/phase-3/reports/P3-MP03/<HEAD>.md`;
+- required delivery: one product commit, one draft PR, one connector report under `signalguard-rs/phase-3/reports/P3-MP03/<HEAD>.md`;
 - status: `WEB_WORKER_EXECUTION_AUTHORIZED`.
+
+Because P3-MP01 is now integrated, a delivered P3-MP03 PR may show the phase branch advanced by one commit. Review must still validate its candidate against immutable assigned base `6b57938…`, then confirm mergeability and non-overlap against the current phase SHA before guarded integration.
 
 ### P3-MP04 — Blocked by P3-MP03 acceptance
 
@@ -158,7 +169,7 @@ Status:
 
 `BLOCKED_BY_P3_MP03`
 
-No branch or execution contract is published yet. Its exact base will be the accepted and integrated P3-MP03 phase SHA, not the original Wave 0 base.
+No branch or execution contract is published yet. Its exact base will be the current Phase 3 SHA after accepted P3-MP03 integration.
 
 ## Common Wave 0 forbidden scope
 
@@ -184,7 +195,7 @@ No active worker owns another worker's leased path.
 After independently accepted Wave 0 candidates are integrated into `refactor/dashboard-modules`:
 
 - run full combined frontend gates;
-- create/update the stable local preview checkout;
+- create or update the stable local preview checkout;
 - confirm the stable preview remains visually identical to final Phase 2;
 - confirm the ticker is byte-for-byte unchanged;
 - record combined-tree CI;
@@ -192,9 +203,9 @@ After independently accepted Wave 0 candidates are integrated into `refactor/das
 
 ## Next actions
 
-1. Dispatch three isolated web workers using only the immutable WEB1 prompt URLs/commits above.
-2. Workers implement remotely, push one normal commit, open draft PRs, and publish connector reports.
-3. Independently inspect exact remote heads, reports, changed paths, CI, and ticker proof.
+1. Await P3-MP02-WEB1 and P3-MP03-WEB1 deliveries.
+2. Independently inspect exact remote heads, connector reports, changed paths, CI, and ticker proof against their immutable assigned base.
+3. Confirm each accepted candidate is non-overlapping and mergeable against current Phase 3 SHA `3988205007c35c77037eb758a21b2728b90c2943`.
 4. Integrate only accepted exact heads into `refactor/dashboard-modules`.
 5. Keep P3-MP04 blocked until P3-MP03 is accepted and integrated.
 6. Do not begin Wave 1 or any visible semantic caller migration before Checkpoint 0 closes.
