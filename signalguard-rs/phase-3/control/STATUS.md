@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `P3_MP15_COMPOSITOR_AUTHORIZED`
+Current state: `P3_MP15_WEB2_AUTHORIZED`
 
 ## Authoritative identity
 
@@ -15,7 +15,7 @@ Current state: `P3_MP15_COMPOSITOR_AUTHORIZED`
 - Workers use immutable connector prompts, one branch, one commit, one draft PR and one report.
 - Workers never merge or rewrite history.
 - Acceptance requires exact identity, exact path scope, remote read-back, independent review and green current-tree CI.
-- Rejected and superseded branches remain immutable evidence.
+- Rejected, blocked and superseded executions remain immutable evidence.
 - Visible tasks additionally require integration to stable preview and a separate user UI checkpoint.
 
 ## Wave 0 — COMPLETE
@@ -78,15 +78,30 @@ P3-MP05 through P3-MP09 are integrated. P3-MP09 used its accepted replacement.
 
 ## P3-MP15 — Dashboard compositor wiring
 
-- Status: `AUTHORIZED_AWAITING_DELIVERY`
+### WEB1
+
+- Status: `BLOCKED_WITHOUT_PRODUCT_MUTATION`
 - Branch: `p3/mp15-dashboard-compositor`
 - Exact assigned base: `455a0bf15fbf7df2ecac9dbeb95e2a6dba7f8b73`
+- Final divergence: `0 0`
+- Product commits: `0`
+- PR: none
+- Reason: complete dependency-backed local gate sequence was unavailable before the contractually ordered first commit.
+- Review: `signalguard-rs/phase-3/reviews/P3-MP15/WEB1-BLOCKED-REQUIRED-GATES-UNAVAILABLE.md`
+- Recovery: `signalguard-rs/phase-3/control/P3-MP15-WEB1-RECOVERY.md`
+
+### WEB2
+
+- Status: `AUTHORIZED_AWAITING_DELIVERY`
+- Branch: `p3/mp15-dashboard-compositor-r1`
+- Exact assigned base: `455a0bf15fbf7df2ecac9dbeb95e2a6dba7f8b73`
 - Initial divergence: `0 0`
-- Contract: `signalguard-rs/phase-3/prompts/P3-MP15-WEB1.md`
-- Contract commit: `159ca764eac26286445c916118d7a350b095fbe5`
+- Contract: `signalguard-rs/phase-3/prompts/P3-MP15-WEB2.md`
+- Contract commit: `ea8dedad4adcf8903d24341f0b2e176a9ac60c3a`
 - Binding scope: `signalguard-rs/phase-3/prompts/P3-MP15-SCOPE.md`
 - Binding verification: `signalguard-rs/phase-3/prompts/P3-MP15-VERIFICATION.md`
 - Exclusive product lease: `DashboardPage.tsx` and `DashboardPage.test.tsx` only.
+- Procedure: all available pre-commit checks plus mandatory complete green current-phase PR merge-ref CI.
 - Mission: replace inline timeline and preview presentation with the five accepted components without visible or data-semantic changes.
 
 ## P3-MP15 acceptance sequence
