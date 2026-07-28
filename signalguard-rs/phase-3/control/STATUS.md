@@ -1,181 +1,121 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `WAVE_0_EXECUTION_AUTHORIZED`
+Current state: `P3_MP15_WEB2_AUTHORIZED`
 
-## Authoritative inputs
+## Authoritative identity
 
-Authoritative execution plan:
+- Phase branch: `refactor/dashboard-modules`
+- Current accepted Phase 3 SHA: `455a0bf15fbf7df2ecac9dbeb95e2a6dba7f8b73`
+- Execution plan: `signalguard-rs/phase-3/control/EXECUTION_PLAN.md`
+- Wave 2 closure: `signalguard-rs/phase-3/control/WAVE_2_CLOSURE.md`
+- Phase 3 starting main SHA: `6b57938d87e05d3b4fa4858f9c34c27739877821`
 
-`signalguard-rs/phase-3/control/EXECUTION_PLAN.md`
+## Execution model
 
-Plan creation commit:
+- Workers use immutable connector prompts, one branch, one commit, one draft PR and one report.
+- Workers never merge or rewrite history.
+- Acceptance requires exact identity, exact path scope, remote read-back, independent review and green current-tree CI.
+- Rejected, blocked and superseded executions remain immutable evidence.
+- Visible tasks additionally require integration to stable preview and a separate user UI checkpoint.
 
-`8787f58d0d7b9fc64e8678af83ac2933bcf44b5b`
+## Wave 0 — COMPLETE
 
-Final Phase 2 / authoritative starting `main` SHA:
+P3-MP00 through P3-MP04 are integrated. Checkpoint 0 is accepted.
 
-`6b57938d87e05d3b4fa4858f9c34c27739877821`
+## Wave 1 — COMPLETE
 
-Phase 2 final merge record:
+P3-MP05 through P3-MP09 are integrated. P3-MP09 used its accepted replacement.
 
-`signalguard-rs/phase-2/integration/PHASE-2/6b57938d87e05d3b4fa4858f9c34c27739877821.md`
+## Wave 2 independent components — COMPLETE
 
-Phase 2-to-main PR:
+### P3-MP10 Timeline panel
 
-`https://github.com/progeranna/signalguard-rs/pull/23`
+- Accepted execution: WEB3
+- Accepted head: `86690e59666026c69d66ce4cb1589a040a00517b`
+- PR: `#46`
+- CI: `30380824266`
+- Resulting Phase SHA: `ae0759079d0845753c2bbcbd30fb13d24af85ad8`
+- Earlier WEB1/WEB2 executions are rejected and quarantined.
 
-Exact-head CI run:
+### P3-MP11 Market Health desktop
 
-`30286016632` — success.
+- Accepted execution: WEB5
+- Accepted head: `f92e8978a5b19346acc447e9e0426a26a1e8043b`
+- PR: `#47`
+- CI: `30383418741`
+- Tested merge ref: `a82a882d207a7e20578b05d6049b9741a186719f`
+- Resulting Phase SHA: `455a0bf15fbf7df2ecac9dbeb95e2a6dba7f8b73`
+- Review: `signalguard-rs/phase-3/reviews/P3-MP11/f92e8978a5b19346acc447e9e0426a26a1e8043b.md`
+- Integration: `signalguard-rs/phase-3/integration/P3-MP11/455a0bf15fbf7df2ecac9dbeb95e2a6dba7f8b73.md`
+- Earlier WEB1 through WEB4 executions are rejected and quarantined.
 
-## Product branch and previews
+### P3-MP12 Market Health mobile
 
-Phase 3 branch:
+- Accepted execution: WEB3
+- Accepted head: `8e6b84146dcd208d830e945e183a6a77a22bd35e`
+- PR: `#42`
+- CI: `30372780352`
 
-`refactor/dashboard-modules`
+### P3-MP13 Recent Anomalies desktop
 
-Initial and current Phase 3 branch SHA:
+- Accepted execution: WEB2
+- Accepted head: `78aa90f6479397ff8d7907a895969db2a93a5eab`
+- PR: `#40`
+- CI: `30370164163`
 
-`6b57938d87e05d3b4fa4858f9c34c27739877821`
+### P3-MP14 Recent Anomalies mobile
 
-The branch was created directly from the final merged Phase 2 main SHA and contains no Phase 3 product commit yet.
+- Accepted head: `7952ad4c6cb3fa0c80c5b8ad93f6972f7a4ddba0`
+- PR: `#34`
+- CI: `30365176809`
 
-Required preview model:
+## Final Wave 2 combined-tree gate
 
-- stable accepted preview: `/Users/anion/Desktop/work/git-signalguard-rs/worktrees/p3-preview`, branch `refactor/dashboard-modules`, port `5173`;
-- candidate comparison preview: `/Users/anion/Desktop/work/git-signalguard-rs/worktrees/p3-candidate-preview`, temporary candidate checkout, port `5174`.
+- The PR #47 merge ref combined the current accepted Phase tree, including MP10/MP12/MP13/MP14, with the immutable MP11 head.
+- Frontend and Rust/global jobs completed successfully with no required skipped gate.
+- The squash-integrated Phase result differs from the same base by the same two added paths and exact blobs as the tested merge ref.
+- Wave 2 closure verdict: `ACCEPT`.
 
-Visible changes require:
+## P3-MP15 — Dashboard compositor wiring
 
-`CODE_ACCEPTED → INTEGRATED_TO_PREVIEW → USER_UI_ACCEPTED`
+### WEB1
+
+- Status: `BLOCKED_WITHOUT_PRODUCT_MUTATION`
+- Branch: `p3/mp15-dashboard-compositor`
+- Exact assigned base: `455a0bf15fbf7df2ecac9dbeb95e2a6dba7f8b73`
+- Final divergence: `0 0`
+- Product commits: `0`
+- PR: none
+- Reason: complete dependency-backed local gate sequence was unavailable before the contractually ordered first commit.
+- Review: `signalguard-rs/phase-3/reviews/P3-MP15/WEB1-BLOCKED-REQUIRED-GATES-UNAVAILABLE.md`
+- Recovery: `signalguard-rs/phase-3/control/P3-MP15-WEB1-RECOVERY.md`
+
+### WEB2
+
+- Status: `AUTHORIZED_AWAITING_DELIVERY`
+- Branch: `p3/mp15-dashboard-compositor-r1`
+- Exact assigned base: `455a0bf15fbf7df2ecac9dbeb95e2a6dba7f8b73`
+- Initial divergence: `0 0`
+- Contract: `signalguard-rs/phase-3/prompts/P3-MP15-WEB2.md`
+- Contract commit: `ea8dedad4adcf8903d24341f0b2e176a9ac60c3a`
+- Binding scope: `signalguard-rs/phase-3/prompts/P3-MP15-SCOPE.md`
+- Binding verification: `signalguard-rs/phase-3/prompts/P3-MP15-VERIFICATION.md`
+- Exclusive product lease: `DashboardPage.tsx` and `DashboardPage.test.tsx` only.
+- Procedure: all available pre-commit checks plus mandatory complete green current-phase PR merge-ref CI.
+- Mission: replace inline timeline and preview presentation with the five accepted components without visible or data-semantic changes.
+
+## P3-MP15 acceptance sequence
+
+1. independent code review;
+2. guarded integration after complete green current-phase CI;
+3. stable preview verification;
+4. Visual Checkpoint 1 with desktop/mobile, Demo/Live, BTC/ETH, timeline, Market Health, Recent Anomalies, View all and row clicks;
+5. only then mark `USER_UI_ACCEPTED` and open Wave 3.
 
 ## Binding invariants
 
-- the upper ticker is not modified;
-- dashboard composition is not redesigned;
-- existing public routes remain;
-- Demo and Live remain the only public modes;
-- strict Phase 2 Demo/Live and symbol identity isolation remains;
-- popup and symbol route both remain;
-- desktop tables and mobile cards remain;
-- extraction, wiring, semantic copy, tooltip content, accessibility migration, route splitting, and styling are separate tasks;
-- workers do not merge;
-- the Orchestrator creates product PRs after independent candidate review;
-- no Phase 3 task may repeat Phase 2 data-boundary work.
-
-## P3-MP00 — Complete
-
-Task:
-
-Post-Phase-2 route, component, visual, responsive, test, dialog, and high-conflict path inventory.
-
-Result:
-
-`ACCEPT`
-
-Inventory:
-
-`signalguard-rs/phase-3/inventory/P3-MP00/6b57938d87e05d3b4fa4858f9c34c27739877821.md`
-
-Inventory commit:
-
-`1a6668b47b5bce1dd04fd6aed40560311543ad62`
-
-P3-MP00 made no product change and no product commit. It confirmed the exact starting tree, permanently forbade ticker paths/behavior, reserved router/AppShell/DashboardPage as high-conflict paths, and published non-overlapping Wave 0 leases.
-
-## Active Wave 0 workers
-
-P3-MP01, P3-MP02, and P3-MP03 are independently executable in parallel from the same exact base. No candidate is authoritative until independently reviewed at its exact pushed head.
-
-### P3-MP01 — Reusable local UI smoke matrix
-
-- contract: `signalguard-rs/phase-3/prompts/P3-MP01.md`;
-- contract commit: `445068e77e3b3764b9012e3ff9b24769fa4fe59b`;
-- branch: `p3/mp01-ui-smoke-matrix`;
-- initial remote SHA: `6b57938d87e05d3b4fa4858f9c34c27739877821`;
-- worktree: `/Users/anion/Desktop/work/git-signalguard-rs/worktrees/p3-mp01`;
-- required commit: `test(ui): define reusable smoke matrix`;
-- authorized production delta: none;
-- authorized files: new `web/src/test/uiSmokeMatrix.ts`, new `web/src/test/uiSmokeMatrix.test.ts`, and only if strictly necessary `web/src/test/marketFixtures.ts`;
-- product PR: not created;
-- status: `EXECUTION_AUTHORIZED`.
-
-### P3-MP02 — Accessible tooltip primitive foundation
-
-- contract: `signalguard-rs/phase-3/prompts/P3-MP02.md`;
-- contract commit: `ef2d4ec1765e68324c0cc3330e5e7ee42ffa638d`;
-- branch: `p3/mp02-tooltip-primitive`;
-- initial remote SHA: `6b57938d87e05d3b4fa4858f9c34c27739877821`;
-- worktree: `/Users/anion/Desktop/work/git-signalguard-rs/worktrees/p3-mp02`;
-- required commit: `feat(ui): add accessible tooltip primitive`;
-- authorized files: new `web/src/shared/components/Tooltip.tsx`, new `web/src/shared/components/Tooltip.test.tsx`;
-- no caller migration or global CSS/dependency change;
-- product PR: not created;
-- status: `EXECUTION_AUTHORIZED`.
-
-### P3-MP03 — Pure status vocabulary and descriptor model
-
-- contract: `signalguard-rs/phase-3/prompts/P3-MP03.md`;
-- contract commit: `b7fe66442d85de7ef46c921257d72bc1dbb1a26f`;
-- branch: `p3/mp03-status-descriptors`;
-- initial remote SHA: `6b57938d87e05d3b4fa4858f9c34c27739877821`;
-- worktree: `/Users/anion/Desktop/work/git-signalguard-rs/worktrees/p3-mp03`;
-- required commit: `feat(ui): define status descriptor model`;
-- authorized files: new `web/src/features/dashboard/statusDescriptors.ts`, new `web/src/features/dashboard/statusDescriptors.test.ts`;
-- no JSX/caller wiring;
-- product PR: not created;
-- status: `EXECUTION_AUTHORIZED`.
-
-### P3-MP04 — Blocked by P3-MP03 acceptance
-
-Task:
-
-Deterministic semantic fixtures for all accepted descriptor states.
-
-Status:
-
-`BLOCKED_BY_P3_MP03`
-
-No branch or execution contract is published yet. Its exact base will be the accepted/integrated P3-MP03 phase SHA, not the original Wave 0 base.
-
-## Common Wave 0 forbidden scope
-
-All active workers must leave unchanged:
-
-- `web/src/pages/DashboardPage.tsx`;
-- `web/src/pages/SymbolDetailPage.tsx`;
-- `web/src/pages/AnomaliesPage.tsx`;
-- `web/src/app/AppShell.tsx`;
-- `web/src/app/GlobalMarketTicker.tsx`;
-- `web/src/app/router.tsx`;
-- `web/src/shared/styles/globals.css`;
-- all established Phase 2 API/query/resource/identity/adaptor files except the new isolated descriptor path leased to MP03;
-- `web/package.json` and lockfiles;
-- build/test/style configuration;
-- backend, OpenAPI, contract, CI, Docker, deployment, docs, and scripts;
-- all ticker text, structure, order, scrolling, animation, and CSS.
-
-No active worker owns another worker's leased path.
-
-## Checkpoint 0
-
-After independently accepted Wave 0 candidates are integrated into `refactor/dashboard-modules`:
-
-- run full combined frontend gates;
-- create/update the stable preview worktree;
-- confirm the stable preview remains visually identical to final Phase 2;
-- confirm the ticker is byte-for-byte unchanged;
-- record combined-tree CI;
-- then authorize P3-MP04 from the accepted P3-MP03 result.
-
-## Next actions
-
-1. Execute P3-MP01, P3-MP02, and P3-MP03 in separate Codex sessions/worktrees.
-2. Require one normal commit and normal push per branch; workers do not open PRs.
-3. Independently inspect exact remote heads, path leases, focused/full gates, and ticker proof.
-4. Create draft PRs only for accepted candidates.
-5. Integrate accepted changes one by one into `refactor/dashboard-modules`, rerunning exact-head/combined-tree CI.
-6. Keep P3-MP04 blocked until P3-MP03 is accepted and integrated.
-7. Do not begin Wave 1 or any visible semantic caller migration before Checkpoint 0 closes.
-
-Only the Orchestrator updates this file.
+- Upper ticker remains byte-identical and outside all worker leases.
+- Demo/Live and symbol isolation remain strict.
+- No route, page, section, dialog, View-all action or popup may be removed.
+- P3-MP15 may not change labels, tooltips, CSS semantics, data logic or accepted component/model implementations.
+- P3-MP16 and later work remain blocked until P3-MP15 integration and Visual Checkpoint 1.
