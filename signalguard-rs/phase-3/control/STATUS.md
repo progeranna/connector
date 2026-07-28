@@ -1,149 +1,106 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `WAVE_2_FINAL_REPLACEMENT_ACTIVE`
+Current state: `P3_MP15_COMPOSITOR_AUTHORIZED`
 
 ## Authoritative identity
 
 - Phase branch: `refactor/dashboard-modules`
-- Current accepted Phase 3 SHA: `ae0759079d0845753c2bbcbd30fb13d24af85ad8`
+- Current accepted Phase 3 SHA: `455a0bf15fbf7df2ecac9dbeb95e2a6dba7f8b73`
 - Execution plan: `signalguard-rs/phase-3/control/EXECUTION_PLAN.md`
-- Phase 3 starting `main` SHA: `6b57938d87e05d3b4fa4858f9c34c27739877821`
-- Product `main` administrative no-net-diff incident is recorded separately; the Phase branch is authoritative for this work.
+- Wave 2 closure: `signalguard-rs/phase-3/control/WAVE_2_CLOSURE.md`
+- Phase 3 starting main SHA: `6b57938d87e05d3b4fa4858f9c34c27739877821`
 
 ## Execution model
 
-- Workers use immutable connector prompts and never merge or rewrite history.
-- Acceptance requires exact identity, exact path scope, remote read-back, connector report, independent review, and green current-tree CI.
+- Workers use immutable connector prompts, one branch, one commit, one draft PR and one report.
+- Workers never merge or rewrite history.
+- Acceptance requires exact identity, exact path scope, remote read-back, independent review and green current-tree CI.
 - Rejected and superseded branches remain immutable evidence.
+- Visible tasks additionally require integration to stable preview and a separate user UI checkpoint.
 
 ## Wave 0 — COMPLETE
 
-P3-MP00 through P3-MP04 are integrated and Checkpoint 0 is accepted.
+P3-MP00 through P3-MP04 are integrated. Checkpoint 0 is accepted.
 
 ## Wave 1 — COMPLETE
 
-P3-MP05 through P3-MP09 are integrated; MP09 used the accepted WEB2 replacement.
+P3-MP05 through P3-MP09 are integrated. P3-MP09 used its accepted replacement.
 
-## Wave 2 — ACTIVE
+## Wave 2 independent components — COMPLETE
 
-### P3-MP10 — Timeline panel
+### P3-MP10 Timeline panel
 
-#### WEB1
-
-- Status: `REJECTED_AND_QUARANTINED`
-- Branch: `p3/mp10-timeline-panel`
-- Head: `9bddc301d32c51bbb54dc5058d8d33320c144ff7`
-- PRs: `#36`, `#38` — closed, unmerged.
-- Reason: invalid focused-test domain expectation and superseded execution state.
-
-#### WEB2
-
-- Status: `REJECTED_AND_QUARANTINED`
-- Branch: `p3/mp10-timeline-panel-r1`
-- Head: `0ad34843578670d8b313af4f7f53853195c305a9`
-- PR: `#41` — closed, unmerged.
-- CI: `30372209086` — frontend tests failed; Rust/global passed.
-- Exact later diagnosis: the global `Date.now` spy observed React renderer calls and the test incorrectly attributed them to the component.
-
-#### WEB3
-
-- Status: `INTEGRATED`
-- Branch: `p3/mp10-timeline-panel-r2`
+- Accepted execution: WEB3
 - Accepted head: `86690e59666026c69d66ce4cb1589a040a00517b`
 - PR: `#46`
-- CI: `30380824266` — complete success on merge ref `955a0d0a0da55b5a83f0b90763df0a46b247f4cc`.
+- CI: `30380824266`
 - Resulting Phase SHA: `ae0759079d0845753c2bbcbd30fb13d24af85ad8`
-- Review: `signalguard-rs/phase-3/reviews/P3-MP10/86690e59666026c69d66ce4cb1589a040a00517b.md`
-- Integration: `signalguard-rs/phase-3/integration/P3-MP10/ae0759079d0845753c2bbcbd30fb13d24af85ad8.md`
-- Report: `signalguard-rs/phase-3/reports/P3-MP10/86690e59666026c69d66ce4cb1589a040a00517b.md`
+- Earlier WEB1/WEB2 executions are rejected and quarantined.
 
-### P3-MP11 — Market Health desktop
+### P3-MP11 Market Health desktop
 
-#### WEB1
+- Accepted execution: WEB5
+- Accepted head: `f92e8978a5b19346acc447e9e0426a26a1e8043b`
+- PR: `#47`
+- CI: `30383418741`
+- Tested merge ref: `a82a882d207a7e20578b05d6049b9741a186719f`
+- Resulting Phase SHA: `455a0bf15fbf7df2ecac9dbeb95e2a6dba7f8b73`
+- Review: `signalguard-rs/phase-3/reviews/P3-MP11/f92e8978a5b19346acc447e9e0426a26a1e8043b.md`
+- Integration: `signalguard-rs/phase-3/integration/P3-MP11/455a0bf15fbf7df2ecac9dbeb95e2a6dba7f8b73.md`
+- Earlier WEB1 through WEB4 executions are rejected and quarantined.
 
-- Status: `REJECTED_AND_QUARANTINED`
-- Branch: `p3/mp11-market-health-desktop`
-- Head: `3b5e3e0b5efd1ca5291c08cb0d7f9e3ab36ea596`
-- PR: `#33` — closed, unmerged.
-- Reason: overbroad test rejected harmless `value.slice(1)`.
+### P3-MP12 Market Health mobile
 
-#### WEB2
-
-- Status: `REJECTED_AND_QUARANTINED`
-- Branch: `p3/mp11-market-health-desktop-r1`
-- Head: `e3230713fcc5256dd1d92651f9ba54bdb4ec1c8a`
-- PR: none.
-- Reason: remote test bytes differed from the hardened candidate and contained malformed quote handling.
-
-#### WEB3
-
-- Status: `REJECTED_AND_QUARANTINED`
-- Branch: `p3/mp11-market-health-desktop-r2`
-- Head: `a10cc096d31dabe525dec321de9cd250951de47b`
-- PR: `#43` — closed, unmerged.
-- CI: `30372902126` — tests passed, typecheck failed, later frontend gates skipped; Rust/global passed.
-- Reason: typed fixture used invalid `healthStatus: "custom"`.
-
-#### WEB4
-
-- Status: `REJECTED_AND_QUARANTINED`
-- Branch: `p3/mp11-market-health-desktop-r3`
-- Head: `76ab834f65d2f792bdb24ae39f2f726c49e556fe`
-- PR: none.
-- CI: none.
-- Reason: exact remote test blob `ebf4e6b19c778c0e849f2ae099fad32ec9d0f51f` contains malformed hash-based quote handling in the forbidden-import expression.
-- Review: `signalguard-rs/phase-3/reviews/P3-MP11/76ab834f65d2f792bdb24ae39f2f726c49e556fe.md`
-- Recovery: `signalguard-rs/phase-3/control/P3-MP11-WEB4-RECOVERY.md`
-
-#### WEB5
-
-- Status: `AUTHORIZED_AWAITING_DELIVERY`
-- Branch: `p3/mp11-market-health-desktop-r4`
-- Exact assigned base: `025921919fa923abff1366bea01e9a502c088d22`
-- Initial divergence: `0 0`
-- Current moving Phase branch is ahead through accepted MP10; worker rebase or history rewrite is not authorized.
-- Contract: `signalguard-rs/phase-3/prompts/P3-MP11-WEB5.md`
-- Contract commit: `7bb8d39626bd935a4f200661b045fa2bf509c427`
-- Binding scope: `signalguard-rs/phase-3/prompts/P3-MP11-WEB5-SCOPE.md`
-- Binding verification: `signalguard-rs/phase-3/prompts/P3-MP11-WEB5-VERIFICATION.md`
-
-Administrative PRs `#44` and `#45` were accidentally opened from rejected WEB3 and immediately closed unmerged. They created no product commit and changed no product tree.
-
-### P3-MP12 — Market Health mobile
-
-- Status: `INTEGRATED`
+- Accepted execution: WEB3
 - Accepted head: `8e6b84146dcd208d830e945e183a6a77a22bd35e`
 - PR: `#42`
-- CI: `30372780352` — success.
-- Resulting Phase SHA at integration: `025921919fa923abff1366bea01e9a502c088d22`
+- CI: `30372780352`
 
-### P3-MP13 — Recent Anomalies desktop
+### P3-MP13 Recent Anomalies desktop
 
-- Status: `INTEGRATED`
+- Accepted execution: WEB2
 - Accepted head: `78aa90f6479397ff8d7907a895969db2a93a5eab`
 - PR: `#40`
-- CI: `30370164163` — success.
+- CI: `30370164163`
 
-### P3-MP14 — Recent Anomalies mobile
+### P3-MP14 Recent Anomalies mobile
 
-- Status: `INTEGRATED`
 - Accepted head: `7952ad4c6cb3fa0c80c5b8ad93f6972f7a4ddba0`
 - PR: `#34`
-- CI: `30365176809` — success.
+- CI: `30365176809`
 
-## Wave 2 closure condition
+## Final Wave 2 combined-tree gate
 
-P3-MP10 and P3-MP12/P3-MP13/P3-MP14 are integrated. Only an accepted and integrated P3-MP11 replacement remains.
+- The PR #47 merge ref combined the current accepted Phase tree, including MP10/MP12/MP13/MP14, with the immutable MP11 head.
+- Frontend and Rust/global jobs completed successfully with no required skipped gate.
+- The squash-integrated Phase result differs from the same base by the same two added paths and exact blobs as the tested merge ref.
+- Wave 2 closure verdict: `ACCEPT`.
 
-After P3-MP11 integration:
+## P3-MP15 — Dashboard compositor wiring
 
-1. run final Wave 2 combined-tree CI;
-2. authorize P3-MP15 compositor/wiring;
-3. integrate P3-MP15 only after green CI;
-4. perform Visual Checkpoint 1.
+- Status: `AUTHORIZED_AWAITING_DELIVERY`
+- Branch: `p3/mp15-dashboard-compositor`
+- Exact assigned base: `455a0bf15fbf7df2ecac9dbeb95e2a6dba7f8b73`
+- Initial divergence: `0 0`
+- Contract: `signalguard-rs/phase-3/prompts/P3-MP15-WEB1.md`
+- Contract commit: `159ca764eac26286445c916118d7a350b095fbe5`
+- Binding scope: `signalguard-rs/phase-3/prompts/P3-MP15-SCOPE.md`
+- Binding verification: `signalguard-rs/phase-3/prompts/P3-MP15-VERIFICATION.md`
+- Exclusive product lease: `DashboardPage.tsx` and `DashboardPage.test.tsx` only.
+- Mission: replace inline timeline and preview presentation with the five accepted components without visible or data-semantic changes.
+
+## P3-MP15 acceptance sequence
+
+1. independent code review;
+2. guarded integration after complete green current-phase CI;
+3. stable preview verification;
+4. Visual Checkpoint 1 with desktop/mobile, Demo/Live, BTC/ETH, timeline, Market Health, Recent Anomalies, View all and row clicks;
+5. only then mark `USER_UI_ACCEPTED` and open Wave 3.
 
 ## Binding invariants
 
-- `DashboardPage.tsx` remains read-only until P3-MP15.
-- No Wave 2 component task may modify CSS, routes, APIs, resources, accepted models, packages/configuration, backend, OpenAPI, CI, Docker, scripts, or the upper ticker.
+- Upper ticker remains byte-identical and outside all worker leases.
 - Demo/Live and symbol isolation remain strict.
+- No route, page, section, dialog, View-all action or popup may be removed.
+- P3-MP15 may not change labels, tooltips, CSS semantics, data logic or accepted component/model implementations.
+- P3-MP16 and later work remain blocked until P3-MP15 integration and Visual Checkpoint 1.
