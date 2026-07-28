@@ -30,18 +30,12 @@ Current state: `WAVE_0_MP04_ACCEPTED_PENDING_INTEGRATION`
 - Accepted head: `a5f67245ba4b70a28bb751d6e40b8bedb428bed8`
 - PR: `#24`
 - Resulting Phase 3 SHA: `3988205007c35c77037eb758a21b2728b90c2943`
-- Integrated paths:
-  - `web/src/test/uiSmokeMatrix.ts`
-  - `web/src/test/uiSmokeMatrix.test.ts`
 
 ### P3-MP02 — INTEGRATED
 
-- Accepted head: `1af52c901d4f59afbbae6fd6c324b0b0e390c753`
+- Accepted head: `1af52c901d4f59afbbae0cbf32b0d4b726dd8fb`
 - PR: `#25`
 - Resulting Phase 3 SHA: `17f1d044d9d89205e1aa19cf38a887d2452d38de`
-- Integrated paths:
-  - `web/src/shared/components/Tooltip.tsx`
-  - `web/src/shared/components/Tooltip.test.tsx`
 
 ### P3-MP03 — INTEGRATED
 
@@ -49,9 +43,6 @@ Current state: `WAVE_0_MP04_ACCEPTED_PENDING_INTEGRATION`
 - PR: `#26`
 - Resulting Phase 3 SHA: `5e0b186fe1aa42d1b739077fff9b14832e8e3eb1`
 - Combined-tree CI after MP01+MP02+MP03: `30353706127` — success.
-- Integrated paths:
-  - `web/src/features/dashboard/statusDescriptors.ts`
-  - `web/src/features/dashboard/statusDescriptors.test.ts`
 
 ### P3-MP04 — ACCEPTED, GUARDED INTEGRATION AUTHORIZED
 
