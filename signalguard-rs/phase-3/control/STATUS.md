@@ -43,12 +43,26 @@ P3-MP05, P3-MP06, P3-MP07, P3-MP08, and accepted replacement P3-MP09-WEB2 are in
 
 #### WEB2
 
-- Status: `AUTHORIZED_USER_PROMPT_SENT_REMOTE_DELIVERY_PENDING`
+- Status: `REJECTED_AND_QUARANTINED`
 - Branch: `p3/mp10-timeline-panel-r1`
-- Assigned base: `93a870010730c458417ccfff392cb97aff23d6c9`
-- Contract: `signalguard-rs/phase-3/prompts/P3-MP10-WEB2.md`
-- Contract commit: `0439f09bc468c1a391fdf77ebd2269433b62be16`
-- Moving phase branch is now ahead; no worker rebase/history rewrite is authorized. Current-tree CI will be refreshed before integration.
+- Head: `0ad34843578670d8b313af4f7f53853195c305a9`
+- Worker report: `signalguard-rs/phase-3/reports/P3-MP10/0ad34843578670d8b313af4f7f53853195c305a9.md`
+- Orchestrator-opened PR: `#41` — closed, unmerged.
+- Current-tree merge ref: `cc19e0cf6c5179e25e2d35970694808c43331c1f`.
+- CI: `30372209086` (`#208`) — Rust/global passed; frontend tests failed; typecheck/lint/build/bundle skipped.
+- Exact failing assertion was not exposed by the connector's truncated job-log response and is not guessed.
+- Review: `signalguard-rs/phase-3/reviews/P3-MP10/0ad34843578670d8b313af4f7f53853195c305a9.md`
+- Recovery: `signalguard-rs/phase-3/control/P3-MP10-WEB2-RECOVERY.md`
+
+#### WEB3
+
+- Status: `AUTHORIZED_DIAGNOSTIC_FIRST`
+- Replacement branch: `p3/mp10-timeline-panel-r2`
+- Exact assigned base: `144ca95ae0338cfcf5ae00bd1cccd8317dbbc0b0`
+- Initial divergence: `0 0`
+- Contract: `signalguard-rs/phase-3/prompts/P3-MP10-WEB3.md`
+- Contract commit: `d18cc78cbf5bbea2ec1a8a1085a8efa678c6bec4`
+- Before any product write, the worker must identify or faithfully reproduce the exact WEB2 frontend test failure. If exact diagnosis is unavailable, it must stop with a diagnostic-only connector report and no product mutation.
 
 ### P3-MP11 — Market Health desktop
 
