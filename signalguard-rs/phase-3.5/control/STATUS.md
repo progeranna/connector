@@ -51,9 +51,30 @@ Preferred worker: local Codex.
 
 ### P3.5-MP00D — Test-guard maintainability audit
 
-Status: `IN_PROGRESS_OR_AWAITING_REPORT`
+Status: `ACCEPTED`
 
-Preferred worker: web worker.
+- Product SHA audited: `c06082a97254bfa2f6ebd7e29a1ad753c4acc798`
+- Report: `signalguard-rs/phase-3.5/inventory/P3.5-MP00D/c06082a97254bfa2f6ebd7e29a1ad753c4acc798.md`
+- Report commit: `73408022752cc63dc77aeff7c897ad1c6a1dd889`
+- Frontend test files inspected: 42
+- Guard findings: 47
+- KEEP_EXACT: 17
+- KEEP_BUT_NARROW: 18
+- REPLACE_WITH_BEHAVIOR: 8
+- REPLACE_WITH_TYPE_OR_API_CONTRACT: 1
+- REMOVE_REDUNDANT: 3
+- INVESTIGATE: 0
+- Independent Orchestrator review: pass
+
+Accepted conclusions:
+
+1. Exact visual-parity guards from PR #56 remain exact.
+2. Resource identity, Demo/Live separation, ticker ownership, row/card identity, mutation/order, forbidden dependency ownership, accessibility, callbacks, and state-matrix guards must remain strong.
+3. Exact import counts, internal function names, exact JSX composition strings, helper-location assumptions, and unqualified whole-source word/method bans are legitimate modernization targets.
+4. P3.5-MP06A and P3.5-MP06B may run in parallel only after final leases are published, with `DashboardPage.test.tsx` exclusive to MP06A and `DashboardPage.popup.test.tsx` exclusive to MP06B.
+5. MP06A/MP06B remain test-only; all production and configuration paths are forbidden.
+
+MP00D recommendations are not implementation authorization. MP06A and MP06B remain blocked until Wave 2 reaches their dependency gate and the Orchestrator publishes final exact path leases.
 
 ## Current authorization
 
@@ -68,15 +89,21 @@ Not authorized:
 - product commits;
 - product pull requests;
 - Wave 1 implementation;
+- MP06A or MP06B implementation;
 - bundle-budget changes;
 - Phase 4 work;
 - merges.
 
+## Remaining Wave 0 work
+
+1. P3.5-MP00A — bundle composition and split-prototype audit.
+2. P3.5-MP00C — dead code, exports, dependencies, and cycles audit.
+
 ## Next gate
 
-After MP00A, MP00C, and MP00D are complete and independently reviewed, the Orchestrator must publish the consolidated MP00 inventory with:
+After MP00A and MP00C are complete and independently reviewed, the Orchestrator must publish the consolidated MP00 inventory with:
 
-- accepted findings;
+- accepted findings from MP00A–D;
 - rejected false positives;
 - exact Wave 1 path leases;
 - measured bundle baselines;
