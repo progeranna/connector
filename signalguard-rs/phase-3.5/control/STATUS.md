@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3.5 — Status
 
-Current state: `WAVE_3_MP08B_INTEGRATED_MP09_AUTHORIZED`
+Current state: `WAVE_3_MP09_BLOCKED_MP09_R1_AUTHORIZED`
 
 ## Authoritative product state
 
@@ -9,7 +9,7 @@ Current state: `WAVE_3_MP08B_INTEGRATED_MP09_AUTHORIZED`
 - Immutable Phase 3.5 starting SHA: `c06082a97254bfa2f6ebd7e29a1ad753c4acc798`
 - Current integrated phase head: `38a1cc440a264d9e04fad3c699386fd45778797f`
 - Phase branch resolves exactly to the current integrated head.
-- Phase 4 remains blocked until MP09 and Checkpoint 3.5 are complete.
+- Phase 4 remains blocked until MP09-R1 and Checkpoint 3.5 are complete.
 
 ## Current quantitative state
 
@@ -21,7 +21,7 @@ Current state: `WAVE_3_MP08B_INTEGRATED_MP09_AUTHORIZED`
 - emitted JavaScript assets: `1` initial, `0` async;
 - initial/largest/total raw JS: `395700` bytes;
 - direct gzip: `113042` bytes;
-- current largest/total budgets: `761856` bytes, unchanged pending MP09;
+- current largest/total budgets: `761856` bytes, unchanged pending MP09-R1;
 - raw headroom under current budget: `366156` bytes;
 - raw reduction from Phase 3.5 start: `366156` bytes;
 - Recharts and its measured transitive production graph: removed.
@@ -48,7 +48,7 @@ MP06B used the accepted recovery merge `1893a0dc193b837a8be26274d00fcb6cf83401da
 
 - MP07 route splitting: accepted measurement, no implementation. Every tested route split reduced initial JS but increased total JS.
 - MP08 lazy Recharts boundary: accepted measurement, no implementation. The preferred lazy renderer reduced initial JS but increased total JS.
-- MP08B Recharts-free native SVG renderer: accepted implementation candidate.
+- MP08B Recharts-free native SVG renderer: accepted and integrated.
 
 Measurement reports:
 
@@ -72,11 +72,9 @@ Measurement reports:
 - integration report commit: `25aa500c27784a525f2aafd2ef268da3614107da`
 - terminal disposition: `P3_5_MP08B_INTEGRATION_COMPLETE`
 
-## MP09 authorization
+## MP09 validation and recovery
 
-Status: `AUTHORIZED`
-
-Contract:
+Original MP09 contract:
 
 `signalguard-rs/phase-3.5/prompts/P3.5-MP09.md`
 
@@ -88,31 +86,64 @@ Assigned branch:
 
 `p35/mp09-bundle-policy-refinement`
 
-Required commit message:
+Required single product commit message:
 
 `chore(ui): refine bundle policy reporting`
 
-Purpose:
+### Accepted blocker
 
-- derive initial JavaScript closure from a deterministic Vite manifest;
-- retain filesystem-based total-JS protection;
-- report initial, largest, and total raw metrics independently;
-- add Node built-in policy tests;
-- lower budgets to `409600` initial, `409600` largest, and `414720` total bytes;
-- preserve the exact `395700`-byte production baseline with no application-source change.
+The mandated Node built-in suite `web/scripts/check-bundle-size.test.mjs` passed `25` tests under Node, but the unchanged Vitest discovery also matched `*.test.mjs`. `npm run test:run` therefore discovered it as a 46th suite and failed it with `No test suite found`, while the application suite itself remained `45` passing files and `653` passing tests.
+
+No product commit, push, PR, merge, or connector implementation report was created. Product history remains at the exact base. Uncommitted changes remain in the five original MP09 lease paths and generated `dist` output was removed.
+
+Validation blocker record:
+
+`signalguard-rs/phase-3.5/reports/P3.5-MP09-VALIDATION/38a1cc440a264d9e04fad3c699386fd45778797f-node-test-discovery.md`
+
+Blocker record commit:
+
+`8c35b1554f6538a86aa35d30350c6254ffdabb0c`
+
+Terminal disposition:
+
+`P3_5_MP09_BLOCKED_BY_NODE_TEST_DISCOVERY_MP09_R1_REQUIRED`
+
+### MP09-R1 authorization
+
+Status: `AUTHORIZED`
+
+Recovery addendum:
+
+`signalguard-rs/phase-3.5/prompts/P3.5-MP09-R1.md`
+
+Recovery contract commit:
+
+`a63440cb38824ed997cfc7d4b7848005eeede114`
+
+The recovery expands the writable lease only by adding:
+
+`web/vitest.config.ts`
+
+The required change must preserve `configDefaults.exclude` and add exactly `scripts/check-bundle-size.test.mjs` to Vitest exclusions. The protected `vitest run --threads` command remains unchanged. The Node policy suite remains mandatory and must execute separately through Node as part of bundle-policy validation.
+
+The final product result must still be exactly one commit from the original MP09 base. The final recovery lease contains six paths and still forbids all application-source, lockfile, CI, backend, and generated-contract changes.
 
 ## Current authorization
 
 Authorized:
 
-- execute MP09 locally against exact base `38a1cc440a264d9e04fad3c699386fd45778797f`;
-- create exactly one product commit on `p35/mp09-bundle-policy-refinement` within the exact MP09 lease;
-- publish the required connector implementation report.
+- continue the existing MP09 worktree without discarding validated changes;
+- modify only the six-path MP09-R1 lease;
+- create exactly one product commit on `p35/mp09-bundle-policy-refinement` after all recovery gates pass;
+- publish the required MP09-R1 connector report.
 
 Not authorized:
 
-- route splitting or lazy Recharts implementation;
-- production application-source changes during MP09;
+- changing the protected Vitest command;
+- renaming the mandated Node policy suite;
+- importing Vitest into the Node policy suite;
+- broad test exclusions;
+- application-source or package-lock changes;
 - budget increases;
 - PR or merge by the worker;
 - Phase 4;
@@ -120,4 +151,4 @@ Not authorized:
 
 ## Next required result
 
-`P3_5_MP09_IMPLEMENTATION_COMPLETE`
+`P3_5_MP09_R1_IMPLEMENTATION_COMPLETE`
