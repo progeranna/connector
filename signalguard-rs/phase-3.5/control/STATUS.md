@@ -1,13 +1,13 @@
 # SignalGuard RS Phase 3.5 — Status
 
-Current state: `WAVE_2_MP06B_SOURCE_ACCEPTED_WAITING_FOR_MP06A`
+Current state: `WAVE_2_MP06A_INTEGRATED_MP06B_R1_AUTHORIZED`
 
 ## Authoritative product state
 
 - Product repository: `progeranna/signalguard-rs`
 - Phase branch: `refactor/dashboard-modules`
 - Immutable Phase 3.5 starting SHA: `c06082a97254bfa2f6ebd7e29a1ad753c4acc798`
-- Current integrated phase head: `21fec6d357b365a3710c8e7118a467564247dee6`
+- Current integrated phase head: `bb3df51339ad4a7a3524fe4782fdc24069944160`
 - Phase 4 remains blocked until Checkpoint 3.5.
 
 The phase branch resolves exactly to the current integrated head.
@@ -22,9 +22,9 @@ Phase 3.5 starting baseline:
 - largest/total JS budget: `761856` bytes;
 - headroom: `0` bytes.
 
-Current integrated state after MP05:
+Current integrated state after MP06A:
 
-- frontend: 43 test files, 629 tests;
+- frontend: 43 test files, 634 tests;
 - TypeScript: pass;
 - lint: pass;
 - production build: pass;
@@ -35,9 +35,7 @@ Current integrated state after MP05:
 - headroom: `4639` bytes;
 - cumulative raw reduction: `4639` bytes.
 
-MP05 was a test/export/dead-declaration cleanup and produced no additional emitted-JS reduction.
-
-Phase 3.5 minimum target remains `8192` raw bytes of headroom. Remaining reduction required to reach the minimum target is `3553` bytes. Wave 3 remains required unless later measured work recovers the remaining headroom.
+Phase 3.5 minimum target remains `8192` raw bytes of headroom. Remaining reduction required is `3553` bytes. Wave 3 remains required after MP06B integration.
 
 ## Wave 0
 
@@ -90,10 +88,7 @@ Each actual merge tree was identical to its exact green PR merge-ref tree.
 
 Status: `INTEGRATED`
 
-- Contract: `signalguard-rs/phase-3.5/prompts/P3.5-MP04.md`
-- Contract commit: `ca0bd5e7e6e732b7017dca06927528f537e760c9`
 - Worker head: `a36caf7201f8c7e9adf91ecf2238db23a6f083ef`
-- Worker report commit: `bd02eef895bf86ba7f9f54f88408de48d07d6f76`
 - Integration PR: `#60`
 - Tested merge ref: `e893437a7b6ca812c5d9f534064e84cfc554a116`
 - CI run: `30703462034` — success
@@ -102,17 +97,15 @@ Status: `INTEGRATED`
 - Raw JS: `757217` bytes
 - Headroom: `4639` bytes
 - Integration report: `signalguard-rs/phase-3.5/reports/P3.5-MP04-INTEGRATION/0027679f7a5b2cc783098b1d4a625e1638bee67d.md`
-- Integration report commit: `f313f2a2d15b43e31b61d0b405b4a6c495615940`
 - Terminal disposition: `P3_5_MP04_INTEGRATION_COMPLETE`
 
 ### MP00C-R1 — Refreshed dead-code/export/dependency/cycle audit
 
 Status: `ACCEPTED`
 
-- Exact audited product SHA: `0027679f7a5b2cc783098b1d4a625e1638bee67d`
+- Exact audited SHA: `0027679f7a5b2cc783098b1d4a625e1638bee67d`
 - Report: `signalguard-rs/phase-3.5/inventory/P3.5-MP00C-R1/0027679f7a5b2cc783098b1d4a625e1638bee67d.md`
 - Report commit: `ccdf3b81cc543a594876065240f82049226faa52`
-- Terminal disposition: `P3_5_MP00C_R1_AUDIT_COMPLETE`
 - Findings: 13 confirmed, 4 probable, 7 needing verification, 4 intentional, 3 false positives
 - Package deletion candidates: none
 - Credible cycles: none
@@ -121,85 +114,100 @@ Status: `ACCEPTED`
 
 Status: `INTEGRATED`
 
-- Original contract: `signalguard-rs/phase-3.5/prompts/P3.5-MP05.md`
-- Original contract commit: `869041a3f9e236539f4e0d273867d1b995e953a0`
-- Recovery addendum: `signalguard-rs/phase-3.5/prompts/P3.5-MP05-R1.md`
-- Recovery addendum commit: `7c509606b02070d3656d1f8c4ea7021ab75950b6`
-- Worker branch: `p35/mp05-confirmed-dead-code`
 - Worker head: `621c41e199e2b56ff31e5af72396b7e2b86ce5eb`
-- Worker report: `signalguard-rs/phase-3.5/reports/P3.5-MP05/621c41e199e2b56ff31e5af72396b7e2b86ce5eb.md`
-- Worker report commit: `231a91caa977dffee0b6b981d157ea8f4f35ccdc`
 - Integration PR: `#61`
 - Tested merge ref: `dd651aa823f0073bbc83210c6e667aa3493dd12d`
 - CI run: `30710872784` — success
-- Merge commit and current phase head: `21fec6d357b365a3710c8e7118a467564247dee6`
+- Merge commit: `21fec6d357b365a3710c8e7118a467564247dee6`
 - Frontend: 43 files, 629 tests
 - Raw JS: `757217` bytes
 - Headroom: `4639` bytes
-- Tested merge-ref and actual merge trees: identical
 - Integration report: `signalguard-rs/phase-3.5/reports/P3.5-MP05-INTEGRATION/21fec6d357b365a3710c8e7118a467564247dee6.md`
-- Integration report commit: `e1a6ed88593f0cce4c6776b9eed3df21f380df06`
 - Terminal disposition: `P3_5_MP05_INTEGRATION_COMPLETE`
 
-The initial MP05 modifier-only attempt correctly stopped at `P3_5_MP05_BLOCKED_BY_VALIDATION`. The accepted recovery retained `installControlledFetch` and `UiSmokeDialogRequirement` as exports. No artificial use, suppression, reset, or history rewrite was introduced.
+The accepted MP05 recovery retained `installControlledFetch` and `UiSmokeDialogRequirement` as exports after executable validation disproved modifier-only privatization.
 
 ### MP06A — Market-health and timeline test guards
 
-Status: `IMPLEMENTATION_PENDING`
+Status: `INTEGRATED`
 
 - Contract: `signalguard-rs/phase-3.5/prompts/P3.5-MP06A.md`
-- Contract commit: `c51876c750d7ed35344299d22b8306b002e3657c`
-- Worker class: GitHub web implementation worker
-- Exact base: `21fec6d357b365a3710c8e7118a467564247dee6`
-- Assigned branch: `p35/mp06a-market-health-test-guards`
-- Required commit: `test(ui): modernize market health and timeline guards`
-- Lease: eleven exact test files listed in the contract
-- Exclusive path: `web/src/pages/DashboardPage.test.tsx`
-- Production writes: forbidden
-- Worker PR/merge: forbidden
-- Current branch state at acceptance of MP06B: identical to the exact base, zero commits ahead and zero behind.
+- Worker branch: `p35/mp06a-market-health-test-guards`
+- Worker head: `9d6d287515bc7f2122b30bda85e96c08fd07ae25`
+- Worker report: `signalguard-rs/phase-3.5/reports/P3.5-MP06A/9d6d287515bc7f2122b30bda85e96c08fd07ae25.md`
+- Worker report commit: `ebccfe57c1c41fe66121e918bd3053aa302addcc`
+- Superseded validation PR: `#62` — closed without merge
+- Authoritative integration PR: `#63`
+- Tested merge ref: `002202c2b1bc5fe459795f9135e15ffa4a9449a1`
+- CI run: `30712369103` — success
+- Frontend: 43 test files, 634 tests
+- TypeScript/lint/build/bundle: pass
+- Raw JS: `757217` bytes
+- Merge commit and current phase head: `bb3df51339ad4a7a3524fe4782fdc24069944160`
+- Tested merge-ref and actual merge trees: identical
+- Integration report: `signalguard-rs/phase-3.5/reports/P3.5-MP06A-INTEGRATION/bb3df51339ad4a7a3524fe4782fdc24069944160.md`
+- Integration report commit: `7863fc9f2b604e4f33b4cb236311e165f0321049`
+- Terminal disposition: `P3_5_MP06A_INTEGRATION_COMPLETE`
 
 ### MP06B — Anomaly and symbol-detail test guards
 
-Status: `SOURCE_ACCEPTED_AWAITING_MP06A_INTEGRATION`
+Status: `CURRENT_BASE_TYPECHECK_BLOCKED`
+
+Original accepted worker identity:
 
 - Contract: `signalguard-rs/phase-3.5/prompts/P3.5-MP06B.md`
-- Contract commit: `90d2ab1c1d3b9d6d2e6f0773a757357bd6e31b8a`
-- Worker class: GitHub web implementation worker
-- Exact base: `21fec6d357b365a3710c8e7118a467564247dee6`
-- Assigned branch: `p35/mp06b-symbol-detail-test-guards`
-- Worker head: `0fbc488476a5b0efb657f88a06f26aa67c620c7c`
-- Required and actual commit: `test(ui): modernize anomaly and symbol detail guards`
-- History: exactly one commit ahead and zero behind the exact base
-- Changed scope: five leased test files only
-- Audited unchanged leased file: `web/src/features/dashboard/SymbolDetailMetrics.test.tsx`
-- Unchanged file blob at base and worker head: `b67df30b29438b8ff055e9f830e74dbce9edd26c`
-- Production changes: none
-- MP06A-leased changes: none
+- Worker branch: `p35/mp06b-symbol-detail-test-guards`
+- Immutable worker head: `0fbc488476a5b0efb657f88a06f26aa67c620c7c`
+- Original shared base: `21fec6d357b365a3710c8e7118a467564247dee6`
 - Worker report: `signalguard-rs/phase-3.5/reports/P3.5-MP06B/0fbc488476a5b0efb657f88a06f26aa67c620c7c.md`
 - Worker report commit: `cd15263c3403f582231b0b765082ea5c8c00d10d`
-- Terminal disposition: `P3_5_MP06B_IMPLEMENTATION_COMPLETE`
-- Executable npm, Vitest, TypeScript, ESLint, build, bundle, and Rust gates: deferred to Orchestrator merge-ref CI
-- PR: not opened
-- Merge: not performed
 
-Source review accepted the replacement of brittle internal-name, source-slicing, broad-word, and exact-JSX guards with behavioral identity, mode-isolation, state, accessibility, visual-parity, and explicit import/API boundary checks. Exact `GUARD-031` visual distinctions and unchanged `GUARD-034` remain preserved.
+Current-base validation:
 
-MP06B is frozen on the immutable worker head until MP06A is accepted, validated, and integrated. Do not rebase or modify the MP06B worker branch.
+- PR: `#64` — closed without merge
+- Base: `bb3df51339ad4a7a3524fe4782fdc24069944160`
+- Tested merge ref: `e923defbeeeebf7cf6bf7457b77be28898286c82`
+- CI run: `30712501382`
+- Rust: pass
+- Frontend tests: 43 files, 640 tests, all pass
+- TypeScript: fail
+- Lint/build/bundle: skipped after typecheck failure
+- Validation report: `signalguard-rs/phase-3.5/reports/P3.5-MP06B-VALIDATION/e923defbeeeebf7cf6bf7457b77be28898286c82.md`
+- Validation report commit: `b8432bf514eaefee5087d5f944e793c52f34134e`
+- Terminal disposition: `P3_5_MP06B_BLOCKED_BY_CURRENT_BASE_TYPECHECK`
 
-Integration order remains:
+Exact defect boundary:
 
-`MP06A -> MP06B`
+- `DashboardPage.popup.test.tsx`: one optional adapter-identity recorder type and four async `refetch` mock types;
+- `SymbolDetailPage.test.tsx`: three price fixture values use numbers where the Zod/API-derived contract requires strings.
 
-Current-base PR merge-ref CI is authoritative for each integration.
+No runtime test failed and no production fix is required.
+
+### MP06B-R1 — Current-base type-contract recovery
+
+Status: `IMPLEMENTATION_AUTHORIZED`
+
+- Recovery contract: `signalguard-rs/phase-3.5/prompts/P3.5-MP06B-R1.md`
+- Recovery contract commit: `d6949566bba9f41a753c5a733561efd8883cd1bb`
+- Worker class: local Codex implementation-recovery worker
+- Required skill: `$rust-development`
+- Exact current base: `bb3df51339ad4a7a3524fe4782fdc24069944160`
+- Immutable second parent: `0fbc488476a5b0efb657f88a06f26aa67c620c7c`
+- Assigned branch: `p35/mp06b-r1-symbol-detail-test-guards`
+- Required commit: `test(ui): repair MP06B type contracts`
+- Exact repair write lease: `DashboardPage.popup.test.tsx` and `SymbolDetailPage.test.tsx`
+- Required history: one new normal merge commit with current phase head first and immutable worker head second
+- Worker PR/merge: forbidden
+
+The recovery must preserve all accepted MP06B test changes and contracts. It may only repair the six exact TypeScript diagnostics. The immutable MP06B worker branch remains unchanged.
 
 ## Wave 3
 
 ### MP07–MP09
 
-Status: `BLOCKED_BY_MP06_INTEGRATION`
+Status: `BLOCKED_BY_MP06B_R1_INTEGRATION`
 
-Wave 3 starts only after both MP06 test-only candidates are accepted and integrated. MP07 and MP08 require measured local experiments against the cleaned tree before implementation authorization.
+MP07 and MP08 require measured local experiments against the final Wave 2 tree before implementation authorization.
 
 ## Phase 4
 
@@ -207,34 +215,33 @@ Status: `BLOCKED_BY_CHECKPOINT_3_5`
 
 ## Evidence boundary
 
-The connected workflow lookup exposes pull-request-triggered runs rather than push-run history. For every accepted integration, the actual merge tree was directly compared with its exact green PR merge-ref tree and had zero file differences. No separate push-run ID is claimed.
+For each accepted integration, the actual merge tree is directly compared with the exact green PR merge-ref tree. No merge is accepted when executable gates are skipped or failing.
 
 ## Current authorization
 
 Authorized:
 
-- complete MP06A from exact base `21fec6d357b365a3710c8e7118a467564247dee6` under its exact eleven-file test lease;
-- create and push only `p35/mp06a-market-health-test-guards` with exactly one logical commit and the required message;
-- publish the MP06A connector implementation report;
-- retain MP06B unchanged at immutable head `0fbc488476a5b0efb657f88a06f26aa67c620c7c`;
-- after MP06A source acceptance, run sequential Orchestrator merge-ref CI and integration in order `MP06A -> MP06B`;
-- update connector reports and control files through the Orchestrator.
+- execute only `P3.5-MP06B-R1` as a local Codex recovery;
+- preserve immutable worker commit `0fbc488476a5b0efb657f88a06f26aa67c620c7c` as the second parent;
+- create one recovery merge commit on `p35/mp06b-r1-symbol-detail-test-guards`;
+- edit only the two exact recovery test files;
+- run every focused, full frontend, TypeScript, lint, build, bundle, Rust, Docker Compose, and script gate;
+- publish and verify the required recovery report;
+- update connector reports/control files through the Orchestrator.
 
 Not authorized:
 
-- opening or merging an MP06B integration PR before MP06A integration;
-- modifying or rebasing the accepted MP06B worker branch;
-- any production-file change in MP06A or MP06B;
-- overlapping edits between the two workers;
-- worker PR creation or merge;
-- rebase, amend, reset, force-push, squash, or history rewrite;
-- package, lockfile, dependency, configuration, budget, route, API, backend, generated-contract, visual, product-copy, or Phase 4 changes;
-- MP07–MP09 implementation;
-- bundle-budget increase;
-- weakening exact identity, no-fallback, order, mutation, accessibility, state, responsive, or documented visual contracts.
+- reopening or merging failed PR `#64`;
+- modifying, rebasing, amending, resetting, or force-pushing the immutable MP06B worker branch;
+- production-file changes;
+- edits to MP06A tests or the other three accepted MP06B test files;
+- changes to `SymbolDetailMetrics.test.tsx`;
+- test weakening or diagnostic suppression;
+- package, lockfile, dependency, configuration, budget, route, API, backend, generated-contract, visual, product-copy, Wave 3, or Phase 4 changes;
+- bundle-budget increase.
 
 ## Next action
 
-Complete and report MP06A. Keep MP06B frozen at:
+Execute:
 
-`0fbc488476a5b0efb657f88a06f26aa67c620c7c`
+`signalguard-rs/phase-3.5/prompts/P3.5-MP06B-R1.md`
