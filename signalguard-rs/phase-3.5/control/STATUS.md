@@ -1,183 +1,135 @@
 # SignalGuard RS Phase 3.5 — Status
 
-Current state: `WAVE_1_EXECUTION_AUTHORIZED`
+Current state: `WAVE_1_IMPLEMENTATIONS_ACCEPTED_AWAITING_INTEGRATION`
 
 ## Authoritative product baseline
 
 - Product repository: `progeranna/signalguard-rs`
 - Phase branch: `refactor/dashboard-modules`
 - Immutable Phase 3.5 base: `c06082a97254bfa2f6ebd7e29a1ad753c4acc798`
-- Phase branch comparison at authorization: identical to base; ahead `0`, behind `0`
 - Checkpoint 2 CI: `30548108769` — success
-- Frontend baseline: 42 test files, 607 tests, 761856 raw JS bytes, 220163 gzip JS bytes, 761856-byte largest/total budget, 0-byte headroom
+- Frontend baseline: 42 test files, 607 tests
+- Baseline production JS: 761856 raw bytes, 220163 gzip bytes
+- Bundle budget: 761856 bytes largest and total JS
+- Baseline headroom: 0 bytes
 
 Phase 4 remains blocked until Checkpoint 3.5.
 
-## Phase plan and consolidated inventory
+## Wave 0 disposition
 
-- Plan: `signalguard-rs/phase-3.5/PLAN.md`
-- Consolidated MP00 inventory: `signalguard-rs/phase-3.5/inventory/P3.5-MP00/c06082a97254bfa2f6ebd7e29a1ad753c4acc798.md`
+Status: `COMPLETE`
+
+- Consolidated inventory: `signalguard-rs/phase-3.5/inventory/P3.5-MP00/c06082a97254bfa2f6ebd7e29a1ad753c4acc798.md`
 - Consolidation commit: `ab703e4a0ed3062360f0550c5a68efaa0e9929e7`
-- MP00 disposition: `P3_5_MP00_COMPLETE_WAVE_1_AUTHORIZED`
+- Terminal disposition: `P3_5_MP00_COMPLETE_WAVE_1_AUTHORIZED`
 
-## Wave 0 audit status
+Accepted audits:
 
-### P3.5-MP00A-WEB — Bundle composition and dependency graph
+- MP00A-WEB: static route and Recharts dependency graph accepted;
+- MP00B: duplicate implementation inventory accepted;
+- MP00C-WEB: dead-code/export/dependency inventory accepted, with deletion deferred;
+- MP00D: test-guard maintainability inventory accepted.
 
-Status: `ACCEPTED_STATIC_GRAPH`
+## Wave 1 implementation disposition
 
-- Report: `signalguard-rs/phase-3.5/inventory/P3.5-MP00A-WEB/c06082a97254bfa2f6ebd7e29a1ad753c4acc798.md`
-- Commit: `3ba9dc726de4f9e46048ef2b0236ffc74bd2a77e`
-- 51 production files inspected
-- 14 accepted findings
+All three workers started from exact immutable base `c06082a97254bfa2f6ebd7e29a1ad753c4acc798`.
 
-Accepted:
+Each branch is exactly one commit ahead and zero behind the base. Their writable path sets do not overlap. No worker opened a pull request or performed a merge.
 
-- every current route is eager in the initial static graph;
-- no route/chart dynamic import exists;
-- Recharts is statically reachable through DashboardPage and TimelinePanel;
-- conditional JSX is not code splitting;
-- route splitting alone cannot defer Recharts inside `/dashboard`;
-- local emitted-byte experiments are deferred to Wave 3 preflight.
+### P3.5-MP01 — Health-score presentation consolidation
 
-### P3.5-MP00B — Duplicate implementation audit
+Status: `SOURCE_ACCEPTED_AWAITING_EXECUTABLE_GATES`
 
-Status: `ACCEPTED`
+- Product branch: `p35/mp01-health-score-presentation`
+- Product head: `33977cf830de9fcab17753489beac990d7f59ac1`
+- Commit: `refactor(ui): consolidate health score presentation`
+- Changed files: 4, all inside the MP01 lease
+- Added canonical `HealthScore.tsx` and focused contract tests
+- Desktop caller retains compact layout
+- Mobile caller retains regular layout
+- Connector report: `signalguard-rs/phase-3.5/reports/P3.5-MP01/33977cf830de9fcab17753489beac990d7f59ac1.md`
+- Connector report commit: `163e90349f62a7d6f784b21981efd66983f33ae5`
+- Source-review result: accepted without qualification
+- Tests/build/bundle: not run by web worker
 
-- Report: `signalguard-rs/phase-3.5/inventory/P3.5-MP00B/c06082a97254bfa2f6ebd7e29a1ad753c4acc798.md`
-- Commit: `c115742575c2f47808473fe2f2c8a378e5d2f26d`
-- Accepted findings: 13
-- Priority A / B / C: 2 / 6 / 5
-- Rejected similarities: 8
+### P3.5-MP02 — Timeline market-health presentation reuse
 
-Accepted Wave 1 candidates:
+Status: `SOURCE_ACCEPTED_WAITING_FOR_MP01_INTEGRATION`
 
-1. desktop/mobile HealthScore consolidation;
-2. Timeline reuse of market-health presentation helpers;
-3. Dashboard anomaly modal reuse of canonical anomaly presentation helpers.
+- Product branch: `p35/mp02-timeline-presentation-reuse`
+- Product head: `e86d46161e8b99fed2b38f6e05240af0abe0f74b`
+- Commit: `refactor(ui): reuse market health presentation in timeline`
+- Changed files: 1, all inside the MP02 lease
+- Reuses six canonical market-health presentation helpers
+- Timeline-only chart, timestamp, anomaly, domain, and `marketStatusLabel` behavior remains local
+- No Recharts splitting or route-loading work was introduced
+- Connector report: `signalguard-rs/phase-3.5/reports/P3.5-MP02/e86d46161e8b99fed2b38f6e05240af0abe0f74b.md`
+- Connector report commit: `b83c7671c78e5f254fe19188a3577e43af045ca8`
+- Source-review result: accepted without qualification
+- Tests/build/bundle: not run by web worker
 
-### P3.5-MP00C-WEB — Dead code, exports, dependencies, and cycles
+### P3.5-MP03 — Dashboard anomaly presentation consolidation
 
-Status: `ACCEPTED_WEB_INVENTORY`
+Status: `SOURCE_ACCEPTED_WAITING_FOR_MP02_INTEGRATION`
 
-- Report: `signalguard-rs/phase-3.5/inventory/P3.5-MP00C-WEB/c06082a97254bfa2f6ebd7e29a1ad753c4acc798.md`
-- Commit: `5ffc52ca5ee5d3f25b27fb5ea96a4d23900145c1`
-- 51 production files inspected
-- 245 export bindings inventoried
-- 3 confirmed findings, including 2 cleanup candidates
-- 4 probable candidates
-- 2 verification-required groups
-- dependency deletion candidates: 0
-- credible cycles: 0
+- Product branch: `p35/mp03-dashboard-anomaly-presentation`
+- Product head: `9561f3ce86a78a37a1a82bcc592a3a2c94150200`
+- Commit: `refactor(ui): consolidate dashboard anomaly presentation`
+- Changed files: 4, all inside the exclusive MP03 lease
+- Dashboard now reuses canonical anomaly class/time/value helpers
+- Added pure canonical `formatAnomalyType`
+- Dashboard-owned `SeverityBadge` renderer remains local
+- Route/popup semantics, raw modal collection, resource identity, query ownership, copy, styling, Recharts, and market-health behavior remain unchanged
+- Connector report: `signalguard-rs/phase-3.5/reports/P3.5-MP03/9561f3ce86a78a37a1a82bcc592a3a2c94150200.md`
+- Connector report commit: `cb0bfee7ca1bf429cb5bb1ca68a4fcce43b52a80`
+- Source-review result: accepted without qualification
+- Tests/build/bundle: not run by web worker
 
-Accepted sequencing decision:
+## Integration queue
 
-- MP05 remains after MP04;
-- MP00C must be refreshed against the integrated tree before any deletion;
-- no dependency or lockfile change is currently justified.
+Integration is sequential and uses normal merge commits. Same-base worker branches are not rebased, amended, or force-pushed.
 
-### P3.5-MP00D — Test-guard maintainability audit
+1. `MP01` — current integration candidate
+2. `MP02` — integrate only after MP01 post-merge CI succeeds
+3. `MP03` — integrate only after MP02 post-merge CI succeeds
 
-Status: `ACCEPTED`
+For every candidate the Orchestrator must:
 
-- Report: `signalguard-rs/phase-3.5/inventory/P3.5-MP00D/c06082a97254bfa2f6ebd7e29a1ad753c4acc798.md`
-- Commit: `73408022752cc63dc77aeff7c897ad1c6a1dd889`
-- 42 test files inspected
-- 47 guard findings
-- KEEP_EXACT: 17
-- KEEP_BUT_NARROW: 18
-- REPLACE_WITH_BEHAVIOR: 8
-- REPLACE_WITH_TYPE_OR_API_CONTRACT: 1
-- REMOVE_REDUNDANT: 3
-- INVESTIGATE: 0
-
-MP06A/MP06B remain blocked until Wave 2.
-
-## Authorized Wave 1 workers
-
-All three workers start from exact SHA:
-
-`c06082a97254bfa2f6ebd7e29a1ad753c4acc798`
-
-They may implement concurrently because their leases do not overlap. Integration remains sequential.
-
-### P3.5-MP01 — Health-score presentation
-
-Status: `EXECUTION_AUTHORIZED`
-
-- Worker class: GitHub web implementation worker
-- Branch: `p35/mp01-health-score-presentation`
-- Required commit: `refactor(ui): consolidate health score presentation`
-- Writable: new `HealthScore.tsx` and focused test; MarketHealth desktop/mobile source and focused tests
-- Forbidden: DashboardPage, Timeline, marketHealthPresentation, anomaly/symbol-detail modules, shared status, router/config/package/budget/backend
-- Expected reduction: qualitative `medium`
-- Production total JS may not increase
-
-### P3.5-MP02 — Timeline presentation reuse
-
-Status: `EXECUTION_AUTHORIZED`
-
-- Worker class: GitHub web implementation worker
-- Branch: `p35/mp02-timeline-presentation-reuse`
-- Required commit: `refactor(ui): reuse market health presentation in timeline`
-- Writable: TimelinePanel source/test; marketHealthPresentation source/test only for a proven minimal status-label contract
-- Forbidden: DashboardPage, MarketHealth callers, anomaly/symbol-detail modules, adapters/view models/shared formatters, router/config/package/budget/backend
-- No Recharts or lazy-boundary work
-- Expected reduction: qualitative `medium`
-- Production total JS may not increase
-
-### P3.5-MP03 — Dashboard anomaly presentation
-
-Status: `EXECUTION_AUTHORIZED_HIGH_CONFLICT`
-
-- Worker class: GitHub web implementation worker
-- Branch: `p35/mp03-dashboard-anomaly-presentation`
-- Required commit: `refactor(ui): consolidate dashboard anomaly presentation`
-- Exclusive writable paths: `DashboardPage.tsx`, `DashboardPage.test.tsx`, `recentAnomaliesPresentation.ts`, `recentAnomaliesPresentation.test.ts`
-- No other worker may edit the Dashboard paths while MP03 is active
-- Forbidden: MarketHealth callers, Timeline, marketHealthPresentation, adapters/view models, symbol-detail/shared/router/config/package/budget/backend
-- Expected reduction: qualitative `medium`
-- Production total JS may not increase
-
-## Integration policy
-
-Recommended order:
-
-1. MP01;
-2. MP02;
-3. MP03.
-
-For each candidate:
-
-1. verify exact branch head and one logical commit;
-2. inspect complete diff and path lease;
-3. require focused tests;
-4. require full frontend tests, typecheck, lint, build, and bundle check;
-5. compare production JS against the candidate base;
-6. create draft PR only after acceptance;
-7. require merge-ref CI against the current phase branch;
-8. merge with a normal merge commit only after independent review;
-9. verify post-merge CI before integrating the next candidate.
-
-Workers do not merge. Same-base branches are not rebased.
+1. verify the exact immutable worker head;
+2. inspect the complete diff and lease compliance;
+3. create an integration candidate against the current phase branch without rewriting the worker branch;
+4. run focused frontend tests;
+5. run all frontend tests;
+6. run typecheck and lint;
+7. run production build and bundle check;
+8. compare raw and gzip JS against the current integrated candidate base;
+9. require no bundle-budget increase;
+10. create a draft PR only after local acceptance;
+11. require merge-ref CI against the current phase branch;
+12. merge normally only after independent review;
+13. require post-merge CI before advancing to the next worker.
 
 ## Current authorization
 
 Authorized:
 
-- MP01, MP02, and MP03 implementation on their exact assigned branches and leases;
-- independent worker reports;
-- Orchestrator exact-head review and later PR creation.
+- local/CI validation and integration preparation for MP01;
+- later sequential validation of MP02 and MP03 after their predecessor merges;
+- draft PR creation only after the corresponding exact-head executable gates pass;
+- connector integration reports and status updates.
 
 Not authorized:
 
-- worker merges;
+- worker branch rewrites;
+- parallel merges;
 - bundle-budget increase;
 - MP04–MP09 implementation;
 - MP06A/MP06B implementation;
 - Phase 4;
-- visual redesign, copy change, backend/API change, or ownership change outside exact leases.
+- visual redesign, product copy change, backend/API change, or ownership change outside exact leases.
 
 ## Next action
 
-Launch MP01, MP02, and MP03 as three separate GitHub web workers from the exact immutable base. Do not share writable branches or leases.
+Validate and integrate exact MP01 head `33977cf830de9fcab17753489beac990d7f59ac1` against current phase branch `refactor/dashboard-modules`.
+
+MP02 and MP03 remain frozen as accepted immutable worker heads until their integration turn.
