@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3.5 — Status
 
-Current state: `WAVE_1_INTEGRATED_MP04_CONTRACT_REQUIRED`
+Current state: `WAVE_2_MP04_IMPLEMENTATION_AUTHORIZED`
 
 ## Authoritative product state
 
@@ -120,11 +120,11 @@ The Phase 3.5 minimum target remains 8192 bytes. Wave 1 alone does not close the
 
 The connected GitHub workflow lookup available to the Orchestrator exposes pull-request-triggered runs rather than push-run history. Each actual merge tree was compared with its exact green PR merge-ref tree and had zero file differences. No separate push-run ID is claimed here.
 
-## Wave 2 authorization
+## Wave 2
 
 ### MP04 — Dashboard market-health consolidation
 
-Status: `CONTRACT_PREPARATION_AUTHORIZED`
+Status: `IMPLEMENTATION_AUTHORIZED`
 
 Dependencies are satisfied:
 
@@ -132,16 +132,47 @@ Dependencies are satisfied:
 - MP03 integrated;
 - current phase head fixed at `4b90a9fe9e4ddda9b0b9411857e5d8b2c3685c69`.
 
-The Orchestrator may publish an exact MP04 contract and path lease. Implementation must not start before that contract exists.
+Authoritative contract:
+
+`signalguard-rs/phase-3.5/prompts/P3.5-MP04.md`
+
+Contract commit:
+
+`ca0bd5e7e6e732b7017dca06927528f537e760c9`
+
+Worker class:
+
+`local Codex implementation worker`
+
+Required instruction:
+
+`Use the $rust-development skill.`
+
+Assigned product branch:
+
+`p35/mp04-dashboard-market-health-presentation`
+
+Required product commit:
+
+`refactor(ui): consolidate dashboard market health presentation`
+
+Exact writable lease:
+
+- `web/src/pages/DashboardPage.tsx`;
+- `web/src/pages/DashboardPage.test.tsx`;
+- `web/src/features/dashboard/marketHealthPresentation.ts`;
+- `web/src/features/dashboard/marketHealthPresentation.test.ts`.
 
 Required direction:
 
-- migrate Dashboard full-market modal score rendering to the canonical `HealthScore` owner;
-- reuse accepted market-health formatting and availability/status owners where semantics are identical;
-- remove remaining Dashboard-local duplicate score and formatting helpers;
-- preserve modal, popup, resource, query, keyboard, copy, styling, and visual behavior;
-- exclusive lease on `DashboardPage.tsx` and focused tests;
-- no production-JS increase.
+- migrate Dashboard full-market modal score rendering to canonical `HealthScore`;
+- reuse accepted market-health formatter, availability, and status owners;
+- add a focused general canonical `marketStatusLabel` contract;
+- remove remaining Dashboard-local score and market formatting owners;
+- preserve modal, popup, resource, query, keyboard, copy, styling, routes, ticker, Timeline, anomaly, and visual behavior;
+- run full local frontend and repository gates;
+- raw production JS may not exceed 758875 bytes;
+- no PR or merge by the worker.
 
 ### MP05
 
@@ -167,13 +198,15 @@ Status: `BLOCKED_BY_CHECKPOINT_3_5`
 
 Authorized:
 
-- publish the exact P3.5-MP04 contract against phase head `4b90a9fe9e4ddda9b0b9411857e5d8b2c3685c69`;
-- prepare an isolated MP04 implementation branch/worktree under the contract;
-- update connector reports and control files.
+- execute exact P3.5-MP04 contract against phase head `4b90a9fe9e4ddda9b0b9411857e5d8b2c3685c69`;
+- create and push only `p35/mp04-dashboard-market-health-presentation` under the contract;
+- publish the MP04 connector implementation report;
+- update connector reports and control files through the Orchestrator.
 
 Not authorized:
 
-- MP04 implementation before contract publication;
+- MP04 changes outside the exact lease;
+- MP04 worker PR creation or merge;
 - MP05–MP09 implementation;
 - parallel edits to Dashboard paths;
 - bundle-budget increase;
@@ -183,4 +216,4 @@ Not authorized:
 
 ## Next action
 
-Publish `signalguard-rs/phase-3.5/prompts/P3.5-MP04.md` for exact product base `4b90a9fe9e4ddda9b0b9411857e5d8b2c3685c69`.
+Run the exact local Codex contract at `signalguard-rs/phase-3.5/prompts/P3.5-MP04.md`.
