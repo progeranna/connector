@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3.5 — Status
 
-Current state: `WAVE_2_MP05_INTEGRATED_MP06A_MP06B_AUTHORIZED`
+Current state: `WAVE_2_MP06B_SOURCE_ACCEPTED_WAITING_FOR_MP06A`
 
 ## Authoritative product state
 
@@ -145,7 +145,7 @@ The initial MP05 modifier-only attempt correctly stopped at `P3_5_MP05_BLOCKED_B
 
 ### MP06A — Market-health and timeline test guards
 
-Status: `IMPLEMENTATION_AUTHORIZED`
+Status: `IMPLEMENTATION_PENDING`
 
 - Contract: `signalguard-rs/phase-3.5/prompts/P3.5-MP06A.md`
 - Contract commit: `c51876c750d7ed35344299d22b8306b002e3657c`
@@ -157,27 +157,41 @@ Status: `IMPLEMENTATION_AUTHORIZED`
 - Exclusive path: `web/src/pages/DashboardPage.test.tsx`
 - Production writes: forbidden
 - Worker PR/merge: forbidden
+- Current branch state at acceptance of MP06B: identical to the exact base, zero commits ahead and zero behind.
 
 ### MP06B — Anomaly and symbol-detail test guards
 
-Status: `IMPLEMENTATION_AUTHORIZED`
+Status: `SOURCE_ACCEPTED_AWAITING_MP06A_INTEGRATION`
 
 - Contract: `signalguard-rs/phase-3.5/prompts/P3.5-MP06B.md`
 - Contract commit: `90d2ab1c1d3b9d6d2e6f0773a757357bd6e31b8a`
 - Worker class: GitHub web implementation worker
 - Exact base: `21fec6d357b365a3710c8e7118a467564247dee6`
 - Assigned branch: `p35/mp06b-symbol-detail-test-guards`
-- Required commit: `test(ui): modernize anomaly and symbol detail guards`
-- Lease: six exact test files listed in the contract
-- Exclusive path: `web/src/pages/DashboardPage.popup.test.tsx`
-- Production writes: forbidden
-- Worker PR/merge: forbidden
+- Worker head: `0fbc488476a5b0efb657f88a06f26aa67c620c7c`
+- Required and actual commit: `test(ui): modernize anomaly and symbol detail guards`
+- History: exactly one commit ahead and zero behind the exact base
+- Changed scope: five leased test files only
+- Audited unchanged leased file: `web/src/features/dashboard/SymbolDetailMetrics.test.tsx`
+- Unchanged file blob at base and worker head: `b67df30b29438b8ff055e9f830e74dbce9edd26c`
+- Production changes: none
+- MP06A-leased changes: none
+- Worker report: `signalguard-rs/phase-3.5/reports/P3.5-MP06B/0fbc488476a5b0efb657f88a06f26aa67c620c7c.md`
+- Worker report commit: `cd15263c3403f582231b0b765082ea5c8c00d10d`
+- Terminal disposition: `P3_5_MP06B_IMPLEMENTATION_COMPLETE`
+- Executable npm, Vitest, TypeScript, ESLint, build, bundle, and Rust gates: deferred to Orchestrator merge-ref CI
+- PR: not opened
+- Merge: not performed
 
-MP06A and MP06B may execute concurrently because their exact leases do not overlap. Integration is sequential:
+Source review accepted the replacement of brittle internal-name, source-slicing, broad-word, and exact-JSX guards with behavioral identity, mode-isolation, state, accessibility, visual-parity, and explicit import/API boundary checks. Exact `GUARD-031` visual distinctions and unchanged `GUARD-034` remain preserved.
+
+MP06B is frozen on the immutable worker head until MP06A is accepted, validated, and integrated. Do not rebase or modify the MP06B worker branch.
+
+Integration order remains:
 
 `MP06A -> MP06B`
 
-Branches from the same base must not be rebased. Current-base PR merge-ref CI is authoritative.
+Current-base PR merge-ref CI is authoritative for each integration.
 
 ## Wave 3
 
@@ -199,15 +213,17 @@ The connected workflow lookup exposes pull-request-triggered runs rather than pu
 
 Authorized:
 
-- execute MP06A and MP06B concurrently from exact base `21fec6d357b365a3710c8e7118a467564247dee6`;
-- create and push only their assigned branches;
-- create exactly one logical commit per worker with the required message;
-- modify only the exact leased test files;
-- publish each required connector implementation report;
+- complete MP06A from exact base `21fec6d357b365a3710c8e7118a467564247dee6` under its exact eleven-file test lease;
+- create and push only `p35/mp06a-market-health-test-guards` with exactly one logical commit and the required message;
+- publish the MP06A connector implementation report;
+- retain MP06B unchanged at immutable head `0fbc488476a5b0efb657f88a06f26aa67c620c7c`;
+- after MP06A source acceptance, run sequential Orchestrator merge-ref CI and integration in order `MP06A -> MP06B`;
 - update connector reports and control files through the Orchestrator.
 
 Not authorized:
 
+- opening or merging an MP06B integration PR before MP06A integration;
+- modifying or rebasing the accepted MP06B worker branch;
 - any production-file change in MP06A or MP06B;
 - overlapping edits between the two workers;
 - worker PR creation or merge;
@@ -219,7 +235,6 @@ Not authorized:
 
 ## Next action
 
-Launch the two exact GitHub web-worker contracts in parallel:
+Complete and report MP06A. Keep MP06B frozen at:
 
-- `signalguard-rs/phase-3.5/prompts/P3.5-MP06A.md`
-- `signalguard-rs/phase-3.5/prompts/P3.5-MP06B.md`
+`0fbc488476a5b0efb657f88a06f26aa67c620c7c`
