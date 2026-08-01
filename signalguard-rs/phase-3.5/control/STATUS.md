@@ -1,24 +1,39 @@
 # SignalGuard RS Phase 3.5 — Status
 
-Current state: `WAVE_2_MP04_IMPLEMENTATION_AUTHORIZED`
+Current state: `WAVE_2_MP04_INTEGRATED_MP00C_R1_AUTHORIZED`
 
 ## Authoritative product state
 
 - Product repository: `progeranna/signalguard-rs`
 - Phase branch: `refactor/dashboard-modules`
 - Immutable Phase 3.5 starting SHA: `c06082a97254bfa2f6ebd7e29a1ad753c4acc798`
-- Current integrated phase head: `4b90a9fe9e4ddda9b0b9411857e5d8b2c3685c69`
-- Checkpoint 2 CI: `30548108769` — success
+- Current integrated phase head: `0027679f7a5b2cc783098b1d4a625e1638bee67d`
 - Phase 4 remains blocked until Checkpoint 3.5.
 
-## Baseline
+## Baseline and current quantitative state
 
-- Frontend test files: 42
-- Frontend tests: 607
-- Production JS raw: 761856 bytes
-- Production JS gzip: 220163 bytes
-- Largest/total JS budget: 761856 bytes
-- Headroom: 0 bytes
+Phase 3.5 starting baseline:
+
+- frontend: 42 test files, 607 tests;
+- production JS raw: `761856` bytes;
+- production JS gzip: `220163` bytes;
+- largest/total JS budget: `761856` bytes;
+- headroom: `0` bytes.
+
+Current integrated state after MP04:
+
+- frontend: 43 test files, 629 tests;
+- TypeScript: pass;
+- lint: pass;
+- production build: pass;
+- bundle check: pass;
+- raw JS: `757217` bytes;
+- Vite gzip display: `219.99 kB`;
+- budget: `761856` bytes, unchanged;
+- headroom: `4639` bytes;
+- cumulative raw reduction: `4639` bytes.
+
+Phase 3.5 minimum target remains `8192` bytes. Remaining reduction required to reach the minimum target is `3553` bytes.
 
 ## Wave 0
 
@@ -32,16 +47,20 @@ Accepted audits:
 
 - MP00A-WEB: static route and Recharts dependency graph;
 - MP00B: duplicate implementation inventory;
-- MP00C-WEB: dead-code/export/dependency inventory, with deletion deferred;
+- MP00C-WEB: initial dead-code/export/dependency inventory, with deletion deferred;
 - MP00D: test-guard maintainability inventory.
 
 ## Wave 1
 
 Status: `INTEGRATED`
 
-Integration was sequential: `MP01 -> MP02 -> MP03`.
+Integration order:
 
-All workers started from the immutable Phase 3.5 base. Worker branches were not rebased, amended, reset, force-pushed, or otherwise rewritten. Every candidate passed exact current-base PR merge-ref CI before a normal merge commit.
+`MP01 -> MP02 -> MP03`
+
+Final Wave 1 phase head:
+
+`4b90a9fe9e4ddda9b0b9411857e5d8b2c3685c69`
 
 Integration report:
 
@@ -55,136 +74,107 @@ Terminal disposition:
 
 `P3_5_WAVE_1_INTEGRATION_COMPLETE`
 
-### MP01 — Health-score presentation
+### MP01
 
-Status: `MERGED`
-
-- Immutable worker head: `33977cf830de9fcab17753489beac990d7f59ac1`
-- Pull request: `#57`
-- Tested merge ref: `aa997de7e3fd4304c1df368199a0ed58a97171f5`
-- CI run: `30700589902` — success
+- Worker head: `33977cf830de9fcab17753489beac990d7f59ac1`
+- PR: `#57`
+- CI: `30700589902` — success
 - Merge commit: `93cb115a02509cc92384dc1746c761e2c875c8eb`
-- Frontend: 43 test files, 624 tests
-- Raw JS: 760751 bytes
-- Headroom: 1105 bytes
-- Tested merge-ref and actual merge trees: identical
+- Raw JS: `760751` bytes.
 
-### MP02 — Timeline market-health presentation reuse
+### MP02
 
-Status: `MERGED`
-
-- Immutable worker head: `e86d46161e8b99fed2b38f6e05240af0abe0f74b`
-- Integration head: `10d0776999e02d837ee1148a69140d5dce19114a`
-- Pull request: `#58`
-- Tested merge ref: `5d50ef592e0501d804e1888cd6625f06d447184a`
-- CI run: `30700795882` — success
+- Worker head: `e86d46161e8b99fed2b38f6e05240af0abe0f74b`
+- PR: `#58`
+- CI: `30700795882` — success
 - Merge commit: `0d032bd3082e3351227387a45a17fe06cd1c3a21`
-- Frontend: 43 test files, 624 tests
-- Raw JS: 760148 bytes
-- Headroom: 1708 bytes
-- Tested merge-ref and actual merge trees: identical
+- Raw JS: `760148` bytes.
 
-### MP03 — Dashboard anomaly presentation
+### MP03
 
-Status: `MERGED`
+- Worker head: `9561f3ce86a78a37a1a82bcc592a3a2c94150200`
+- PR: `#59`
+- CI: `30700972480` — success
+- Merge commit: `4b90a9fe9e4ddda9b0b9411857e5d8b2c3685c69`
+- Raw JS: `758875` bytes.
 
-- Immutable worker head: `9561f3ce86a78a37a1a82bcc592a3a2c94150200`
-- Integration head: `870b24f52eb9f8560365f0cc7bf0861e446e0d92`
-- Pull request: `#59`
-- Tested merge ref: `0e4270c027dd316b97fddd17eed20ebc2db6ddc9`
-- CI run: `30700972480` — success
-- Merge commit and current phase head: `4b90a9fe9e4ddda9b0b9411857e5d8b2c3685c69`
-- Frontend: 43 test files, 627 tests
-- Raw JS: 758875 bytes
-- Headroom: 2981 bytes
-- Tested merge-ref and actual merge trees: identical
-
-## Wave 1 quantitative result
-
-- Final frontend test files: 43
-- Final frontend tests: 627
-- Typecheck: pass
-- Lint: pass
-- Production build: pass
-- Bundle check: pass
-- Final production JS raw: 758875 bytes
-- Final Vite gzip display: 220.36 kB
-- Existing budget: 761856 bytes
-- Final headroom: 2981 bytes
-- Total raw reduction: 2981 bytes
-- Budget increase: none
-
-The Phase 3.5 minimum target remains 8192 bytes. Wave 1 alone does not close the phase.
-
-## Evidence boundary
-
-The connected GitHub workflow lookup available to the Orchestrator exposes pull-request-triggered runs rather than push-run history. Each actual merge tree was compared with its exact green PR merge-ref tree and had zero file differences. No separate push-run ID is claimed here.
+Each tested PR merge-ref tree was identical to its actual merge tree.
 
 ## Wave 2
 
 ### MP04 — Dashboard market-health consolidation
 
-Status: `IMPLEMENTATION_AUTHORIZED`
+Status: `INTEGRATED`
 
-Dependencies are satisfied:
+- Contract: `signalguard-rs/phase-3.5/prompts/P3.5-MP04.md`
+- Contract commit: `ca0bd5e7e6e732b7017dca06927528f537e760c9`
+- Worker branch: `p35/mp04-dashboard-market-health-presentation`
+- Worker head: `a36caf7201f8c7e9adf91ecf2238db23a6f083ef`
+- Worker report: `signalguard-rs/phase-3.5/reports/P3.5-MP04/a36caf7201f8c7e9adf91ecf2238db23a6f083ef.md`
+- Worker report commit: `bd02eef895bf86ba7f9f54f88408de48d07d6f76`
+- Integration PR: `#60`
+- Tested merge ref: `e893437a7b6ca812c5d9f534064e84cfc554a116`
+- CI run: `30703462034` — success
+- Merge commit and current phase head: `0027679f7a5b2cc783098b1d4a625e1638bee67d`
+- Frontend: 43 test files, 629 tests
+- Raw JS: `757217` bytes
+- Headroom: `4639` bytes
+- Tested merge-ref and actual merge trees: identical
+- Integration report: `signalguard-rs/phase-3.5/reports/P3.5-MP04-INTEGRATION/0027679f7a5b2cc783098b1d4a625e1638bee67d.md`
+- Integration report commit: `f313f2a2d15b43e31b61d0b405b4a6c495615940`
+- Terminal disposition: `P3_5_MP04_INTEGRATION_COMPLETE`
 
-- MP01 integrated;
-- MP03 integrated;
-- current phase head fixed at `4b90a9fe9e4ddda9b0b9411857e5d8b2c3685c69`.
+### MP00C-R1 — Refreshed dead-code/export/dependency/cycle audit
+
+Status: `AUDIT_AUTHORIZED`
+
+Purpose:
+
+- refresh the original MP00C inventory against exact integrated SHA `0027679f7a5b2cc783098b1d4a625e1638bee67d`;
+- run authoritative compiler, export, importer, dependency, and cycle analysis;
+- publish only `CONFIRMED` deletion candidates for MP05;
+- distinguish current findings from original MP00C-WEB false positives and stale candidates.
 
 Authoritative contract:
 
-`signalguard-rs/phase-3.5/prompts/P3.5-MP04.md`
+`signalguard-rs/phase-3.5/prompts/P3.5-MP00C-R1.md`
 
 Contract commit:
 
-`ca0bd5e7e6e732b7017dca06927528f537e760c9`
+`a5f842b8d7ec1018549acd50aeb5607214333d6f`
 
 Worker class:
 
-`local Codex implementation worker`
+`local Codex read-only product audit`
 
 Required instruction:
 
 `Use the $rust-development skill.`
 
-Assigned product branch:
+Required report path:
 
-`p35/mp04-dashboard-market-health-presentation`
+`signalguard-rs/phase-3.5/inventory/P3.5-MP00C-R1/0027679f7a5b2cc783098b1d4a625e1638bee67d.md`
 
-Required product commit:
-
-`refactor(ui): consolidate dashboard market health presentation`
-
-Exact writable lease:
-
-- `web/src/pages/DashboardPage.tsx`;
-- `web/src/pages/DashboardPage.test.tsx`;
-- `web/src/features/dashboard/marketHealthPresentation.ts`;
-- `web/src/features/dashboard/marketHealthPresentation.test.ts`.
-
-Required direction:
-
-- migrate Dashboard full-market modal score rendering to canonical `HealthScore`;
-- reuse accepted market-health formatter, availability, and status owners;
-- add a focused general canonical `marketStatusLabel` contract;
-- remove remaining Dashboard-local score and market formatting owners;
-- preserve modal, popup, resource, query, keyboard, copy, styling, routes, ticker, Timeline, anomaly, and visual behavior;
-- run full local frontend and repository gates;
-- raw production JS may not exceed 758875 bytes;
-- no PR or merge by the worker.
+No product write, product branch, product commit, PR, or merge is authorized.
 
 ### MP05
 
-Status: `BLOCKED_BY_MP04_AND_REFRESHED_MP00C`
+Status: `BLOCKED_BY_MP00C_R1_ACCEPTANCE`
 
-MP05 requires MP04 integration and a refreshed dead-code/export/dependency inventory against the then-current integrated tree.
+MP05 implementation requires:
+
+1. completed MP00C-R1 report;
+2. independent Orchestrator verification and acceptance;
+3. exact confirmed deletion set;
+4. exact writable lease and implementation contract.
+
+No deletion is authorized merely because it appeared in the original MP00C-WEB audit.
 
 ### MP06A / MP06B
 
 Status: `BLOCKED_BY_MP05`
 
-These test-only tasks may run in parallel only after MP05.
+These test-only tasks may run in parallel only after MP05 is accepted and integrated.
 
 ### MP07–MP09
 
@@ -194,26 +184,31 @@ Status: `BLOCKED_BY_WAVE_2`
 
 Status: `BLOCKED_BY_CHECKPOINT_3_5`
 
+## Evidence boundary
+
+The connected workflow lookup exposes pull-request-triggered runs rather than push-run history. For every accepted integration, the actual merge tree was directly compared with the exact green PR merge-ref tree and had zero file differences. No separate push-run ID is claimed.
+
 ## Current authorization
 
 Authorized:
 
-- execute exact P3.5-MP04 contract against phase head `4b90a9fe9e4ddda9b0b9411857e5d8b2c3685c69`;
-- create and push only `p35/mp04-dashboard-market-health-presentation` under the contract;
-- publish the MP04 connector implementation report;
+- execute exact read-only P3.5-MP00C-R1 audit against product SHA `0027679f7a5b2cc783098b1d4a625e1638bee67d`;
+- create no product branch or product commit;
+- publish only the required connector inventory report;
 - update connector reports and control files through the Orchestrator.
 
 Not authorized:
 
-- MP04 changes outside the exact lease;
-- MP04 worker PR creation or merge;
-- MP05–MP09 implementation;
-- parallel edits to Dashboard paths;
+- MP05 implementation or deletion;
+- package or lockfile mutation;
+- MP06A/MP06B implementation;
+- MP07–MP09 implementation;
 - bundle-budget increase;
-- worker branch history rewriting;
 - Phase 4;
-- visual redesign, product copy change, backend/API change, or ownership change outside the exact lease.
+- product feature, copy, visual, route, API, backend, resource-identity, or ownership changes.
 
 ## Next action
 
-Run the exact local Codex contract at `signalguard-rs/phase-3.5/prompts/P3.5-MP04.md`.
+Run the exact local Codex audit contract at:
+
+`signalguard-rs/phase-3.5/prompts/P3.5-MP00C-R1.md`
