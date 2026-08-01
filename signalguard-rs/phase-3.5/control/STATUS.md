@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3.5 — Status
 
-Current state: `WAVE_2_MP04_INTEGRATED_MP00C_R1_AUTHORIZED`
+Current state: `WAVE_2_MP00C_R1_ACCEPTED_MP05_IMPLEMENTATION_AUTHORIZED`
 
 ## Authoritative product state
 
@@ -126,53 +126,103 @@ Status: `INTEGRATED`
 
 ### MP00C-R1 — Refreshed dead-code/export/dependency/cycle audit
 
-Status: `AUDIT_AUTHORIZED`
+Status: `ACCEPTED`
 
-Purpose:
+- Exact audited product SHA: `0027679f7a5b2cc783098b1d4a625e1638bee67d`
+- Report: `signalguard-rs/phase-3.5/inventory/P3.5-MP00C-R1/0027679f7a5b2cc783098b1d4a625e1638bee67d.md`
+- Report commit: `ccdf3b81cc543a594876065240f82049226faa52`
+- Report commit message: `docs(phase-3.5): publish refreshed dead-code audit`
+- Terminal disposition: `P3_5_MP00C_R1_AUDIT_COMPLETE`
+- Product mutation: none
+- Compiler no-unused diagnostics: none
+- Direct package deletion candidates: none
+- Credible import cycles: none
 
-- refresh the original MP00C inventory against exact integrated SHA `0027679f7a5b2cc783098b1d4a625e1638bee67d`;
-- run authoritative compiler, export, importer, dependency, and cycle analysis;
-- publish only `CONFIRMED` deletion candidates for MP05;
-- distinguish current findings from original MP00C-WEB false positives and stale candidates.
+Finding disposition:
+
+- `CONFIRMED`: 13 stable finding records;
+- `PROBABLE`: 4, retained;
+- `NEEDS_LOCAL_VERIFICATION`: 7, retained;
+- `INTENTIONAL`: 4, retained;
+- `FALSE_POSITIVE`: 3, rejected.
+
+Accepted MP05 candidate boundary:
+
+- two dead production declarations plus their private implementation helper where unreachable;
+- export-modifier removal only for independently proven same-module or fixture-internal symbols;
+- nine exact writable paths;
+- no file deletion;
+- no dependency, manifest, lockfile, configuration, budget, route, API, backend, UI, or product-copy change.
+
+Explicitly excluded from MP05:
+
+- `dashboardResourceState.ts`;
+- `Tooltip.tsx`;
+- `replaceSymbolPopupSymbol`;
+- the `DEMO_MARKETS` compatibility re-export;
+- runtime-mode and broad schema/type exports;
+- query-key bridges;
+- defensive fallback branches;
+- every probable or verification-required finding.
+
+### MP05 — Confirmed dead exports and declarations
+
+Status: `IMPLEMENTATION_AUTHORIZED`
 
 Authoritative contract:
 
-`signalguard-rs/phase-3.5/prompts/P3.5-MP00C-R1.md`
+`signalguard-rs/phase-3.5/prompts/P3.5-MP05.md`
 
 Contract commit:
 
-`a5f842b8d7ec1018549acd50aeb5607214333d6f`
+`869041a3f9e236539f4e0d273867d1b995e953a0`
 
 Worker class:
 
-`local Codex read-only product audit`
+`local Codex implementation worker`
 
 Required instruction:
 
 `Use the $rust-development skill.`
 
-Required report path:
+Exact base:
 
-`signalguard-rs/phase-3.5/inventory/P3.5-MP00C-R1/0027679f7a5b2cc783098b1d4a625e1638bee67d.md`
+`0027679f7a5b2cc783098b1d4a625e1638bee67d`
 
-No product write, product branch, product commit, PR, or merge is authorized.
+Assigned product branch:
 
-### MP05
+`p35/mp05-confirmed-dead-code`
 
-Status: `BLOCKED_BY_MP00C_R1_ACCEPTANCE`
+Required product commit:
 
-MP05 implementation requires:
+`refactor(ui): remove confirmed dead exports and declarations`
 
-1. completed MP00C-R1 report;
-2. independent Orchestrator verification and acceptance;
-3. exact confirmed deletion set;
-4. exact writable lease and implementation contract.
+Exact writable lease:
 
-No deletion is authorized merely because it appeared in the original MP00C-WEB audit.
+- `web/src/features/dashboard/MarketHealthMobileCards.tsx`;
+- `web/src/features/dashboard/marketOrder.ts`;
+- `web/src/features/dashboard/marketCatalog.ts`;
+- `web/src/features/dashboard/api.ts`;
+- `web/src/test/marketFixtures.ts`;
+- `web/src/test/deferredFetch.ts`;
+- `web/src/shared/api/client.ts`;
+- `web/src/test/statusDescriptorFixtures.ts`;
+- `web/src/test/uiSmokeMatrix.ts`.
+
+Required boundaries:
+
+- re-run importer/dynamic/public-entry evidence before edits;
+- remove only the exact authorized dead declarations and export modifiers;
+- no test assertion file changes;
+- no probable or verification-required candidate changes;
+- no package/lockfile/config/budget changes;
+- full frontend, no-unused, Knip, Madge, Rust, Compose, and script gates;
+- raw production JS must remain `<= 757217` bytes;
+- no PR or merge by the worker.
 
 ### MP06A / MP06B
 
-Status: `BLOCKED_BY_MP05`
+Status: `BLOCKED_BY_MP05_INTEGRATION`
 
 These test-only tasks may run in parallel only after MP05 is accepted and integrated.
 
@@ -192,15 +242,19 @@ The connected workflow lookup exposes pull-request-triggered runs rather than pu
 
 Authorized:
 
-- execute exact read-only P3.5-MP00C-R1 audit against product SHA `0027679f7a5b2cc783098b1d4a625e1638bee67d`;
-- create no product branch or product commit;
-- publish only the required connector inventory report;
+- execute exact P3.5-MP05 contract against product SHA `0027679f7a5b2cc783098b1d4a625e1638bee67d`;
+- create and push only `p35/mp05-confirmed-dead-code` under the exact lease;
+- create exactly one product commit with the required message;
+- publish the required connector implementation report;
 - update connector reports and control files through the Orchestrator.
 
 Not authorized:
 
-- MP05 implementation or deletion;
-- package or lockfile mutation;
+- product edits outside the exact MP05 lease;
+- file, package, or dependency deletion beyond the exact confirmed set;
+- probable or verification-required candidate changes;
+- test assertion rewrites;
+- MP05 worker PR creation or merge;
 - MP06A/MP06B implementation;
 - MP07–MP09 implementation;
 - bundle-budget increase;
@@ -209,6 +263,6 @@ Not authorized:
 
 ## Next action
 
-Run the exact local Codex audit contract at:
+Run the exact local Codex implementation contract at:
 
-`signalguard-rs/phase-3.5/prompts/P3.5-MP00C-R1.md`
+`signalguard-rs/phase-3.5/prompts/P3.5-MP05.md`
