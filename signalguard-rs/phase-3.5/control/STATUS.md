@@ -1,137 +1,149 @@
 # SignalGuard RS Phase 3.5 — Status
 
-Current state: `WAVE_3_COMPLETE_CHECKPOINT_3_5_EVIDENCE_AUTHORIZED`
+Current state: `PHASE_3_5_CHECKPOINT_CLOSED_PHASE_4_NOT_AUTHORIZED`
 
-## Authoritative product state
+## Terminal disposition
+
+`P3_5_CHECKPOINT_3_5_CLOSED`
+
+Phase 3.5 is complete and Checkpoint 3.5 is independently closed. Phase 4 has not been authorized by this transition and requires a separate exact-base planning and contract step.
+
+## Authoritative product identity
 
 - Product repository: `progeranna/signalguard-rs`
 - Phase branch: `refactor/dashboard-modules`
 - Immutable Phase 3.5 starting SHA: `c06082a97254bfa2f6ebd7e29a1ad753c4acc798`
-- Current integrated Phase 3.5 head: `09e0cbaa8cafd7c0523bb4ed539c01b2f7ad0b27`
-- Phase branch resolves exactly to the current integrated head.
-- Phase 4 remains blocked until Checkpoint 3.5 is independently closed.
+- Final integrated Phase 3.5 SHA: `09e0cbaa8cafd7c0523bb4ed539c01b2f7ad0b27`
+- Final product tree: `0ad193d7aca4b668ba51232b7bf8362ddd066e10`
+- Remote phase branch resolves exactly to the final integrated SHA.
 
-## Final integrated quantitative state
+## Final CI evidence
 
-- frontend: `45` test files, `653` tests;
-- Node bundle-policy suite: `25` tests;
-- TypeScript: pass;
-- ESLint: pass with zero warnings;
-- production build: pass;
-- transformed modules: `140`;
-- emitted JavaScript assets: `1` initial, `0` async;
-- initial raw JS: `395700` bytes;
-- largest raw JS: `395700` bytes;
-- total raw JS: `395700` bytes;
-- direct gzip: `113042` bytes;
-- initial budget: `409600`, headroom `13900` bytes;
-- largest budget: `409600`, headroom `13900` bytes;
-- total budget: `414720`, headroom `19020` bytes;
-- Recharts and its measured transitive production graph: removed;
-- no budget increase.
+### Final integration PR
+
+- PR: `#67`
+- Tested merge ref: `67ec5488b8747ceeb8f09b3fb4c921af24c05eff`
+- Authoritative PR CI run: `30721976267` — success
+- Frontend job: `91427128390` — success
+- Rust job: `91427128400` — success
+- Green merge-ref tree and final integrated tree: identical
+
+### Final-SHA post-merge CI
+
+- Push-triggered run: `30722022839` — success
+- Branch: `refactor/dashboard-modules`
+- Exact head SHA: `09e0cbaa8cafd7c0523bb4ed539c01b2f7ad0b27`
+- Frontend job: `91427246502` — success
+- Rust job: `91427246542` — success
+
+## Final validation state
+
+- Node bundle-policy suite: `25` passed, `0` failed
+- Vitest: `45` files, `653` tests passed
+- TypeScript: pass
+- ESLint: pass with zero warnings
+- Production build: pass
+- Transformed frontend modules: `140`
+- Rust tests: `379` passed, `0` failed, `23` intentionally ignored
+- Replay E2E: `0` failed, `2` service-dependent tests intentionally ignored
+- API-contract check and validation: pass
+- Clippy with warnings denied: pass
+- Docker Compose configurations: pass
+- Shell-script syntax gates: pass
+
+## Final bundle ledger
+
+- Initial raw JS: `395700` bytes
+- Largest raw JS: `395700` bytes
+- Total raw JS: `395700` bytes
+- Direct gzip: `113042` bytes
+- Initial budget: `409600`; headroom: `13900` bytes
+- Largest budget: `409600`; headroom: `13900` bytes
+- Total budget: `414720`; headroom: `19020` bytes
+- Emitted JavaScript: `1` initial asset, `0` async assets
+- Duplicate emitted module IDs: `0`
+- Recharts and its measured transitive production graph: absent
+- No bundle budget was increased
 
 Phase 3.5 movement from the immutable start:
 
-- tests: `42 / 607 -> 45 / 653`;
-- raw JS: `761856 -> 395700`, reduction `366156` bytes;
-- direct gzip: `220163 -> 113042`, reduction `107121` bytes;
-- minimum `8192`-byte and preferred `16384`-byte headroom targets exceeded.
+- frontend tests: `42 / 607 -> 45 / 653`
+- raw JS: `761856 -> 395700`, reduction `366156` bytes
+- direct gzip: `220163 -> 113042`, reduction `107121` bytes
+- minimum `8192`-byte and preferred `16384`-byte total-headroom targets exceeded
 
-## Integrated waves
+## Visual and runtime acceptance
 
-### Wave 1
+Production-preview browser validation passed for required routes, direct navigation and refresh, Demo/Live and BTC/ETH isolation, route/popup differences, timeline resource states, anomaly markers, pointer and keyboard tooltips, inclusive `±15s` matching, responsive behavior, ticker behavior, request counts, retry behavior, and renderer initialization/remount checks.
 
-Integration order: `MP01 -> MP02 -> MP03`
+Visual acceptance passed. Only the three previously authorized native-SVG differences were observed:
 
-Final Wave 1 head: `4b90a9fe9e4ddda9b0b9411857e5d8b2c3685c69`
+1. straight native-SVG polyline instead of Recharts monotone interpolation;
+2. slight native-SVG tick-position/value differences;
+3. CSS-sized mobile labels.
 
-### Wave 2
+No additional material layout, copy, route, popup, ticker, accessibility, or presentation regression was accepted.
 
-Integration order: `MP04 -> MP05 -> MP06A -> MP06B`
+## Checkpoint artifacts
 
-Final Wave 2 head: `9c8aed635e57272fc834c1ddcdbc3dbf33cf4328`
+Evidence report:
 
-### Wave 3 measurements
+`signalguard-rs/phase-3.5/checkpoints/Checkpoint-3.5/09e0cbaa8cafd7c0523bb4ed539c01b2f7ad0b27.md`
 
-- MP07 route splitting: measurement accepted, implementation rejected because total JS increased.
-- MP08 lazy Recharts boundary: measurement accepted, implementation rejected because total JS increased.
-- MP08B Recharts-free native SVG renderer: accepted and integrated.
+Archive:
 
-### MP08B integration
+`signalguard-rs/phase-3.5/checkpoints/Checkpoint-3.5/signalguard-rs-refactor-dashboard-modules-09e0cbaa8c.zip`
 
-- worker head: `564cc6e8b5b584625e1a168c27657ecb269700d0`;
-- PR: `#66`;
-- tested merge ref: `5a342a9bdd2a7330ef84fb83832f7b60158b7456`;
-- CI run: `30721050915` — success;
-- merge commit: `38a1cc440a264d9e04fad3c699386fd45778797f`;
-- merge-ref and actual merge trees: identical;
-- integration report: `signalguard-rs/phase-3.5/reports/P3.5-MP08B-INTEGRATION/38a1cc440a264d9e04fad3c699386fd45778797f.md`.
+Checksum file:
 
-### MP09-R1 integration
+`signalguard-rs/phase-3.5/checkpoints/Checkpoint-3.5/signalguard-rs-refactor-dashboard-modules-09e0cbaa8c.zip.sha256`
 
-- original MP09 blocker: Node `*.test.mjs` policy suite was also discovered by Vitest;
-- recovery worker head: `b1e574705dea0ae2e3fb682cbd187ce4e3d717ff`;
-- exact recovery scope: six bundle-policy/configuration paths;
-- PR: `#67`;
-- tested merge ref: `67ec5488b8747ceeb8f09b3fb4c921af24c05eff`;
-- authoritative CI run: `30721976267` — success;
-- frontend job: `91427128390` — success;
-- Rust job: `91427128400` — success;
-- normal merge commit and current phase head: `09e0cbaa8cafd7c0523bb4ed539c01b2f7ad0b27`;
-- green merge-ref tree and actual merge tree: identical;
-- integration report: `signalguard-rs/phase-3.5/reports/P3.5-MP09-R1-INTEGRATION/09e0cbaa8cafd7c0523bb4ed539c01b2f7ad0b27.md`;
-- integration report commit: `0e8f7855a80dfc74b7efbc6eb8334701f42049a4`;
-- terminal disposition: `P3_5_MP09_R1_INTEGRATION_COMPLETE`.
+SHA-256:
 
-## Checkpoint 3.5 authorization
+`8ef66046b09fcbdac424ac6ad1a338993bb4bd1212beec25b4d69e25dee1377b`
 
-Status: `EVIDENCE_AUTHORIZED`
+Checkpoint artifact publication commit:
 
-Contract:
+`70cdfb1a86d3f8df228ebd2de4cbace7b9a1c58f`
 
-`signalguard-rs/phase-3.5/prompts/P3.5-CHECKPOINT.md`
+The archive was independently downloaded and verified against the checksum, extraction inventory, exact Git tree, and Git blob identities. It contains `214` product paths under the single `signalguard-rs/` root and no prohibited build, Git, connector-control, browser, screenshot, report, or prompt artifacts.
 
-Contract commit:
+## Worktree and repository closure
 
-`040f6dcdaabfb9f180ed8911f2b905b8a1dcf0a1`
+- All Phase 3.5 product worktrees were verified clean and removed.
+- Retained Phase 3.5 worktrees: none.
+- Temporary checkpoint and baseline worktrees were removed.
+- Product repository and connector repository were reported clean after publication.
+- Remote phase branch remains exactly at the final integrated SHA.
+- No product history mutation occurred during checkpoint validation.
 
-Exact checkpoint product SHA:
+## Integrated phase sequence
 
-`09e0cbaa8cafd7c0523bb4ed539c01b2f7ad0b27`
-
-Checkpoint evidence must include:
-
-- exact-head full frontend, bundle-policy, Rust, Docker Compose, and script gates;
-- direct GitHub CI inspection, including any final-SHA push or dispatch run;
-- final browser/runtime and visual acceptance;
-- complete bundle and phase ledger;
-- `git archive` snapshot outside the product repository;
-- SHA-256 checksum and archive-content verification;
-- obsolete verified-clean Phase 3.5 worktree cleanup;
-- clean product and connector repositories.
-
-Required checkpoint artifacts:
-
-- `signalguard-rs/phase-3.5/checkpoints/Checkpoint-3.5/signalguard-rs-refactor-dashboard-modules-09e0cbaa8c.zip`;
-- `signalguard-rs/phase-3.5/checkpoints/Checkpoint-3.5/signalguard-rs-refactor-dashboard-modules-09e0cbaa8c.zip.sha256`;
-- `signalguard-rs/phase-3.5/checkpoints/Checkpoint-3.5/09e0cbaa8cafd7c0523bb4ed539c01b2f7ad0b27.md`.
+- Wave 1: `MP01 -> MP02 -> MP03`
+- Wave 2: `MP04 -> MP05 -> MP06A -> MP06B`
+- Wave 3 measurements: MP07 and MP08 accepted as measurements but rejected for implementation because total JS increased
+- Wave 3 implementation: MP08B native SVG renderer integrated
+- Bundle policy: MP09-R1 integrated
+- Checkpoint 3.5: evidence accepted and closed
 
 ## Current authorization
 
 Authorized:
 
-- execute the read-only Checkpoint 3.5 evidence and archival task against the exact final SHA;
-- create temporary detached validation worktrees;
-- publish only the checkpoint archive, checksum, and evidence report to connector `main`.
+- treat `09e0cbaa8cafd7c0523bb4ed539c01b2f7ad0b27` and its published snapshot as the closed Phase 3.5 product base;
+- perform read-only Phase 4 planning and inventory against this exact base when separately contracted.
 
 Not authorized:
 
-- product branch, commit, PR, merge, tag, or history change;
-- application or configuration modification;
-- budget changes;
-- Phase 4 work;
-- closing Checkpoint 3.5 before independent review of the checkpoint artifacts.
+- Phase 4 product implementation;
+- creating a Phase 4 product branch, commit, PR, or merge;
+- rewriting product history;
+- changing the closed Phase 3.5 snapshot or checksum.
 
-## Next required result
+## Next control-plane action
 
-`P3_5_CHECKPOINT_EVIDENCE_COMPLETE`
+Publish a separate Phase 4 planning/inventory contract against exact base:
+
+`09e0cbaa8cafd7c0523bb4ed539c01b2f7ad0b27`
+
+Do not start `P4-MP01` implementation before that contract is reviewed and explicitly authorized.
