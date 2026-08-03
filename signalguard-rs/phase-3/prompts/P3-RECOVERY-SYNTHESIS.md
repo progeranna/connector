@@ -1,27 +1,41 @@
 # P3-RECOVERY-SYNTHESIS — Authoritative roadmap recovery synthesis
 
-Status: `P3_RECOVERY_SYNTHESIS_BLOCKED_PENDING_INVENTORIES`
+Status: `P3_RECOVERY_SYNTHESIS_AUTHORIZED`
 
 ## Mode
 
-Dedicated synthesis worker. Use connected GitHub tools. Product repository is read-only. Connector writes are permitted only after all four inventory outputs are provided in the conversation and independently checked against the exact product base.
+Dedicated synthesis worker. Use connected GitHub tools only.
+
+The product repository is read-only. Connector writes are permitted only for the exact synthesis outputs below.
+
+Do not use a local checkout, shell, Codex CLI or an unconnected repository copy.
 
 ## Exact product base
 
 - repository: `progeranna/signalguard-rs`
 - ref/SHA: `ba31a348dc5055935c45f6be81073688caedd925`
 - expected tree: `f629b6ea4339c92d03223c3bd8024cd4cb4571da`
+- phase branch: `refactor/dashboard-modules`
 
-## Required inputs
+Verify that the phase branch still resolves to the exact SHA and tree before synthesis. Stop on drift.
 
-Complete terminal outputs from:
+## Accepted inventory evidence
 
-- `P3-RECOVERY-INV-A-WAVE3.md`
-- `P3-RECOVERY-INV-B-WAVE4.md`
-- `P3-RECOVERY-INV-C-DIALOGS.md`
-- `P3-RECOVERY-INV-D-PERF-RESPONSIVE.md`
+All four inventories have been supplied, reviewed and reconciled by the orchestrator.
 
-Do not synthesize from missing, blocked or identity-drifted inventories.
+Read completely:
+
+`signalguard-rs/phase-3/reports/P3-RECOVERY-INVENTORIES/ba31a348dc5055935c45f6be81073688caedd925.md`
+
+This report is the authoritative synthesis input and records:
+
+- acceptance of A after independent tree-evidence completion;
+- complete B, C and D results;
+- resolved lease collisions;
+- required continuation order;
+- exact proposed leases and reinterpretations.
+
+Do not require the user to paste the four worker outputs again.
 
 ## Authority
 
@@ -31,7 +45,9 @@ Read completely:
 - `signalguard-rs/phase-3/control/RESUMPTION_PLAN.md`
 - `signalguard-rs/phase-3/control/STATUS.md`
 - all four inventory contracts;
-- all four worker outputs.
+- the consolidated inventory evidence report.
+
+The original 47-mini-phase roadmap remains authoritative except for the explicit modal-only product-owner overrides in `RESUMPTION_PLAN.md`.
 
 ## Required synthesis
 
@@ -44,6 +60,8 @@ Publish an evidence-backed ledger for every `P3-MP00…P3-MP46` using only:
 - `NOT_STARTED`;
 - `REQUIRES_REVALIDATION`.
 
+The ledger may define recovery/bridge subphases such as `P3-MP18R`, `P3-MP20R`, `P3-W4-BRIDGE01`, `P3-W4-BRIDGE02`, `P3-MP31A`, `P3-MP37A` and `P3-MP37B`, but it must retain traceability to the original `P3-MP00…P3-MP46` roadmap.
+
 For every non-complete item include:
 
 - current evidence;
@@ -52,22 +70,50 @@ For every non-complete item include:
 - forbidden adjacent paths;
 - dependencies;
 - safe parallelisation group;
-- required commit message;
+- required branch name;
+- required Conventional Commit message;
 - focused tests;
 - full validation gates;
 - browser/screenshot evidence;
-- terminal status.
+- success and blocker terminal statuses.
 
-The synthesis must preserve this order:
+## Required sequencing decisions
 
-1. `P3-MP18R` / `P3-MP20R`;
-2. Checkpoint 2R;
-3. semantic bridge;
-4. `P3-MP21…P3-MP30` and Checkpoint 3;
-5. `P3-MP31…P3-MP35`;
-6. `P3-MP36…P3-MP41`;
-7. `P3-MP42…P3-MP46`;
-8. only then a new product Phase 4.
+Preserve this order:
+
+1. `P3-MP18R`;
+2. `P3-MP20R` on the accepted MP18R head;
+3. Checkpoint 2R;
+4. `P3-W4-BRIDGE01`;
+5. `P3-W4-BRIDGE02`;
+6. semantic Wave 4 `P3-MP21…P3-MP30` and Checkpoint 3;
+7. Dialog primitive `P3-MP31`;
+8. structural decomposition `P3-MP31A`;
+9. modal migrations `P3-MP32…P3-MP34` and integrated `P3-MP35`;
+10. routing/loading/performance `P3-MP36…P3-MP41`;
+11. responsive/final `P3-MP42…P3-MP46`;
+12. only then a new product Phase 4.
+
+Resolve ownership using the consolidated evidence:
+
+- MP18R owns controller/UI interaction cleanup.
+- MP20R owns pure route-presentation residue cleanup.
+- Bridge 02 may sequentially reopen the resulting model/adapter paths.
+- Wave 4 uses the accepted G2–G7 grouped schedule.
+- MP31A is mandatory before parallel MP32–MP34.
+- modal-boundary and lazy-loading leases must be expressed against the post-decomposition tree.
+- MP39 is superseded by the accepted native-SVG implementation and receives no implementation contract.
+- MP43 must not alter ticker behavior.
+
+## Authorization boundary
+
+This synthesis may authorize only the first implementation step:
+
+`P3-MP18R — exact anomaly detail from Symbol Detail`
+
+It may also record the already-planned subsequent MP20R lease, but MP20R implementation remains blocked until MP18R is accepted and integrated.
+
+Do not authorize semantic bridge, Wave 4, dialogs, routing/performance or responsive implementation yet.
 
 ## Connector publication
 
@@ -77,16 +123,18 @@ Publish exactly:
 - `signalguard-rs/phase-3/control/IMPLEMENTATION_SEQUENCE.md`
 - updated `signalguard-rs/phase-3/control/STATUS.md`
 
-Use one connector commit if the available connector tooling supports an atomic multi-file write; otherwise use the minimum sequential commits and record every commit identity in the final response.
+Use one connector commit if the tool supports an atomic multi-file write. Otherwise use the minimum sequential commits and record every commit identity.
 
 The resulting status must be either:
 
-- `P3_WAVE3_CLOSURE_IMPLEMENTATION_AUTHORIZED`, when leases are complete and non-conflicting;
-- `P3_RECOVERY_BLOCKED_BY_UNRESOLVED_CONFLICT`, when they are not.
+- `P3_MP18R_IMPLEMENTATION_AUTHORIZED`, when the first lease is exact and non-conflicting;
+- `P3_RECOVERY_BLOCKED_BY_UNRESOLVED_CONFLICT`, when it is not.
 
-Do not create product branches, product commits or PRs. Do not authorise Wave 4 implementation before Wave 3 closure and Checkpoint 2R.
+Do not create product branches, product commits or PRs.
 
-Return exactly one terminal marker:
+## Terminal result
+
+Return exactly one:
 
 - `P3_RECOVERY_SYNTHESIS_COMPLETE`
 - `P3_RECOVERY_SYNTHESIS_BLOCKED_BY_INPUT`
