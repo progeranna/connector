@@ -1,105 +1,107 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `P3_MP18R_R1_IMPLEMENTATION_AUTHORIZED`
+Current state: `P3_MP18R_INTEGRATION_AUTHORIZED`
 
-## Authoritative identity
+## Authoritative roadmap
 
 - Product repository: `progeranna/signalguard-rs`
-- Phase branch: `refactor/dashboard-modules`
-- Accepted product SHA: `ba31a348dc5055935c45f6be81073688caedd925`
-- Accepted product tree: `f629b6ea4339c92d03223c3bd8024cd4cb4571da`
+- Target branch: `refactor/dashboard-modules`
 - Roadmap: `signalguard-rs/phase-3/control/EXECUTION_PLAN.md`
 - Product-owner overrides: `signalguard-rs/phase-3/control/RESUMPTION_PLAN.md`
-- Complete recovered ledger: `signalguard-rs/phase-3/control/MICRO_PHASE_LEDGER.md`
+- Recovered ledger: `signalguard-rs/phase-3/control/MICRO_PHASE_LEDGER.md`
 - Binding sequence: `signalguard-rs/phase-3/control/IMPLEMENTATION_SEQUENCE.md`
 
-## Verified MP18R blocker
+## Exact product identities
 
-The initial MP18R worker returned `P3_MP18R_BLOCKED_BY_SCOPE_OR_IDENTITY` before delivery.
+Target base:
 
-The same worktree then completed the authorized diagnostic and identified the primary blocker as:
+- SHA: `ba31a348dc5055935c45f6be81073688caedd925`
+- tree: `f629b6ea4339c92d03223c3bd8024cd4cb4571da`
+- branch read-back: still identical to this SHA at integration authorization
 
-`OUT_OF_LEASE_DEPENDENCY`
-
-The immutable-base code was independently verified to contain two stale test-only dependencies:
-
-1. `web/src/features/dashboard/symbolPopupResource.test.tsx` still passes obsolete SymbolPopup return context `"anomalies"`.
-2. `web/src/pages/DashboardPage.test.tsx` still requires exact source strings for removed popup-only props and the obsolete anomaly-to-symbol callback.
-
-No production scope expansion is required. The original lease was incomplete only with respect to these two tests.
-
-Verified diagnostic report:
-
-- path: `signalguard-rs/phase-3/reports/P3-MP18R-DIAGNOSTIC/ba31a348dc5055935c45f6be81073688caedd925.md`
-- connector commit: `69e2f8e47674393166fbb53e59449d684ddda17d`
-- recommendation: `PRESERVE_AND_EXPAND_LEASE`
-
-## Current implementation authorization
-
-The same local Codex conversation and preserved worktree are authorized to continue under:
-
-- addendum: `signalguard-rs/phase-3/prompts/P3-MP18R-R1.md`
-- addendum commit: `f128695345d93b61466b7739c982c871b60e491d`
-- status: `P3_MP18R_R1_IMPLEMENTATION_AUTHORIZED`
-
-The worker must not restart from a clean checkout or discard current work.
-
-### Preserved worktree identity
+MP18R worker:
 
 - branch: `p3/mp18r-exact-symbol-anomaly-detail`
-- HEAD: `ba31a348dc5055935c45f6be81073688caedd925`
-- tree: `f629b6ea4339c92d03223c3bd8024cd4cb4571da`
-- ahead/behind: `0 / 0`
-- changes: ten original leased files, uncommitted and unstaged
-- untracked files: none
-- remote worker branch: none
-- PR: none
-- product commit: none
+- commit: `664daebc9bc63a761ea8db205f9ae345f0d0c622`
+- tree: `65c816c76a5f9e31858cdcb29acd523e8a92c122`
+- message: `fix(ui): open exact anomaly detail from symbol detail`
+- divergence: one ahead, zero behind
+- merge base: exact target base
+- diff: exactly twelve corrected-lease files, 496 additions and 102 deletions
+- PR: none at authorization time
+- merge: none at authorization time
 
-### Corrected lease
+## Implementation evidence
 
-The final product diff may contain only the original ten MP18R files plus:
+Implementation report:
 
-- `web/src/features/dashboard/symbolPopupResource.test.tsx`
-- `web/src/pages/DashboardPage.test.tsx`
+- path: `signalguard-rs/phase-3/reports/P3-MP18R/664daebc9bc63a761ea8db205f9ae345f0d0c622.md`
+- connector commit: `341e4f1e47b1acd0f7f55cb54e345d7bccab2b73`
+- blob: `1cd4ccead6adc35ffec2cd0320cb094650af0132`
 
-No additional production path is authorized.
+The report records successful focused/full frontend gates, global Rust and repository gates, bundle policy, deterministic browser validation, eight screenshot hashes and zero console/page/unhandled errors.
 
-### Mandatory correction
+## Independent review
 
-- restore strict `SymbolPopupReturnContext` typing;
-- remove the temporary permissive string-normalization workaround;
-- update the two stale tests to the authorized prop-free, exact-anomaly behavior;
-- rerun every original focused, full, global, bundle and browser gate;
-- deliver the same single product commit and branch required by MP18R.
+Review status:
 
-Success marker remains:
+`P3_MP18R_IMPLEMENTATION_ACCEPTED_FOR_INTEGRATION`
 
-`P3_MP18R_COMPLETE`
+Review report:
 
-R1 blocker marker:
+- path: `signalguard-rs/phase-3/reports/P3-MP18R-REVIEW/664daebc9bc63a761ea8db205f9ae345f0d0c622.md`
+- connector commit: `732a7ebf73a7a53e0daddff9257718ce985cc2fa`
+- blob: `db7e9c0240d3926481829111501b3b311c44c600`
 
-`P3_MP18R_R1_BLOCKED_BY_SCOPE_OR_IDENTITY`
+Independent review verified:
+
+- exact single-commit ancestry;
+- exact twelve-path lease;
+- strict `dashboard | symbols` return-context typing;
+- UUID-keyed Symbol Detail anomaly activation;
+- exact parent resource resolution without Dashboard-summary fallback;
+- Back and visible responsive focus restoration;
+- stale mode/symbol replacement handling;
+- no route, API, adapter, ticker, package, backend or migration drift.
+
+A fresh PR merge-ref CI run is mandatory before merge.
+
+## Current authorization
+
+The dedicated GitHub web integration worker is authorized under:
+
+- contract: `signalguard-rs/phase-3/prompts/P3-MP18R-INTEGRATION.md`
+- contract commit: `05eadd3c55832e70e26afb5373d68531958857b0`
+- contract blob: `f8f1e49547079f3e7fec2fe1de6b64b05f2b3cac`
+- contract status: `P3_MP18R_INTEGRATION_AUTHORIZED`
+
+The worker may:
+
+1. create exactly one PR from the exact worker branch to the exact target branch;
+2. verify the synthetic merge ref and its tree;
+3. require successful Rust and Frontend PR CI;
+4. perform a normal merge commit with expected head SHA;
+5. verify final parent order, tree and exact effective diff;
+6. publish the integration report and final status.
 
 ## Explicitly blocked work
 
-Until MP18R is independently accepted and integrated, all of the following remain blocked:
+Until MP18R integration is complete:
 
-- P3-MP20R;
+- P3-MP20R implementation;
 - Checkpoint 2R;
 - semantic Bridge 01 and Bridge 02;
 - Wave 4 `P3-MP21…P3-MP30`;
 - dialogs/accessibility;
 - routing/loading/performance;
 - responsive/final work;
-- new product Phase 4.
+- any new product Phase 4.
 
 ## Binding continuation order
 
 ```text
-P3-MP18R-R1 continuation
-→ MP18R review and integration
-→ P3-MP20R
+P3-MP18R integration
+→ separate P3-MP20R contract and implementation
 → Checkpoint 2R
 → semantic bridge
 → P3-MP21…P3-MP30 and Checkpoint 3
@@ -120,4 +122,4 @@ P3-MP18R-R1 continuation
 - Standalone detail pages and URL-backed modal state are forbidden.
 - Demo/Live isolation, ticker ownership and bundle budgets remain protected.
 
-Terminal state: `P3_MP18R_R1_IMPLEMENTATION_AUTHORIZED`
+Terminal state: `P3_MP18R_INTEGRATION_AUTHORIZED`
