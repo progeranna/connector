@@ -1,79 +1,117 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `P3_RECOVERY_SYNTHESIS_AUTHORIZED_IMPLEMENTATION_BLOCKED`
+Current state: `P3_MP18R_IMPLEMENTATION_AUTHORIZED`
 
 ## Authoritative identity
 
 - Product repository: `progeranna/signalguard-rs`
 - Phase branch: `refactor/dashboard-modules`
-- Current accepted product SHA: `ba31a348dc5055935c45f6be81073688caedd925`
-- Current accepted product tree: `f629b6ea4339c92d03223c3bd8024cd4cb4571da`
-- Original roadmap: `signalguard-rs/phase-3/control/EXECUTION_PLAN.md`
-- Mandatory current entry point: `signalguard-rs/phase-3/control/RESUMPTION_PLAN.md`
+- Accepted product SHA: `ba31a348dc5055935c45f6be81073688caedd925`
+- Accepted product tree: `f629b6ea4339c92d03223c3bd8024cd4cb4571da`
+- Synthesis authorization commit: `e4e42d04ac603b9040882dbacd1b5ab073b774eb`
+- Synthesis contract blob: `f5271965a34a6abe8a17d3d1ce14fde23884071c`
+- Consolidated evidence commit: `7585ac59e57e9358584daf05ae8bb670b5001a3a`
+- Consolidated evidence blob: `fb45ca39d271b4bfa8ecb044e8c9f3a02cfef31d`
+
+Immediately before publication, `refactor/dashboard-modules` was reverified as identical to `ba31a348dc5055935c45f6be81073688caedd925`. The commit's accepted immutable tree remains `f629b6ea4339c92d03223c3bd8024cd4cb4571da`.
+
+## Authoritative control documents
+
+- Roadmap: `signalguard-rs/phase-3/control/EXECUTION_PLAN.md`
+- Product-owner overrides: `signalguard-rs/phase-3/control/RESUMPTION_PLAN.md`
+- Complete recovered ledger: `signalguard-rs/phase-3/control/MICRO_PHASE_LEDGER.md`
+- Binding sequence and active lease: `signalguard-rs/phase-3/control/IMPLEMENTATION_SEQUENCE.md`
 - Consolidated inventory evidence: `signalguard-rs/phase-3/reports/P3-RECOVERY-INVENTORIES/ba31a348dc5055935c45f6be81073688caedd925.md`
-- Authorized synthesis contract: `signalguard-rs/phase-3/prompts/P3-RECOVERY-SYNTHESIS.md`
 
 ## Binding product direction
 
 - `/` and `/dashboard` are the only visual console pages.
-- `/symbols/:symbol` and `/anomalies` are compatibility replacement redirects to `/dashboard`.
+- `/symbols/:symbol` and `/anomalies` remain replacement redirects to `/dashboard`.
 - Market activation opens Symbol Detail modal.
 - Anomaly activation opens exact UUID-keyed Anomaly Detail.
-- `View all anomalies` opens All Anomalies modal.
 - All Anomalies rows never open Symbol Detail.
-- URL-synchronised modal state and standalone symbol/anomaly pages are forbidden.
-- These overrides do not cancel semantic Wave 4, dialogs/accessibility, loading/performance or responsive work.
+- Modal state is ephemeral and local; URL-synchronised modal state and modal deep links are forbidden.
+- Standalone visual Symbol Detail and Anomalies pages are forbidden.
+- Backend `/anomalies` remains valid.
+- Demo and Live remain strictly isolated; public Replay remains forbidden.
+- Ticker ownership remains protected.
+- Bundle budgets may not be raised.
 
-## Recovery inventory result
+## Current product authorization
 
-The four read-only recovery inventories are accepted for synthesis:
-
-- Wave 3 modal-only closure inventory: substantively complete; missing tool-level tree evidence was independently satisfied by the orchestrator.
-- Wave 4 semantic/data-contract inventory: complete.
-- Dialogs/accessibility inventory: complete.
-- Routing/performance/responsive inventory: complete.
-
-Their conclusions and resolved lease collisions are recorded in the consolidated evidence report.
-
-## Current execution point
-
-A dedicated GitHub web synthesis worker is authorized to publish:
-
-- `signalguard-rs/phase-3/control/MICRO_PHASE_LEDGER.md`;
-- `signalguard-rs/phase-3/control/IMPLEMENTATION_SEQUENCE.md`;
-- the next Phase 3 status.
-
-Product implementation remains blocked during synthesis.
-
-The synthesis may authorize only:
+Only this implementation is authorized:
 
 `P3-MP18R — exact anomaly detail from Symbol Detail`
 
-when its lease is proven exact and non-conflicting.
+- Exact base: `ba31a348dc5055935c45f6be81073688caedd925`
+- Branch: `p3/mp18r-exact-symbol-anomaly-detail`
+- Single commit: `fix(ui): open exact anomaly detail from symbol detail`
+- Success marker: `P3_MP18R_COMPLETE`
+- Blocker marker: `P3_MP18R_BLOCKED_BY_SCOPE_OR_IDENTITY`
 
-`P3-MP20R`, semantic bridge, Wave 4, dialogs, routing/performance, responsive work and product Phase 4 remain blocked until their stated prerequisites are accepted.
+The exact writable lease, forbidden adjacent paths, tests, gates and browser/screenshot matrix are binding in `IMPLEMENTATION_SEQUENCE.md` and `MICRO_PHASE_LEDGER.md`.
+
+## Explicitly blocked work
+
+The following are not authorized by this status:
+
+- P3-MP20R implementation;
+- Checkpoint 2R closure before both recovery commits are accepted;
+- P3-W4-BRIDGE01 and P3-W4-BRIDGE02;
+- P3-MP21 through P3-MP30 and Checkpoint 3;
+- P3-MP31, P3-MP31A and P3-MP32 through P3-MP35;
+- P3-MP36, P3-MP37A, P3-MP37B and P3-MP38 through P3-MP41;
+- P3-MP42 through P3-MP46;
+- any new product Phase 4.
+
+P3-MP20R may be contracted only from the separately accepted and integrated P3-MP18R head. The semantic bridge remains blocked until Checkpoint 2R. Every later unit requires its own immutable contract and exact accepted base.
 
 ## Binding continuation order
 
-1. `P3-MP18R`;
-2. `P3-MP20R`;
-3. Checkpoint 2R;
-4. semantic Bridge 01 and Bridge 02;
-5. agreed semantic Wave 4 `P3-MP21…P3-MP30` and Checkpoint 3;
-6. dialogs/accessibility `P3-MP31…P3-MP35`;
-7. routing/loading/performance `P3-MP36…P3-MP41`;
-8. responsive/final `P3-MP42…P3-MP46`;
-9. only then may a new product Phase 4 be authorized.
+```text
+P3-MP18R
+→ P3-MP20R
+→ Checkpoint 2R
+→ P3-W4-BRIDGE01
+→ P3-W4-BRIDGE02
+→ P3-MP21…P3-MP30
+→ Checkpoint 3
+→ P3-MP31
+→ P3-MP31A
+→ P3-MP32…P3-MP34
+→ P3-MP35
+→ P3-MP36…P3-MP41
+→ P3-MP42…P3-MP46
+→ only then a new product Phase 4
+```
+
+P3-MP39 is `SUPERSEDED_BY_ACCEPTED_IMPLEMENTATION` and receives no implementation work.
+
+## Connector synthesis publication
+
+The available contents action did not support an atomic three-file update, so the minimum sequential publication was used:
+
+1. `signalguard-rs/phase-3/control/MICRO_PHASE_LEDGER.md`
+   - commit: `426c971a40630eef3c2a45651eff27d22a14b780`
+   - resulting blob: `e251789d58420ddb70401c79fd935f2a9669907a`
+2. `signalguard-rs/phase-3/control/IMPLEMENTATION_SEQUENCE.md`
+   - commit: `5dc82e1cf06190f1027f4c5ce16f70a1aa09f76f`
+   - resulting blob: `c3fc1c11f63ec1b846bf3ac30b126a4ffb5ac6f3`
+3. `signalguard-rs/phase-3/control/STATUS.md`
+   - final commit and resulting blob are verified by the synthesis worker immediately after this write and by exact read-back of this file.
+
+No other connector path is authorized to change in this publication.
 
 ## Prohibitions
 
-Until synthesis completes:
+- Do not modify the product during connector synthesis.
+- Do not create a product branch, product commit or product PR except through the separate authorized P3-MP18R implementation contract.
+- Do not restore standalone visual routes.
+- Do not introduce URL-backed modal state.
+- Do not route anomalies to Symbol Detail.
+- Do not invent frontend thresholds or fallback across Demo/Live.
+- Do not change ticker ownership or behavior.
+- Do not weaken tests or bundle budgets.
+- Do not execute the superseded Phase 4 anomaly-explorer plan.
 
-- do not modify the product repository;
-- do not create a Phase 3 implementation branch;
-- do not open a product PR;
-- do not begin MP18R or any later phase;
-- do not execute the superseded Phase 4 anomaly-explorer planning contract;
-- do not restore standalone visual routes;
-- do not alter ticker ownership;
-- do not weaken bundle budgets or Demo/Live isolation.
+Terminal status: `P3_MP18R_IMPLEMENTATION_AUTHORIZED`
