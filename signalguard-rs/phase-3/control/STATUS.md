@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `P3_MP20R_BLOCKED_PENDING_DIAGNOSTIC`
+Current state: `P3_MP20R_WEB_IMPLEMENTATION_AUTHORIZED`
 
 ## Authoritative roadmap
 
@@ -20,68 +20,99 @@ Current state: `P3_MP20R_BLOCKED_PENDING_DIAGNOSTIC`
 - Rust and Frontend CI: success
 - integration report: `signalguard-rs/phase-3/reports/P3-MP18R-INTEGRATION/6142ec7004b75cda077a49ab37bcfdca01f7f8e8.md`
 
-## P3-MP20R execution state
+## MP20R lease correction
 
-Authorized implementation contract:
+The evidence-backed preflight established the exact five-file lease:
 
-- path: `signalguard-rs/phase-3/prompts/P3-MP20R.md`
-- connector commit: `cd7f4daa6a1b8e0a0f71e78a6e0d4af743e588e8`
-- blob: `110352b0d96c315ecf0e8deb1743362d66356901`
-- immutable product base: `6142ec7004b75cda077a49ab37bcfdca01f7f8e8`
-- expected base tree: `65c816c76a5f9e31858cdcb29acd523e8a92c122`
-- assigned branch: `p3/mp20r-route-presentation-residue`
-- corrected implementation lease: five exact paths from the MP20R preflight and contract
+1. `web/src/features/dashboard/marketViewModel.ts`
+2. `web/src/features/dashboard/marketAdapters.ts`
+3. `web/src/features/dashboard/SymbolDetailAnomalies.tsx`
+4. `web/src/features/dashboard/marketAdapters.test.ts`
+5. `web/src/features/dashboard/SymbolDetailAnomalies.test.tsx`
 
-The local worker returned:
+Preflight report:
+
+`signalguard-rs/phase-3/reports/P3-MP20R-PREFLIGHT/6142ec7004b75cda077a49ab37bcfdca01f7f8e8.md`
+
+## Execution-mode correction
+
+The previous contract:
+
+`signalguard-rs/phase-3/prompts/P3-MP20R.md`
+
+required a local Codex checkout, local worktree and shell validation.
+
+The user executed that prompt as a GitHub web worker. The returned marker:
 
 `P3_MP20R_BLOCKED_BY_MP18R_OR_SCOPE_CONFLICT`
 
-No remote branch named `p3/mp20r-route-presentation-residue` is present and no connector blocker or implementation report was published. The exact cause is not available in remote evidence and may exist only in the current local worktree and Codex conversation.
+is therefore classified as `EXECUTION_MODE_MISMATCH`, not as product identity drift, failed product scope, or evidence that the five-file lease is invalid.
 
-No lease expansion, requirement revision, reset, cleanup, replacement run, product commit, push, PR or connector delivery is authorized until the diagnostic completes.
+No remote branch `p3/mp20r-route-presentation-residue`, product commit, PR, merge or connector implementation report was created by that blocked attempt.
 
-## Diagnostic authorization
+The diagnostic-only local-worktree contract `P3-MP20R-DIAGNOSTIC.md` is superseded and must not be executed for this attempt because no local Codex worktree was used.
 
-The same local Codex conversation is authorized to execute the diagnostic-only continuation:
+## Current web-worker authorization
 
-- path: `signalguard-rs/phase-3/prompts/P3-MP20R-DIAGNOSTIC.md`
-- connector commit: `dfac79f0be3671195c53c322d94bae99fbaf5297`
-- blob: `7dd2fa63a5db53ceaaccd7c06f302c3ec15c2e2d`
-- status: `P3_MP20R_DIAGNOSTIC_AUTHORIZED`
+Authoritative replacement contract:
 
-The diagnostic must preserve the existing worktree and every local change. It may not modify product code, commit, push, open a PR, write connector files, reset, clean, restore, stash, rebase, recreate or remove the worktree.
+- path: `signalguard-rs/phase-3/prompts/P3-MP20R-WEB.md`
+- connector commit: `bff9de030ddbbb2dc08c2236aa2c743b75f3e49a`
+- status: `P3_MP20R_WEB_IMPLEMENTATION_AUTHORIZED`
 
-## Current authorization boundary
+Immutable product base:
 
-Authorized:
+- SHA: `6142ec7004b75cda077a49ab37bcfdca01f7f8e8`
+- tree: `65c816c76a5f9e31858cdcb29acd523e8a92c122`
 
-- read-only forensic inspection in `/Users/anion/Desktop/work/git-signalguard-rs/worktrees/p3-mp20r`;
-- non-mutating test/log inspection;
-- complete direct diagnostic output in the same Codex chat.
+Assigned branch:
 
-Blocked:
+`p3/mp20r-route-presentation-residue`
 
-- continued MP20R implementation;
-- any lease expansion or requirement change;
-- product commit, push, PR or merge;
+Required single product commit:
+
+`refactor(ui): remove obsolete route presentation residue`
+
+The GitHub web worker must create the product change as one atomic Git Data commit with exactly the five leased paths. It may not use sequential contents-API commits on the product branch.
+
+Local gates are not claimed by the web implementation worker. Full Frontend and Rust gates must run later against the exact PR synthetic merge ref before merge.
+
+## Authorization boundary
+
+Authorized now:
+
+- exact five-file MP20R GitHub web implementation;
+- one atomic product commit on the assigned branch;
+- connector implementation report;
+- static identity, diff and residual verification.
+
+Blocked until independent review and PR CI integration:
+
+- target-branch mutation;
+- PR creation by the implementation worker;
+- merge;
 - Checkpoint 2R;
 - semantic Bridge 01 and Bridge 02;
 - Wave 4 `P3-MP21…P3-MP30`;
 - dialogs/accessibility;
 - routing/loading/performance;
 - responsive/final work;
-- any new product Phase 4.
+- new product Phase 4.
 
 ## Binding continuation order
 
-After a verified diagnostic result:
-
-1. independently verify the first blocker and current worktree state;
-2. publish the narrowest recovery addendum only when justified;
-3. continue from the preserved worktree;
-4. complete, review and integrate MP20R;
-5. execute Checkpoint 2R;
-6. continue semantic Bridge 01/02 and the recovered Phase 3 sequence.
+```text
+P3-MP20R web implementation
+→ independent review
+→ PR synthetic-merge CI and integration
+→ Checkpoint 2R
+→ semantic Bridge 01 / Bridge 02
+→ P3-MP21…P3-MP30 and Checkpoint 3
+→ dialogs/accessibility
+→ routing/loading/performance
+→ responsive/final smoke
+→ only then a new product Phase 4
+```
 
 ## Permanent product direction
 
@@ -94,4 +125,4 @@ After a verified diagnostic result:
 - Standalone detail pages and URL-backed modal state remain forbidden.
 - Demo/Live isolation, public-Replay prohibition, ticker ownership, accessibility/focus guarantees, backend `/anomalies`, and bundle budgets remain protected.
 
-Terminal state: `P3_MP20R_BLOCKED_PENDING_DIAGNOSTIC`
+Terminal state: `P3_MP20R_WEB_IMPLEMENTATION_AUTHORIZED`
