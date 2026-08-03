@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `P3_MP20R_WEB_IMPLEMENTATION_AUTHORIZED`
+Current state: `P3_MP20R_INTEGRATION_AUTHORIZED`
 
 ## Authoritative roadmap
 
@@ -16,13 +16,34 @@ Current state: `P3_MP20R_WEB_IMPLEMENTATION_AUTHORIZED`
 - final merge commit: `6142ec7004b75cda077a49ab37bcfdca01f7f8e8`
 - final tree: `65c816c76a5f9e31858cdcb29acd523e8a92c122`
 - PR: `#69`, closed and merged
-- synthetic merge SHA: `431ce12ebb413dd436bb101c07a14c443119c029`
-- Rust and Frontend CI: success
 - integration report: `signalguard-rs/phase-3/reports/P3-MP18R-INTEGRATION/6142ec7004b75cda077a49ab37bcfdca01f7f8e8.md`
 
-## MP20R lease correction
+## P3-MP20R implementation identity
 
-The evidence-backed preflight established the exact five-file lease:
+Authoritative web implementation contract:
+
+- path: `signalguard-rs/phase-3/prompts/P3-MP20R-WEB.md`
+- connector commit: `bff9de030ddbbb2dc08c2236aa2c743b75f3e49a`
+- blob: `65c560f4244183ec2119fec99a1a34427b890751`
+
+Product base:
+
+- commit: `6142ec7004b75cda077a49ab37bcfdca01f7f8e8`
+- tree: `65c816c76a5f9e31858cdcb29acd523e8a92c122`
+
+Worker branch:
+
+`p3/mp20r-route-presentation-residue`
+
+Worker commit:
+
+- SHA: `1b09f69d79333872eeed47b00407b6ae09727822`
+- tree: `d8f9e71e7aec5fcf7b472011a68247a6df42bbac`
+- parent: exact product base
+- message: `refactor(ui): remove obsolete route presentation residue`
+- divergence: one ahead, zero behind
+
+Exact effective diff:
 
 1. `web/src/features/dashboard/marketViewModel.ts`
 2. `web/src/features/dashboard/marketAdapters.ts`
@@ -30,81 +51,72 @@ The evidence-backed preflight established the exact five-file lease:
 4. `web/src/features/dashboard/marketAdapters.test.ts`
 5. `web/src/features/dashboard/SymbolDetailAnomalies.test.tsx`
 
-Preflight report:
+Statistics:
 
-`signalguard-rs/phase-3/reports/P3-MP20R-PREFLIGHT/6142ec7004b75cda077a49ab37bcfdca01f7f8e8.md`
+- five modified files;
+- 25 additions;
+- 46 deletions;
+- no added, deleted or renamed files.
 
-## Execution-mode correction
+Implementation report:
 
-The previous contract:
+- path: `signalguard-rs/phase-3/reports/P3-MP20R/1b09f69d79333872eeed47b00407b6ae09727822.md`
+- connector commit: `9870049601679240e5d7ac0d9ce9428cfe2184a5`
+- blob: `5ff6acc18fe8cbc8f627ba0a229f53075baf04c0`
+- status: `P3_MP20R_WEB_COMPLETE`
+- validation boundary: `LOCAL_GATES_NOT_RUN_WEB_WORKER_PR_CI_REQUIRED_BEFORE_MERGE`
 
-`signalguard-rs/phase-3/prompts/P3-MP20R.md`
+## Independent review
 
-required a local Codex checkout, local worktree and shell validation.
+Review report:
 
-The user executed that prompt as a GitHub web worker. The returned marker:
+- path: `signalguard-rs/phase-3/reports/P3-MP20R-REVIEW/1b09f69d79333872eeed47b00407b6ae09727822.md`
+- connector commit: `79bfb5b37ea9ca3459e1fa5c9292cfd0d8a6d365`
+- blob: `db93101c31a7737a9962b6d8be98548e4de52ab7`
+- status: `P3_MP20R_IMPLEMENTATION_ACCEPTED_FOR_INTEGRATION`
 
-`P3_MP20R_BLOCKED_BY_MP18R_OR_SCOPE_CONFLICT`
+Independent review found no identity, scope or static code-review blocker. No PR existed at review time.
 
-is therefore classified as `EXECUTION_MODE_MISMATCH`, not as product identity drift, failed product scope, or evidence that the five-file lease is invalid.
+## Current integration authorization
 
-No remote branch `p3/mp20r-route-presentation-residue`, product commit, PR, merge or connector implementation report was created by that blocked attempt.
+Integration contract:
 
-The diagnostic-only local-worktree contract `P3-MP20R-DIAGNOSTIC.md` is superseded and must not be executed for this attempt because no local Codex worktree was used.
+- path: `signalguard-rs/phase-3/prompts/P3-MP20R-INTEGRATION.md`
+- connector commit: `1079bd84da2f6892254bbae46d6ca8efaa5828db`
+- blob: `243ee9781ef51aee270877ddabbae90fc9bf3a74`
+- status: `P3_MP20R_INTEGRATION_AUTHORIZED`
 
-## Current web-worker authorization
+A dedicated GitHub web integration worker may:
 
-Authoritative replacement contract:
+- create one non-draft PR from the exact worker branch to the exact target base;
+- verify the exact synthetic merge ref and unchanged five-file tree;
+- require successful Frontend and Rust CI on that merge ref;
+- merge by normal merge commit only;
+- publish the integration report and final post-integration status.
 
-- path: `signalguard-rs/phase-3/prompts/P3-MP20R-WEB.md`
-- connector commit: `bff9de030ddbbb2dc08c2236aa2c743b75f3e49a`
-- status: `P3_MP20R_WEB_IMPLEMENTATION_AUTHORIZED`
+## Current authorization boundary
 
-Immutable product base:
+Authorized:
 
-- SHA: `6142ec7004b75cda077a49ab37bcfdca01f7f8e8`
-- tree: `65c816c76a5f9e31858cdcb29acd523e8a92c122`
+- P3-MP20R PR creation;
+- exact merge-ref CI verification;
+- normal merge after successful CI;
+- connector integration report and status publication.
 
-Assigned branch:
+Blocked until integration succeeds and the orchestrator independently accepts it:
 
-`p3/mp20r-route-presentation-residue`
-
-Required single product commit:
-
-`refactor(ui): remove obsolete route presentation residue`
-
-The GitHub web worker must create the product change as one atomic Git Data commit with exactly the five leased paths. It may not use sequential contents-API commits on the product branch.
-
-Local gates are not claimed by the web implementation worker. Full Frontend and Rust gates must run later against the exact PR synthetic merge ref before merge.
-
-## Authorization boundary
-
-Authorized now:
-
-- exact five-file MP20R GitHub web implementation;
-- one atomic product commit on the assigned branch;
-- connector implementation report;
-- static identity, diff and residual verification.
-
-Blocked until independent review and PR CI integration:
-
-- target-branch mutation;
-- PR creation by the implementation worker;
-- merge;
 - Checkpoint 2R;
 - semantic Bridge 01 and Bridge 02;
 - Wave 4 `P3-MP21…P3-MP30`;
 - dialogs/accessibility;
 - routing/loading/performance;
 - responsive/final work;
-- new product Phase 4.
+- any new product Phase 4.
 
 ## Binding continuation order
 
 ```text
-P3-MP20R web implementation
-→ independent review
-→ PR synthetic-merge CI and integration
+P3-MP20R integration
 → Checkpoint 2R
 → semantic Bridge 01 / Bridge 02
 → P3-MP21…P3-MP30 and Checkpoint 3
@@ -125,4 +137,4 @@ P3-MP20R web implementation
 - Standalone detail pages and URL-backed modal state remain forbidden.
 - Demo/Live isolation, public-Replay prohibition, ticker ownership, accessibility/focus guarantees, backend `/anomalies`, and bundle budgets remain protected.
 
-Terminal state: `P3_MP20R_WEB_IMPLEMENTATION_AUTHORIZED`
+Terminal state: `P3_MP20R_INTEGRATION_AUTHORIZED`
