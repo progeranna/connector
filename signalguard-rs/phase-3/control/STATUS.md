@@ -22,6 +22,9 @@ Immediately before publication, `refactor/dashboard-modules` was reverified as i
 - Complete recovered ledger: `signalguard-rs/phase-3/control/MICRO_PHASE_LEDGER.md`
 - Binding sequence and active lease: `signalguard-rs/phase-3/control/IMPLEMENTATION_SEQUENCE.md`
 - Consolidated inventory evidence: `signalguard-rs/phase-3/reports/P3-RECOVERY-INVENTORIES/ba31a348dc5055935c45f6be81073688caedd925.md`
+- Immutable MP18R implementation contract: `signalguard-rs/phase-3/prompts/P3-MP18R.md`
+- MP18R contract commit: `380a6b9a5523f1653adba5cf6a883742de8a1842`
+- MP18R contract blob: `50767715dbd59975fea443d8601952e601654921`
 
 ## Binding product direction
 
@@ -46,10 +49,13 @@ Only this implementation is authorized:
 - Exact base: `ba31a348dc5055935c45f6be81073688caedd925`
 - Branch: `p3/mp18r-exact-symbol-anomaly-detail`
 - Single commit: `fix(ui): open exact anomaly detail from symbol detail`
+- Contract: `signalguard-rs/phase-3/prompts/P3-MP18R.md`
+- Contract commit: `380a6b9a5523f1653adba5cf6a883742de8a1842`
+- Contract blob: `50767715dbd59975fea443d8601952e601654921`
 - Success marker: `P3_MP18R_COMPLETE`
 - Blocker marker: `P3_MP18R_BLOCKED_BY_SCOPE_OR_IDENTITY`
 
-The exact writable lease, forbidden adjacent paths, tests, gates and browser/screenshot matrix are binding in `IMPLEMENTATION_SEQUENCE.md` and `MICRO_PHASE_LEDGER.md`.
+The exact writable lease, forbidden adjacent paths, tests, gates and browser/screenshot matrix are binding in the immutable MP18R contract, `IMPLEMENTATION_SEQUENCE.md` and `MICRO_PHASE_LEDGER.md`.
 
 ## Explicitly blocked work
 
@@ -98,9 +104,13 @@ The available contents action did not support an atomic three-file update, so th
    - commit: `5dc82e1cf06190f1027f4c5ce16f70a1aa09f76f`
    - resulting blob: `c3fc1c11f63ec1b846bf3ac30b126a4ffb5ac6f3`
 3. `signalguard-rs/phase-3/control/STATUS.md`
-   - final commit and resulting blob are verified by the synthesis worker immediately after this write and by exact read-back of this file.
+   - synthesis authorization commit: `91d00cdcf90ecd27adc7a26dc6accfa5dee23814`
+   - synthesis authorization blob: `02ac343d529d18afb74ce0c65d272296befd7f0c`
+4. `signalguard-rs/phase-3/prompts/P3-MP18R.md`
+   - commit: `380a6b9a5523f1653adba5cf6a883742de8a1842`
+   - blob: `50767715dbd59975fea443d8601952e601654921`
 
-No other connector path is authorized to change in this publication.
+No other connector path is authorized to change in these publications.
 
 ## Prohibitions
 
