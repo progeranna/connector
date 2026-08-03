@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `P3_MP20R_IMPLEMENTATION_AUTHORIZED`
+Current state: `P3_MP20R_BLOCKED_PENDING_DIAGNOSTIC`
 
 ## Authoritative roadmap
 
@@ -13,102 +13,57 @@ Current state: `P3_MP20R_IMPLEMENTATION_AUTHORIZED`
 
 ## Integrated P3-MP18R identity
 
-Final target:
-
-- merge commit: `6142ec7004b75cda077a49ab37bcfdca01f7f8e8`
-- tree: `65c816c76a5f9e31858cdcb29acd523e8a92c122`
-- ordered parent 1: `ba31a348dc5055935c45f6be81073688caedd925`
-- ordered parent 2: `664daebc9bc63a761ea8db205f9ae345f0d0c622`
-- target branch read-back: exact final merge commit
-- previous-base divergence: two commits ahead, zero behind
-
-Pull request:
-
-- PR: `#69`
-- state: closed and merged
+- final merge commit: `6142ec7004b75cda077a49ab37bcfdca01f7f8e8`
+- final tree: `65c816c76a5f9e31858cdcb29acd523e8a92c122`
+- PR: `#69`, closed and merged
 - synthetic merge SHA: `431ce12ebb413dd436bb101c07a14c443119c029`
-- synthetic/final tree: `65c816c76a5f9e31858cdcb29acd523e8a92c122`
-- workflow run: `30838790995`
-- Frontend job: `91770465689`, success
-- Rust job: `91770465747`, success
-- both jobs checked out exact synthetic merge SHA
-- effective integrated diff: exact accepted twelve files, 496 additions and 102 deletions
+- Rust and Frontend CI: success
+- integration report: `signalguard-rs/phase-3/reports/P3-MP18R-INTEGRATION/6142ec7004b75cda077a49ab37bcfdca01f7f8e8.md`
 
-Integration report:
+## P3-MP20R execution state
 
-- path: `signalguard-rs/phase-3/reports/P3-MP18R-INTEGRATION/6142ec7004b75cda077a49ab37bcfdca01f7f8e8.md`
-- connector commit: `32a883eb79a713fbffee6d8fcc1f3f4cb347ef9d`
-- blob: `b3e46a07eee4ada569afc3d8bb6bec4565174ece`
-- status: `P3_MP18R_INTEGRATION_COMPLETE`
-
-The integration has been independently reverified from PR metadata, workflow jobs/logs, final branch comparison and connector report.
-
-## P3-MP20R preflight correction
-
-The recovered ledger correctly identified obsolete route/popup anomaly-display residue but its preliminary three-file lease was incomplete.
-
-On the integrated base:
-
-- `marketViewModel.ts` still defines `MarketDisplayVariants` with `route` and `popup`;
-- `marketAdapters.ts` still computes route-only and popup-only values;
-- `SymbolDetailAnomalies.tsx` consumes `.observed.popup` and `.threshold.popup`;
-- `SymbolDetailAnomalies.test.tsx` creates route/popup fixtures and assertions.
-
-Therefore a valid cleanup requires five exact files, not three.
-
-Preflight report:
-
-- path: `signalguard-rs/phase-3/reports/P3-MP20R-PREFLIGHT/6142ec7004b75cda077a49ab37bcfdca01f7f8e8.md`
-- connector commit: `7436d762a49bbf00f551d70c4c9b3dccadcf66a1`
-- status: `P3_MP20R_PREFLIGHT_COMPLETE_IMPLEMENTATION_NOT_YET_AUTHORIZED`
-
-The preflight supersedes only the preliminary MP20R lease in the recovered ledger. It does not change roadmap ordering or product scope.
-
-## Current P3-MP20R authorization
-
-Implementation contract:
+Authorized implementation contract:
 
 - path: `signalguard-rs/phase-3/prompts/P3-MP20R.md`
 - connector commit: `cd7f4daa6a1b8e0a0f71e78a6e0d4af743e588e8`
-- status: `P3_MP20R_IMPLEMENTATION_AUTHORIZED`
+- blob: `110352b0d96c315ecf0e8deb1743362d66356901`
+- immutable product base: `6142ec7004b75cda077a49ab37bcfdca01f7f8e8`
+- expected base tree: `65c816c76a5f9e31858cdcb29acd523e8a92c122`
+- assigned branch: `p3/mp20r-route-presentation-residue`
+- corrected implementation lease: five exact paths from the MP20R preflight and contract
 
-Immutable implementation base:
+The local worker returned:
 
-- SHA: `6142ec7004b75cda077a49ab37bcfdca01f7f8e8`
-- tree: `65c816c76a5f9e31858cdcb29acd523e8a92c122`
+`P3_MP20R_BLOCKED_BY_MP18R_OR_SCOPE_CONFLICT`
 
-Assigned branch:
+No remote branch named `p3/mp20r-route-presentation-residue` is present and no connector blocker or implementation report was published. The exact cause is not available in remote evidence and may exist only in the current local worktree and Codex conversation.
 
-`p3/mp20r-route-presentation-residue`
+No lease expansion, requirement revision, reset, cleanup, replacement run, product commit, push, PR or connector delivery is authorized until the diagnostic completes.
 
-Required product commit:
+## Diagnostic authorization
 
-`refactor(ui): remove obsolete route presentation residue`
+The same local Codex conversation is authorized to execute the diagnostic-only continuation:
 
-Corrected exact lease:
+- path: `signalguard-rs/phase-3/prompts/P3-MP20R-DIAGNOSTIC.md`
+- connector commit: `dfac79f0be3671195c53c322d94bae99fbaf5297`
+- blob: `7dd2fa63a5db53ceaaccd7c06f302c3ec15c2e2d`
+- status: `P3_MP20R_DIAGNOSTIC_AUTHORIZED`
 
-1. `web/src/features/dashboard/marketViewModel.ts`
-2. `web/src/features/dashboard/marketAdapters.ts`
-3. `web/src/features/dashboard/SymbolDetailAnomalies.tsx`
-4. `web/src/features/dashboard/marketAdapters.test.ts`
-5. `web/src/features/dashboard/SymbolDetailAnomalies.test.tsx`
+The diagnostic must preserve the existing worktree and every local change. It may not modify product code, commit, push, open a PR, write connector files, reset, clean, restore, stash, rebase, recreate or remove the worktree.
 
-The worker may change `SymbolDetailAnomalies.tsx` and its test only to replace route/popup display objects with direct strings. MP18R interaction, UUID, keyboard and focus behavior remains protected.
+## Current authorization boundary
 
-## P3-MP20R objective
+Authorized:
 
-- remove `MarketDisplayVariants`;
-- remove route-only formatter and route/popup wrapper construction;
-- map observed and threshold to direct type-aware strings;
-- preserve every rendered value exactly;
-- preserve all modal, UUID, resource, Demo/Live, keyboard and responsive behavior;
-- produce exactly one five-file product commit and connector report;
-- do not open a PR or merge during implementation.
+- read-only forensic inspection in `/Users/anion/Desktop/work/git-signalguard-rs/worktrees/p3-mp20r`;
+- non-mutating test/log inspection;
+- complete direct diagnostic output in the same Codex chat.
 
-## Explicitly blocked work
+Blocked:
 
-Until MP20R is independently reviewed and integrated:
-
+- continued MP20R implementation;
+- any lease expansion or requirement change;
+- product commit, push, PR or merge;
 - Checkpoint 2R;
 - semantic Bridge 01 and Bridge 02;
 - Wave 4 `P3-MP21…P3-MP30`;
@@ -119,16 +74,14 @@ Until MP20R is independently reviewed and integrated:
 
 ## Binding continuation order
 
-```text
-P3-MP20R implementation and integration
-→ Checkpoint 2R
-→ semantic Bridge 01 / Bridge 02
-→ P3-MP21…P3-MP30 and Checkpoint 3
-→ dialogs/accessibility
-→ routing/loading/performance
-→ responsive/final smoke
-→ only then a new product Phase 4
-```
+After a verified diagnostic result:
+
+1. independently verify the first blocker and current worktree state;
+2. publish the narrowest recovery addendum only when justified;
+3. continue from the preserved worktree;
+4. complete, review and integrate MP20R;
+5. execute Checkpoint 2R;
+6. continue semantic Bridge 01/02 and the recovered Phase 3 sequence.
 
 ## Permanent product direction
 
@@ -141,4 +94,4 @@ P3-MP20R implementation and integration
 - Standalone detail pages and URL-backed modal state remain forbidden.
 - Demo/Live isolation, public-Replay prohibition, ticker ownership, accessibility/focus guarantees, backend `/anomalies`, and bundle budgets remain protected.
 
-Terminal state: `P3_MP20R_IMPLEMENTATION_AUTHORIZED`
+Terminal state: `P3_MP20R_BLOCKED_PENDING_DIAGNOSTIC`
