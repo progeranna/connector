@@ -153,7 +153,23 @@ Integration report:
 - blob: `4978a86591ea128011db07578ce27fa817e701b5`
 - status: `P3_MP20R_INTEGRATION_COMPLETE`
 
-The final `STATUS.md` publication commit and blob are verified by connector write response and branch/file read-back.
+## Terminal-marker correction
+
+The integration worker later returned the contradictory chat marker:
+
+`P3_MP20R_INTEGRATION_BLOCKED_BY_IDENTITY_OR_SCOPE`
+
+That marker is superseded by the durable product, CI and connector evidence above.
+
+Correction report:
+
+- path: `signalguard-rs/phase-3/reports/P3-MP20R-INTEGRATION-TERMINAL-CORRECTION/8bbef01d7d9979c4996954171a0e7c3748f02538.md`
+- publication commit: `7a20ccd711804bb108fa848f5e98683a43b734ee`
+- status: `P3_MP20R_INTEGRATION_TERMINAL_MARKER_SUPERSEDED_BY_REMOTE_EVIDENCE`
+
+Do not create a second MP20R PR, repeat the merge, rewrite either branch, roll back the accepted tree, or run the integration contract again.
+
+The exact internal reason for the contradictory chat marker is not established by remote evidence. It is classified as a terminal-output inconsistency after successful completion, not a product identity or scope failure.
 
 ## Current authorization boundary
 
