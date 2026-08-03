@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `P3_MP18R_INTEGRATED_MP20R_NOT_AUTHORIZED`
+Current state: `P3_MP20R_IMPLEMENTATION_AUTHORIZED`
 
 ## Authoritative roadmap
 
@@ -11,123 +11,103 @@ Current state: `P3_MP18R_INTEGRATED_MP20R_NOT_AUTHORIZED`
 - Recovered ledger: `signalguard-rs/phase-3/control/MICRO_PHASE_LEDGER.md`
 - Binding sequence: `signalguard-rs/phase-3/control/IMPLEMENTATION_SEQUENCE.md`
 
-## P3-MP18R integrated product identity
-
-Accepted target base:
-
-- SHA: `ba31a348dc5055935c45f6be81073688caedd925`
-- tree: `f629b6ea4339c92d03223c3bd8024cd4cb4571da`
-
-Accepted worker:
-
-- branch: `p3/mp18r-exact-symbol-anomaly-detail`
-- commit: `664daebc9bc63a761ea8db205f9ae345f0d0c622`
-- tree: `65c816c76a5f9e31858cdcb29acd523e8a92c122`
-- message: `fix(ui): open exact anomaly detail from symbol detail`
-- retained branch read-back: identical to the exact worker commit after merge
+## Integrated P3-MP18R identity
 
 Final target:
 
-- branch: `refactor/dashboard-modules`
 - merge commit: `6142ec7004b75cda077a49ab37bcfdca01f7f8e8`
 - tree: `65c816c76a5f9e31858cdcb29acd523e8a92c122`
 - ordered parent 1: `ba31a348dc5055935c45f6be81073688caedd925`
 - ordered parent 2: `664daebc9bc63a761ea8db205f9ae345f0d0c622`
-- target branch read-back: identical to the final merge commit
-- old base divergence: two commits ahead, zero behind
-- tested synthetic merge tree and final merge tree: identical
-
-## Pull request and CI
+- target branch read-back: exact final merge commit
+- previous-base divergence: two commits ahead, zero behind
 
 Pull request:
 
-- number: `69`
-- title: `fix(ui): open exact anomaly detail from symbol detail`
-- base: `refactor/dashboard-modules`
-- head: `p3/mp18r-exact-symbol-anomaly-detail`
-- draft: `false`
-- final state: closed and merged
-- commits: `1`
-- changed files: `12`
-- additions: `496`
-- deletions: `102`
-
-Synthetic merge ref:
-
-- SHA: `431ce12ebb413dd436bb101c07a14c443119c029`
-- tree: `65c816c76a5f9e31858cdcb29acd523e8a92c122`
-- ordered parent 1: `ba31a348dc5055935c45f6be81073688caedd925`
-- ordered parent 2: `664daebc9bc63a761ea8db205f9ae345f0d0c622`
-
-Required PR CI:
-
-- workflow run ID: `30838790995`
-- run number: `313`
-- conclusion: `success`
-- Rust job ID: `91770465747`
-- Rust conclusion: `success`
-- Frontend job ID: `91770465689`
-- Frontend conclusion: `success`
-- checkout evidence: both jobs fetched and checked out exact synthetic merge SHA `431ce12ebb413dd436bb101c07a14c443119c029`
-- Rust gates: formatting, generated API contract, OpenAPI validation, Cargo check, Clippy, tests, replay target, Docker Compose base/app profiles, demo/smoke shell syntax — all successful
-- Frontend gates: 603 tests, typecheck, lint, production build, 25 bundle-policy tests, bundle budget — all successful
-
-## Exact integrated twelve-path inventory
-
-1. `web/src/features/dashboard/SymbolDetailAnomalies.test.tsx`
-2. `web/src/features/dashboard/SymbolDetailAnomalies.tsx`
-3. `web/src/features/dashboard/SymbolDetailHeader.test.tsx`
-4. `web/src/features/dashboard/SymbolDetailHeader.tsx`
-5. `web/src/features/dashboard/SymbolDetailMetrics.test.tsx`
-6. `web/src/features/dashboard/SymbolDetailMetrics.tsx`
-7. `web/src/features/dashboard/symbolPopup.test.ts`
-8. `web/src/features/dashboard/symbolPopup.ts`
-9. `web/src/features/dashboard/symbolPopupResource.test.tsx`
-10. `web/src/pages/DashboardPage.popup.test.tsx`
-11. `web/src/pages/DashboardPage.test.tsx`
-12. `web/src/pages/DashboardPage.tsx`
-
-The old-base-to-final effective diff remains exactly these twelve paths with 496 additions and 102 deletions.
-
-## Integration authority and evidence
-
-Independent acceptance status:
-
-`P3_MP18R_IMPLEMENTATION_ACCEPTED_FOR_INTEGRATION`
-
-Integration contract:
-
-- path: `signalguard-rs/phase-3/prompts/P3-MP18R-INTEGRATION.md`
-- connector commit: `05eadd3c55832e70e26afb5373d68531958857b0`
-- blob: `f8f1e49547079f3e7fec2fe1de6b64b05f2b3cac`
-- authorization status: `P3_MP18R_INTEGRATION_AUTHORIZED`
+- PR: `#69`
+- state: closed and merged
+- synthetic merge SHA: `431ce12ebb413dd436bb101c07a14c443119c029`
+- synthetic/final tree: `65c816c76a5f9e31858cdcb29acd523e8a92c122`
+- workflow run: `30838790995`
+- Frontend job: `91770465689`, success
+- Rust job: `91770465747`, success
+- both jobs checked out exact synthetic merge SHA
+- effective integrated diff: exact accepted twelve files, 496 additions and 102 deletions
 
 Integration report:
 
 - path: `signalguard-rs/phase-3/reports/P3-MP18R-INTEGRATION/6142ec7004b75cda077a49ab37bcfdca01f7f8e8.md`
-- connector publication commit: `32a883eb79a713fbffee6d8fcc1f3f4cb347ef9d`
+- connector commit: `32a883eb79a713fbffee6d8fcc1f3f4cb347ef9d`
 - blob: `b3e46a07eee4ada569afc3d8bb6bec4565174ece`
-- terminal status: `P3_MP18R_INTEGRATION_COMPLETE`
+- status: `P3_MP18R_INTEGRATION_COMPLETE`
 
-The integration used a normal merge commit with expected head SHA. No squash, rebase, amend, force-push, worker rewrite, product-branch pre-merge mutation, or unrelated product change occurred.
+The integration has been independently reverified from PR metadata, workflow jobs/logs, final branch comparison and connector report.
 
-## Permanent product direction preserved
+## P3-MP20R preflight correction
 
-- `/` and `/dashboard` are the only visual console pages.
-- `/symbols/:symbol` and `/anomalies` remain replacement redirects.
-- Markets open Symbol Detail modal.
-- Symbol Detail anomalies open exact UUID-keyed Anomaly Detail.
-- All Anomalies rows never open Symbol Detail.
-- Modal state remains local and ephemeral.
-- Standalone detail pages and URL-backed modal state remain forbidden.
-- Strict return contexts remain `dashboard | symbols`.
-- Demo/Live isolation, public-Replay prohibition, ticker ownership, accessibility/focus guarantees, backend `/anomalies`, and bundle budgets remain protected.
+The recovered ledger correctly identified obsolete route/popup anomaly-display residue but its preliminary three-file lease was incomplete.
+
+On the integrated base:
+
+- `marketViewModel.ts` still defines `MarketDisplayVariants` with `route` and `popup`;
+- `marketAdapters.ts` still computes route-only and popup-only values;
+- `SymbolDetailAnomalies.tsx` consumes `.observed.popup` and `.threshold.popup`;
+- `SymbolDetailAnomalies.test.tsx` creates route/popup fixtures and assertions.
+
+Therefore a valid cleanup requires five exact files, not three.
+
+Preflight report:
+
+- path: `signalguard-rs/phase-3/reports/P3-MP20R-PREFLIGHT/6142ec7004b75cda077a49ab37bcfdca01f7f8e8.md`
+- connector commit: `7436d762a49bbf00f551d70c4c9b3dccadcf66a1`
+- status: `P3_MP20R_PREFLIGHT_COMPLETE_IMPLEMENTATION_NOT_YET_AUTHORIZED`
+
+The preflight supersedes only the preliminary MP20R lease in the recovered ledger. It does not change roadmap ordering or product scope.
+
+## Current P3-MP20R authorization
+
+Implementation contract:
+
+- path: `signalguard-rs/phase-3/prompts/P3-MP20R.md`
+- connector commit: `cd7f4daa6a1b8e0a0f71e78a6e0d4af743e588e8`
+- status: `P3_MP20R_IMPLEMENTATION_AUTHORIZED`
+
+Immutable implementation base:
+
+- SHA: `6142ec7004b75cda077a49ab37bcfdca01f7f8e8`
+- tree: `65c816c76a5f9e31858cdcb29acd523e8a92c122`
+
+Assigned branch:
+
+`p3/mp20r-route-presentation-residue`
+
+Required product commit:
+
+`refactor(ui): remove obsolete route presentation residue`
+
+Corrected exact lease:
+
+1. `web/src/features/dashboard/marketViewModel.ts`
+2. `web/src/features/dashboard/marketAdapters.ts`
+3. `web/src/features/dashboard/SymbolDetailAnomalies.tsx`
+4. `web/src/features/dashboard/marketAdapters.test.ts`
+5. `web/src/features/dashboard/SymbolDetailAnomalies.test.tsx`
+
+The worker may change `SymbolDetailAnomalies.tsx` and its test only to replace route/popup display objects with direct strings. MP18R interaction, UUID, keyboard and focus behavior remains protected.
+
+## P3-MP20R objective
+
+- remove `MarketDisplayVariants`;
+- remove route-only formatter and route/popup wrapper construction;
+- map observed and threshold to direct type-aware strings;
+- preserve every rendered value exactly;
+- preserve all modal, UUID, resource, Demo/Live, keyboard and responsive behavior;
+- produce exactly one five-file product commit and connector report;
+- do not open a PR or merge during implementation.
 
 ## Explicitly blocked work
 
-P3-MP20R did not begin and is not authorized by this status update.
-
-Also still blocked until separately authorized by the control plane:
+Until MP20R is independently reviewed and integrated:
 
 - Checkpoint 2R;
 - semantic Bridge 01 and Bridge 02;
@@ -139,14 +119,10 @@ Also still blocked until separately authorized by the control plane:
 
 ## Binding continuation order
 
-The next permitted control-plane action is preparation and review of a separate P3-MP20R implementation contract based on integrated target commit `6142ec7004b75cda077a49ab37bcfdca01f7f8e8`.
-
-No P3-MP20R implementation may begin without that separate authorization.
-
 ```text
-separate P3-MP20R contract and implementation
+P3-MP20R implementation and integration
 → Checkpoint 2R
-→ semantic bridge
+→ semantic Bridge 01 / Bridge 02
 → P3-MP21…P3-MP30 and Checkpoint 3
 → dialogs/accessibility
 → routing/loading/performance
@@ -154,4 +130,15 @@ separate P3-MP20R contract and implementation
 → only then a new product Phase 4
 ```
 
-Terminal state: `P3_MP18R_INTEGRATED_MP20R_NOT_AUTHORIZED`
+## Permanent product direction
+
+- `/` and `/dashboard` are the only visual console pages.
+- `/symbols/:symbol` and `/anomalies` remain replacement redirects.
+- Markets open Symbol Detail modal.
+- Anomalies open exact UUID-keyed Anomaly Detail.
+- All Anomalies rows never open Symbol Detail.
+- Modal state remains local and ephemeral.
+- Standalone detail pages and URL-backed modal state remain forbidden.
+- Demo/Live isolation, public-Replay prohibition, ticker ownership, accessibility/focus guarantees, backend `/anomalies`, and bundle budgets remain protected.
+
+Terminal state: `P3_MP20R_IMPLEMENTATION_AUTHORIZED`
