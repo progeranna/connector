@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `P3_MP18R_BLOCKED_PENDING_DIAGNOSTIC`
+Current state: `P3_MP18R_R1_IMPLEMENTATION_AUTHORIZED`
 
 ## Authoritative identity
 
@@ -12,45 +12,82 @@ Current state: `P3_MP18R_BLOCKED_PENDING_DIAGNOSTIC`
 - Product-owner overrides: `signalguard-rs/phase-3/control/RESUMPTION_PLAN.md`
 - Complete recovered ledger: `signalguard-rs/phase-3/control/MICRO_PHASE_LEDGER.md`
 - Binding sequence: `signalguard-rs/phase-3/control/IMPLEMENTATION_SEQUENCE.md`
-- Consolidated inventory evidence: `signalguard-rs/phase-3/reports/P3-RECOVERY-INVENTORIES/ba31a348dc5055935c45f6be81073688caedd925.md`
 
-## MP18R execution state
+## Verified MP18R blocker
 
-The authorized local worker returned:
+The initial MP18R worker returned `P3_MP18R_BLOCKED_BY_SCOPE_OR_IDENTITY` before delivery.
 
-`P3_MP18R_BLOCKED_BY_SCOPE_OR_IDENTITY`
+The same worktree then completed the authorized diagnostic and identified the primary blocker as:
 
-No product branch named `p3/mp18r-exact-symbol-anomaly-detail` is present on the remote, no product commit was published, no PR was opened, and no connector implementation or blocker report was published.
+`OUT_OF_LEASE_DEPENDENCY`
 
-The exact cause is not yet available in connector evidence. Therefore no lease expansion, requirement revision, reset, cleanup or replacement execution is authorized.
+The immutable-base code was independently verified to contain two stale test-only dependencies:
 
-## Diagnostic authorization
+1. `web/src/features/dashboard/symbolPopupResource.test.tsx` still passes obsolete SymbolPopup return context `"anomalies"`.
+2. `web/src/pages/DashboardPage.test.tsx` still requires exact source strings for removed popup-only props and the obsolete anomaly-to-symbol callback.
 
-The same local Codex conversation is authorized to run the diagnostic-only continuation:
+No production scope expansion is required. The original lease was incomplete only with respect to these two tests.
 
-- contract: `signalguard-rs/phase-3/prompts/P3-MP18R-DIAGNOSTIC.md`
-- contract commit: `5bb2016654886b7ea5c9fc29d7b50e1d957671ef`
-- status: `P3_MP18R_DIAGNOSTIC_AUTHORIZED`
+Verified diagnostic report:
 
-The diagnostic must preserve the existing worktree and all uncommitted evidence. It may not modify product code, commit, push, open a PR, write connector files, reset, clean, restore, recreate or remove the worktree.
+- path: `signalguard-rs/phase-3/reports/P3-MP18R-DIAGNOSTIC/ba31a348dc5055935c45f6be81073688caedd925.md`
+- connector commit: `69e2f8e47674393166fbb53e59449d684ddda17d`
+- recommendation: `PRESERVE_AND_EXPAND_LEASE`
 
-## Current authorization boundary
+## Current implementation authorization
 
-Authorized:
+The same local Codex conversation and preserved worktree are authorized to continue under:
 
-- read-only forensic inspection in the existing MP18R worktree;
-- non-mutating test/log inspection;
-- direct structured diagnostic output in the same Codex chat.
+- addendum: `signalguard-rs/phase-3/prompts/P3-MP18R-R1.md`
+- addendum commit: `f128695345d93b61466b7739c982c871b60e491d`
+- status: `P3_MP18R_R1_IMPLEMENTATION_AUTHORIZED`
 
-Blocked:
+The worker must not restart from a clean checkout or discard current work.
 
-- continued MP18R implementation;
-- any lease expansion;
-- any requirement change;
-- product commit or push;
-- MP20R;
+### Preserved worktree identity
+
+- branch: `p3/mp18r-exact-symbol-anomaly-detail`
+- HEAD: `ba31a348dc5055935c45f6be81073688caedd925`
+- tree: `f629b6ea4339c92d03223c3bd8024cd4cb4571da`
+- ahead/behind: `0 / 0`
+- changes: ten original leased files, uncommitted and unstaged
+- untracked files: none
+- remote worker branch: none
+- PR: none
+- product commit: none
+
+### Corrected lease
+
+The final product diff may contain only the original ten MP18R files plus:
+
+- `web/src/features/dashboard/symbolPopupResource.test.tsx`
+- `web/src/pages/DashboardPage.test.tsx`
+
+No additional production path is authorized.
+
+### Mandatory correction
+
+- restore strict `SymbolPopupReturnContext` typing;
+- remove the temporary permissive string-normalization workaround;
+- update the two stale tests to the authorized prop-free, exact-anomaly behavior;
+- rerun every original focused, full, global, bundle and browser gate;
+- deliver the same single product commit and branch required by MP18R.
+
+Success marker remains:
+
+`P3_MP18R_COMPLETE`
+
+R1 blocker marker:
+
+`P3_MP18R_R1_BLOCKED_BY_SCOPE_OR_IDENTITY`
+
+## Explicitly blocked work
+
+Until MP18R is independently accepted and integrated, all of the following remain blocked:
+
+- P3-MP20R;
 - Checkpoint 2R;
-- semantic bridge;
+- semantic Bridge 01 and Bridge 02;
 - Wave 4 `P3-MP21…P3-MP30`;
 - dialogs/accessibility;
 - routing/loading/performance;
@@ -59,14 +96,18 @@ Blocked:
 
 ## Binding continuation order
 
-After a verified diagnostic result:
-
-1. independently verify the exact blocker;
-2. publish the narrowest recovery addendum only when justified;
-3. continue from the preserved worktree;
-4. complete and integrate MP18R;
-5. proceed to MP20R and Checkpoint 2R;
-6. continue the recovered Phase 3 sequence.
+```text
+P3-MP18R-R1 continuation
+→ MP18R review and integration
+→ P3-MP20R
+→ Checkpoint 2R
+→ semantic bridge
+→ P3-MP21…P3-MP30 and Checkpoint 3
+→ dialogs/accessibility
+→ routing/loading/performance
+→ responsive/final smoke
+→ only then a new product Phase 4
+```
 
 ## Permanent product direction
 
@@ -79,4 +120,4 @@ After a verified diagnostic result:
 - Standalone detail pages and URL-backed modal state are forbidden.
 - Demo/Live isolation, ticker ownership and bundle budgets remain protected.
 
-Terminal state: `P3_MP18R_BLOCKED_PENDING_DIAGNOSTIC`
+Terminal state: `P3_MP18R_R1_IMPLEMENTATION_AUTHORIZED`
