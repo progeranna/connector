@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Current Execution
 
-Status: `P3_CHECKPOINT_2R_RERUN_LOCAL_VALIDATION_AUTHORIZED`
+Status: `P3_CHECKPOINT_2R_R2_FOCUS_IMPLEMENTATION_AUTHORIZED`
 
 ## Current accepted product
 
@@ -10,59 +10,93 @@ Status: `P3_CHECKPOINT_2R_RERUN_LOCAL_VALIDATION_AUTHORIZED`
 - exact integrated tree: `9bdfdcf331ef08cdeaf8f21a8ab66adee3092fe8`
 - integrated: P3-MP18R through PR #69; P3-MP20R through PR #70; Checkpoint 2R R1 reachability recovery through PR #71
 
-## Accepted R1 integration
+The target branch was independently rechecked after the rerun blocker and remains exactly at the accepted integrated commit with zero drift.
 
-- worker branch: `p3/checkpoint2r-view-all-reachability`
-- worker commit: `f793b8447076a9feb8227447c2b851622475ef7c`
-- PR: `#71`, closed and merged
-- normal merge: `9cedbeb9c9e5e59ad634123a3b2d6217555a5c96`
-- final tree: `9bdfdcf331ef08cdeaf8f21a8ab66adee3092fe8`
-- synthetic merge: `3b7f85eb12f78a729206d61a6a4e86b29f6d0961`
-- workflow run: `31252099540`, attempt 1, success
-- frontend job: `93089901530`, success
-- rust job: `93089901697`, success
-- exact tested checkout in both jobs: `3b7f85eb12f78a729206d61a6a4e86b29f6d0961`
-- frontend CI: 44 files / 612 tests, typecheck, lint, build, bundle checks passed
-- bundle: 389,453 bytes initial/largest/total, unchanged budgets passed
-- integration report: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-R1-INTEGRATION/9cedbeb9c9e5e59ad634123a3b2d6217555a5c96.md`
+## Checkpoint 2R rerun result
 
-## Checkpoint history
+The authorized local rerun completed all command gates and then returned:
 
-The first local Checkpoint 2R run on `8bbef01d7d9979c4996954171a0e7c3748f02538` returned `P3_CHECKPOINT_2R_BLOCKED` only after all command gates passed. The browser blocker was that real deterministic Demo had exactly 7 markets and 3 recent anomalies while both `View all` actions required `preview.hasMore`.
+`P3_CHECKPOINT_2R_RERUN_BLOCKED`
 
-R1 changed only Dashboard modal-entry reachability, was independently reviewed, passed exact synthetic-merge CI, and is now integrated. The full checkpoint must therefore be rerun from the beginning on the new accepted tree.
+Authoritative blocker report:
+
+- path: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-RERUN-BLOCKER/9cedbeb9c9e5e59ad634123a3b2d6217555a5c96.md`
+- connector commit: `6c4b2e6858b7ce2d8a348f3129e0e1aab3413e4b`
+- blob: `8ee6e7441339d484c56afa9616f18b3463f2f659`
+
+All prescribed command gates passed, including 44 frontend test files / 612 tests, typecheck, lint, build, bundle policy/budget, Rust formatting/check/clippy/tests, and the exact product/CI identity checks. The detached validation worktree was clean after cleanup.
+
+## Verified blocking defect
+
+Deterministic browser flow:
+
+```text
+All Markets
+→ Symbol Detail
+→ exact Anomaly Detail
+→ Back to Symbol Detail
+→ Back to All Markets
+```
+
+Observed:
+
+- first Back restores the exact visible anomaly UUID trigger correctly;
+- second Back restores the All Markets modal but focuses `Close`;
+- the exact originating BTCUSDT market row/card does not receive focus;
+- reproduced at desktop `1440×900` and mobile `390×844`;
+- pathname remains `/dashboard`;
+- no product changes were made by the validation worker.
+
+Independent source review confirms the narrow cause:
+
+- `All Anomalies` already persists a return-focus identity and uses the existing `initialFocusSelector` / `findVisibleInitialFocus` mechanism;
+- `All Markets` state currently persists no return-focus symbol;
+- `DashboardTableModal` therefore falls back to `Close` on remount;
+- both All Markets responsive triggers already share the exact accessible identity `Open <SYMBOL> market detail`.
+
+No shared Dialog, popup identity, route, resource, CSS, or API change is required.
+
+The blocker report also recorded a pre-existing browser-generated `/favicon.ico` 404. It is non-causal to the current focus blocker and is intentionally not mixed into this atomic MP18R recovery. The next full checkpoint must re-audit console behavior.
 
 ## Current authorized action
 
 Only this action is authorized:
 
-`P3-CHECKPOINT-2R-RERUN — combined modal-only recovery validation after R1`
+`P3-CHECKPOINT-2R-R2 — All Markets Back focus recovery`
 
 Contract:
 
-- path: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-RERUN-LOCAL.md`
-- connector commit: `089aabefe712654258e0b339815422b895a13c04`
-- blob: `42ed3a70ea82a96a8ab0d78a96e6d5d01feb9f3c`
-- status: `P3_CHECKPOINT_2R_RERUN_LOCAL_VALIDATION_AUTHORIZED`
-- worker type: local Codex validation worker
-- product write lease: `NONE`
-- success marker: `P3_CHECKPOINT_2R_RERUN_COMPLETE`
-- blocker marker: `P3_CHECKPOINT_2R_RERUN_BLOCKED`
+- path: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-R2-FOCUS.md`
+- connector commit: `0427b340bd7e30f408ef775b1c1303b88c612a0e`
+- blob: `03ae10a630a0ce5e40423aee67c906a7dc507404`
+- status: `P3_CHECKPOINT_2R_R2_FOCUS_IMPLEMENTATION_AUTHORIZED`
+- worker type: local Codex implementation worker
+- immutable product base: `9cedbeb9c9e5e59ad634123a3b2d6217555a5c96`
+- immutable tree: `9bdfdcf331ef08cdeaf8f21a8ab66adee3092fe8`
+- assigned branch: `p3/checkpoint2r-all-markets-back-focus`
+- required single product commit message: `fix(ui): restore all-markets back focus`
 
-The rerun requires local command gates, isolated production preview, real-browser Demo/Live × BTC/ETH × desktop/mobile validation, focus restoration evidence, redirect/modal-state validation, and at least 16 deterministic screenshots with SHA-256 hashes.
+Exact writable lease:
+
+- `web/src/pages/DashboardPage.tsx`
+- `web/src/pages/DashboardPage.popup.test.tsx`
+
+No other product path is writable.
 
 ## Current prohibitions
 
-Until the rerun is independently accepted:
+Until R2 is implemented, independently reviewed, integrated, and Checkpoint 2R is rerun successfully:
 
-- no product modification, branch, commit, push, PR, or merge;
-- no opportunistic defect fix during validation;
+- do not modify any product path outside the exact two-file lease;
+- do not change `SymbolPopupIdentity` or `SymbolPopupReturnContext`;
+- do not change exact anomaly UUID lookup semantics;
+- do not change shared Dialog architecture;
+- do not change routes or introduce URL-backed modal state;
+- do not change Demo/Live isolation, preview limits, accepted Demo cardinality, ticker ownership, CSS, API/resource identity, dependencies, lockfiles, or bundle budgets;
+- do not touch `web/index.html` or `web/public` in R2;
+- do not open or merge an R2 PR from the implementation worker;
 - do not begin P3-W4-BRIDGE01 or P3-W4-BRIDGE02;
-- do not begin P3-MP21…P3-MP30;
-- do not begin dialogs/accessibility, routing/loading/performance, responsive/final work, or a new product Phase 4;
-- do not rerun or reintegrate MP18R, MP20R, or R1;
-- do not restore standalone detail routes or URL-backed modal state;
-- do not weaken Demo/Live isolation, ticker ownership, accessibility/focus guarantees, or bundle budgets.
+- do not begin P3-MP21…P3-MP30 or later phase work.
 
 ## Binding continuation
 
@@ -71,16 +105,15 @@ P3-MP18R integrated
 → P3-MP20R integrated
 → Checkpoint 2R BLOCKED
 → R1 reachability recovery integrated
-→ Checkpoint 2R rerun local validation       [current]
-→ independent GitHub web checkpoint acceptance
+→ Checkpoint 2R rerun BLOCKED on All Markets Back focus
+→ R2 focus implementation                      [current]
+→ independent GitHub web R2 review
+→ R2 integration through exact PR CI
+→ full Checkpoint 2R rerun from integrated R2 head
+→ independent checkpoint acceptance
 → P3-W4-BRIDGE01
 → P3-W4-BRIDGE02
 → semantic Wave 4 P3-MP21…P3-MP30
-→ Checkpoint 3
 ```
 
-On `P3_CHECKPOINT_2R_RERUN_COMPLETE`, a separate GitHub web acceptance worker must verify the connector report, exact product identity, zero product writes, and evidence completeness before Bridge 01 can be authorized.
-
-On `P3_CHECKPOINT_2R_RERUN_BLOCKED`, no fix is authorized until the blocker report is independently reviewed and a narrow recovery lease is published.
-
-Terminal state: `P3_CHECKPOINT_2R_RERUN_LOCAL_VALIDATION_AUTHORIZED`
+Terminal state: `P3_CHECKPOINT_2R_R2_FOCUS_IMPLEMENTATION_AUTHORIZED`
