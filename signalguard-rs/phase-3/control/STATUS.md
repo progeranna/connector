@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `P3_CHECKPOINT_2R_R2_INTEGRATED_CHECKPOINT_RERUN_NOT_AUTHORIZED`
+Current state: `P3_CHECKPOINT_2R_RERUN_AFTER_R2_LOCAL_VALIDATION_AUTHORIZED`
 
 ## Mandatory current entry point
 
@@ -10,9 +10,9 @@ Read first:
 
 Current execution publication:
 
-- connector commit: `ff74009ecc111078d310d82cfefefb8b9f361541`
-- blob: `cd5d1407cc4199ead5595a0a05ac7708d1458377`
-- status: `P3_CHECKPOINT_2R_R2_INTEGRATED_CHECKPOINT_RERUN_NOT_AUTHORIZED`
+- connector commit: `67d69c4088fa8d53c75c6c8573a49a52883d345f`
+- blob: `4999a630e88fff3719f52b84a76ec0c562a33996`
+- status: `P3_CHECKPOINT_2R_RERUN_AFTER_R2_LOCAL_VALIDATION_AUTHORIZED`
 
 ## Current accepted product
 
@@ -30,89 +30,80 @@ Integrated work:
 - P3-MP18R: PR #69
 - P3-MP20R: PR #70
 - Checkpoint 2R R1 reachability recovery: PR #71
-- Checkpoint 2R R2 All Markets Back focus recovery: PR #72
+- Checkpoint 2R R2 All Markets Back-focus recovery: PR #72
 
-## R2 integration result
+## Accepted R2 integration
 
-PR #72 was merged by normal merge commit after successful first-attempt exact-ref PR CI.
-
-Accepted worker:
+R2 worker:
 
 - branch: `p3/checkpoint2r-all-markets-back-focus`
 - commit: `dee3f17919b21dec1fbe701e069103c064f05dd4`
 - tree: `495d14862b0996766b5376358b99382124df9916`
-- branch read-back after merge: unchanged at the accepted worker commit
 
-Accepted effective diff:
+PR #72:
 
-- `web/src/pages/DashboardPage.tsx` — +15 / -3
-- `web/src/pages/DashboardPage.popup.test.tsx` — +87 / -1
-- aggregate: exactly two modified files, +102 / -4; no added/deleted/renamed files
+- normal merge: `cbf5c543ada8752c273fbb2e91be029c9febc3d3`
+- final tree: `495d14862b0996766b5376358b99382124df9916`
+- exact effective diff: two modified files, +102 / -4
 
-Synthetic merge:
+Exact-ref PR CI:
 
-- SHA: `2b66fa6e4aec329aa2d9bdc3999419f954891a3c`
-- tree: `495d14862b0996766b5376358b99382124df9916`
-- parents: `9cedbeb9c9e5e59ad634123a3b2d6217555a5c96`, then `dee3f17919b21dec1fbe701e069103c064f05dd4`
+- synthetic merge: `2b66fa6e4aec329aa2d9bdc3999419f954891a3c`
+- workflow run: `31255927646`, attempt 1, success, no rerun
+- frontend job `93099145069`: success; exact synthetic checkout; 44/44 files, 614/614 tests, typecheck/lint/build/bundle passed
+- rust job `93099145047`: success; exact synthetic checkout; formatting/API/OpenAPI/check/Clippy/tests/replay/Docker/shell gates passed
+- tested synthetic tree = final tree = `495d14862b0996766b5376358b99382124df9916`
+- bundle: 389599 bytes under unchanged 409600 / 409600 / 414720-byte limits
 
-Final merge:
-
-- SHA: `cbf5c543ada8752c273fbb2e91be029c9febc3d3`
-- tree: `495d14862b0996766b5376358b99382124df9916`
-- parents: `9cedbeb9c9e5e59ad634123a3b2d6217555a5c96`, then `dee3f17919b21dec1fbe701e069103c064f05dd4`
-
-The tested synthetic and final merge trees are identical. Base → final remains exactly the accepted two-file +102 / -4 diff; worker → final has no file-content difference.
-
-## PR CI evidence
-
-Workflow run `31255927646`, attempt 1, concluded success with no rerun.
-
-- frontend job `93099145069`: success; decoded log checked out exact synthetic merge `2b66fa6e4aec329aa2d9bdc3999419f954891a3c`; 44/44 test files and 614/614 tests passed; typecheck, zero-warning lint, production build, 25/25 bundle-policy tests and bundle-budget gate passed
-- rust job `93099145047`: success; decoded log checked out exact synthetic merge `2b66fa6e4aec329aa2d9bdc3999419f954891a3c`; formatting, generated API contract, OpenAPI validation, cargo check, Clippy with warnings denied, Cargo tests, replay E2E target discovery, Docker Compose and shell syntax gates passed
-
-Bundle measurements and unchanged limits:
-
-- initial JS: 389599 / 409600 bytes
-- largest JS: 389599 / 409600 bytes
-- total JS: 389599 / 414720 bytes
-
-## Integration publication
-
-Authoritative report:
+Integration report:
 
 - path: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-R2-INTEGRATION/cbf5c543ada8752c273fbb2e91be029c9febc3d3.md`
 - connector commit: `ff6ac3026f0332a7360d63c14baa0c8c482efeb5`
 - blob: `84970533900d0f2687cfa7498701f9f8dcc8b64a`
 - status: `P3_CHECKPOINT_2R_R2_INTEGRATION_COMPLETE`
 
-Integration contract:
+## Current authorization
 
-- connector commit: `ed877174a86ac49c9e355ce6e57af00bc4447fa8`
-- blob: `6f329fa6644faf8e4f006a2f012acaaba1b560d9`
-- status: `P3_CHECKPOINT_2R_R2_INTEGRATION_AUTHORIZED`
+Only the full read-only Checkpoint 2R rerun after R2 is authorized.
 
-Independent review:
+Contract:
 
-- connector commit: `a35b8b1bb8955b4d9295371a2afa194d5724ab49`
-- blob: `66dc5d97bf24ab3bd296382d205ac4a6fc1caa07`
-- status: `P3_CHECKPOINT_2R_R2_FOCUS_ACCEPTED_FOR_INTEGRATION`
+- path: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-RERUN-AFTER-R2-LOCAL.md`
+- connector commit: `cadc9092e9feaaa87d589da112ea5a2f281e6956`
+- blob: `1c97fd7f8c1b05b0b53e2c180a05edd92eb49a77`
+- status: `P3_CHECKPOINT_2R_RERUN_AFTER_R2_LOCAL_VALIDATION_AUTHORIZED`
+- worker type: local Codex validation worker
+- product write lease: `NONE`
+- success marker: `P3_CHECKPOINT_2R_RERUN_AFTER_R2_COMPLETE`
+- blocker marker: `P3_CHECKPOINT_2R_RERUN_AFTER_R2_BLOCKED`
+
+The rerun must execute the full command/browser matrix from the integrated R2 head and explicitly revalidate:
+
+- R1 View-all reachability on real Demo cardinalities;
+- R2 exact two-step Back focus on desktop and mobile;
+- Demo/Live × BTCUSDT/ETHUSDT × desktop/mobile behavior;
+- pointer/keyboard/focus containment and close lifecycle;
+- stale mode/symbol replacement protection;
+- compatibility redirects and modal-only URL invariants;
+- zero unexpected browser console errors/page errors/unhandled rejections;
+- the previously observed `/favicon.ico` 404 from a fresh browser context;
+- at least 16 deterministic screenshot artifacts with hashes.
+
+A reproduced favicon console error is not pre-waived. The validation worker must block rather than fix it if it violates the zero-console acceptance contract.
 
 ## Authorization boundary
 
-The integration worker completed R2 integration and did not execute a Checkpoint 2R rerun.
+Not authorized until independent acceptance of the full rerun:
 
-No Checkpoint 2R rerun is authorized by the current control state. A separate orchestrator step must first publish a new full rerun contract pinned to:
-
-- commit: `cbf5c543ada8752c273fbb2e91be029c9febc3d3`
-- tree: `495d14862b0996766b5376358b99382124df9916`
-
-Until a later full Checkpoint 2R rerun is independently accepted, do not begin:
-
-- `P3-W4-BRIDGE01`;
-- `P3-W4-BRIDGE02`;
-- P3-MP21…P3-MP30 / semantic Wave 4;
-- favicon/static-asset work;
-- dialogs/accessibility, routing/loading/performance, responsive/final, Phase 4 or later work.
+- any product modification or defect fix;
+- favicon/static-asset cleanup;
+- P3-W4-BRIDGE01;
+- P3-W4-BRIDGE02;
+- Wave 4 P3-MP21…P3-MP30;
+- dialogs/accessibility;
+- routing/loading/performance;
+- responsive/final work;
+- Phase 4 or later work.
 
 ## Binding continuation
 
@@ -122,11 +113,8 @@ MP18R integrated
 → Checkpoint 2R BLOCKED
 → R1 integrated
 → Checkpoint 2R rerun BLOCKED on All Markets Back focus
-→ R2 implementation COMPLETE
-→ independent R2 review COMPLETE
-→ R2 PR CI + integration COMPLETE
-→ new full Checkpoint 2R rerun contract          [next orchestrator step; not yet authorized]
-→ full Checkpoint 2R rerun
+→ R2 integrated
+→ full Checkpoint 2R rerun after R2             [current]
 → independent checkpoint acceptance
 → P3-W4-BRIDGE01
 → P3-W4-BRIDGE02
@@ -144,4 +132,4 @@ MP18R integrated
 - Standalone detail pages and URL-backed modal state remain forbidden.
 - Demo/Live isolation, public-Replay prohibition, ticker ownership, accessibility/focus guarantees, backend `/anomalies`, and bundle budgets remain protected.
 
-Terminal state: `P3_CHECKPOINT_2R_R2_INTEGRATED_CHECKPOINT_RERUN_NOT_AUTHORIZED`
+Terminal state: `P3_CHECKPOINT_2R_RERUN_AFTER_R2_LOCAL_VALIDATION_AUTHORIZED`
