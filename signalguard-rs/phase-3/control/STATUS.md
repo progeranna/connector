@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `P3_CHECKPOINT_2R_R1_INTEGRATED_CHECKPOINT_RERUN_NOT_AUTHORIZED`
+Current state: `P3_CHECKPOINT_2R_RERUN_LOCAL_VALIDATION_AUTHORIZED`
 
 ## Mandatory current entry point
 
@@ -8,16 +8,19 @@ Read first:
 
 `signalguard-rs/phase-3/control/CURRENT_EXECUTION.md`
 
-Current execution blob prepared for this atomic publication:
+Current execution publication:
 
-`e7a20abba973ab5399de0c99ed6f8ad77c20832d`
+- connector commit: `76d5359f4fe9ba0a22873bcca7185586e9899b33`
+- blob: `dc8c9d99e2c6e750c643a2dae031925ed98ac187`
+- status: `P3_CHECKPOINT_2R_RERUN_LOCAL_VALIDATION_AUTHORIZED`
 
-## Current integrated product
+## Current accepted product
 
 Product repository: `progeranna/signalguard-rs`
+
 Target branch: `refactor/dashboard-modules`
 
-Exact current target:
+Exact integrated identity:
 
 - commit: `9cedbeb9c9e5e59ad634123a3b2d6217555a5c96`
 - tree: `9bdfdcf331ef08cdeaf8f21a8ab66adee3092fe8`
@@ -26,79 +29,58 @@ Integrated work:
 
 - P3-MP18R: PR #69
 - P3-MP20R: PR #70
-- Checkpoint 2R R1 recovery: PR #71
+- Checkpoint 2R R1 reachability recovery: PR #71
 
-## R1 integration result
+## R1 integration evidence
 
-Worker branch:
-
-`p3/checkpoint2r-view-all-reachability`
-
-Worker commit:
-
-`f793b8447076a9feb8227447c2b851622475ef7c`
-
-Worker branch remains unchanged after merge.
-
-PR #71:
-
-- title: `fix(ui): keep dashboard modal entry points reachable`
-- state: closed and merged
-- merge method: normal merge commit
-- final merge: `9cedbeb9c9e5e59ad634123a3b2d6217555a5c96`
+- worker commit: `f793b8447076a9feb8227447c2b851622475ef7c`
+- normal merge commit: `9cedbeb9c9e5e59ad634123a3b2d6217555a5c96`
 - final tree: `9bdfdcf331ef08cdeaf8f21a8ab66adee3092fe8`
-- ordered parent 1: `8bbef01d7d9979c4996954171a0e7c3748f02538`
-- ordered parent 2: `f793b8447076a9feb8227447c2b851622475ef7c`
+- synthetic merge: `3b7f85eb12f78a729206d61a6a4e86b29f6d0961`
+- workflow run: `31252099540`, success, attempt 1
+- frontend job: `93089901530`, success
+- rust job: `93089901697`, success
+- exact tested checkout in both jobs: `3b7f85eb12f78a729206d61a6a4e86b29f6d0961`
+- exact effective R1 diff: three modified Dashboard files, 98 additions, 13 deletions, no added/deleted/renamed files
+- integration report: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-R1-INTEGRATION/9cedbeb9c9e5e59ad634123a3b2d6217555a5c96.md`
+- integration report blob: `39250f36c7673d8098b8ce8aa691b3dc8cc6c543`
 
-Synthetic merge and CI:
+## Checkpoint 2R history
 
-- synthetic merge SHA: `3b7f85eb12f78a729206d61a6a4e86b29f6d0961`
-- synthetic tree: `9bdfdcf331ef08cdeaf8f21a8ab66adee3092fe8`
-- workflow run: `31252099540` — success, attempt 1
-- frontend job: `93089901530` — success
-- rust job: `93089901697` — success
-- exact tested checkout SHA in both jobs: `3b7f85eb12f78a729206d61a6a4e86b29f6d0961`
-- rerun used: no
+The original Checkpoint 2R local validation returned `P3_CHECKPOINT_2R_BLOCKED` on the prior integrated tree because real Demo cardinalities 7 markets / 3 anomalies made both `View all` modal entry points unreachable under the old `preview.hasMore` gate.
 
-Exact effective diff remained exactly three modified files, 98 additions and 13 deletions:
+R1 corrected only that reachability defect and is now integrated. The full checkpoint must be rerun; prior partial browser evidence is not sufficient for acceptance.
 
-- `web/src/pages/DashboardPage.tsx`
-- `web/src/pages/DashboardPage.test.tsx`
-- `web/src/pages/DashboardPage.popup.test.tsx`
+## Current authorization
 
-No added, deleted or renamed files were integrated.
+Only this validation is authorized:
 
-## Integration publication
+`P3-CHECKPOINT-2R-RERUN — combined modal-only recovery validation after R1`
 
-Integration report:
+Contract:
 
-- path: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-R1-INTEGRATION/9cedbeb9c9e5e59ad634123a3b2d6217555a5c96.md`
-- report blob prepared for atomic publication: `39250f36c7673d8098b8ce8aa691b3dc8cc6c543`
+- path: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-RERUN-LOCAL.md`
+- connector commit: `089aabefe712654258e0b339815422b895a13c04`
+- blob: `42ed3a70ea82a96a8ab0d78a96e6d5d01feb9f3c`
+- worker type: local Codex validation worker
+- product write lease: `NONE`
+- success marker: `P3_CHECKPOINT_2R_RERUN_COMPLETE`
+- blocker marker: `P3_CHECKPOINT_2R_RERUN_BLOCKED`
 
-Current execution blob prepared for the same atomic publication:
+Authorized work is read-only product validation plus connector success/blocker report publication only.
 
-`e7a20abba973ab5399de0c99ed6f8ad77c20832d`
+## Current authorization boundary
 
-The integration report, `CURRENT_EXECUTION.md`, and this status file are published together by one fast-forward connector commit and are verified by post-write branch/blob read-back.
+Not authorized until independent acceptance of the rerun report:
 
-## Next authority
-
-Checkpoint 2R rerun is not authorized yet.
-
-A separate orchestrator must publish a new local Checkpoint 2R rerun contract pinned to product commit/tree:
-
-- `9cedbeb9c9e5e59ad634123a3b2d6217555a5c96`
-- `9bdfdcf331ef08cdeaf8f21a8ab66adee3092fe8`
-
-Not authorized by this integration worker:
-
-- Checkpoint 2R rerun;
-- Bridge 01;
-- Bridge 02;
-- Wave 4 / P3-MP21…30;
-- unrelated product modification.
-
-Checkpoint 2R rerun, Bridge 01/02 and Wave 4 did not begin.
+- any product modification or defect fix;
+- P3-W4-BRIDGE01;
+- P3-W4-BRIDGE02;
+- Wave 4 P3-MP21…P3-MP30;
+- dialog/accessibility work;
+- routing/loading/performance work;
+- responsive/final work;
+- a new product Phase 4.
 
 ## Binding continuation
 
@@ -106,15 +88,27 @@ Checkpoint 2R rerun, Bridge 01/02 and Wave 4 did not begin.
 MP18R integrated
 → MP20R integrated
 → Checkpoint 2R BLOCKED
-→ R1 implementation COMPLETE
-→ R1 independent review COMPLETE
-→ R1 PR CI + integration COMPLETE
-→ new local Checkpoint 2R rerun contract    [next; not yet authorized]
-→ Checkpoint 2R rerun
-→ independent checkpoint acceptance
-→ Bridge 01
-→ Bridge 02
-→ semantic Wave 4
+→ R1 recovery integrated
+→ Checkpoint 2R rerun local validation       [current]
+→ independent GitHub web checkpoint acceptance
+→ P3-W4-BRIDGE01
+→ P3-W4-BRIDGE02
+→ P3-MP21…P3-MP30 and Checkpoint 3
+→ dialogs/accessibility
+→ routing/loading/performance
+→ responsive/final smoke
+→ only then a new product Phase 4
 ```
 
-Terminal state: `P3_CHECKPOINT_2R_R1_INTEGRATED_CHECKPOINT_RERUN_NOT_AUTHORIZED`
+## Permanent product direction
+
+- `/` and `/dashboard` are the only visual console pages.
+- `/symbols/:symbol` and `/anomalies` remain replacement redirects.
+- Markets open Symbol Detail modal.
+- Anomalies open exact UUID-keyed Anomaly Detail.
+- All Anomalies rows never open Symbol Detail.
+- Modal state remains local and ephemeral.
+- Standalone detail pages and URL-backed modal state remain forbidden.
+- Demo/Live isolation, public-Replay prohibition, ticker ownership, accessibility/focus guarantees, backend `/anomalies`, and bundle budgets remain protected.
+
+Terminal state: `P3_CHECKPOINT_2R_RERUN_LOCAL_VALIDATION_AUTHORIZED`
