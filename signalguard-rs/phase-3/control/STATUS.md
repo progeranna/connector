@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `P3_CHECKPOINT_2R_R2_INTEGRATION_AUTHORIZED`
+Current state: `P3_CHECKPOINT_2R_R2_INTEGRATED_CHECKPOINT_RERUN_NOT_AUTHORIZED`
 
 ## Mandatory current entry point
 
@@ -10,9 +10,9 @@ Read first:
 
 Current execution publication:
 
-- connector commit: `3a7b5037055f67390e176b9326cc12eed29e8ec4`
-- blob: `6abe3062e38ca1791218f5a02e4956b38d0907ba`
-- status: `P3_CHECKPOINT_2R_R2_INTEGRATION_AUTHORIZED`
+- connector commit: `ff74009ecc111078d310d82cfefefb8b9f361541`
+- blob: `cd5d1407cc4199ead5595a0a05ac7708d1458377`
+- status: `P3_CHECKPOINT_2R_R2_INTEGRATED_CHECKPOINT_RERUN_NOT_AUTHORIZED`
 
 ## Current accepted product
 
@@ -22,105 +22,97 @@ Target branch: `refactor/dashboard-modules`
 
 Exact integrated identity:
 
-- commit: `9cedbeb9c9e5e59ad634123a3b2d6217555a5c96`
-- tree: `9bdfdcf331ef08cdeaf8f21a8ab66adee3092fe8`
+- commit: `cbf5c543ada8752c273fbb2e91be029c9febc3d3`
+- tree: `495d14862b0996766b5376358b99382124df9916`
 
 Integrated work:
 
 - P3-MP18R: PR #69
 - P3-MP20R: PR #70
 - Checkpoint 2R R1 reachability recovery: PR #71
+- Checkpoint 2R R2 All Markets Back focus recovery: PR #72
 
-The target remains unchanged after independent R2 review.
+## R2 integration result
 
-## Latest Checkpoint 2R disposition
+PR #72 was merged by normal merge commit after successful first-attempt exact-ref PR CI.
 
-The full local rerun returned:
+Accepted worker:
 
-`P3_CHECKPOINT_2R_RERUN_BLOCKED`
+- branch: `p3/checkpoint2r-all-markets-back-focus`
+- commit: `dee3f17919b21dec1fbe701e069103c064f05dd4`
+- tree: `495d14862b0996766b5376358b99382124df9916`
+- branch read-back after merge: unchanged at the accepted worker commit
 
-The blocking defect was the exact All Markets nested Back focus restoration regression. All command gates passed; the defect reproduced deterministically on desktop and mobile.
-
-Authoritative blocker:
-
-- path: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-RERUN-BLOCKER/9cedbeb9c9e5e59ad634123a3b2d6217555a5c96.md`
-- commit: `6c4b2e6858b7ce2d8a348f3129e0e1aab3413e4b`
-- blob: `8ee6e7441339d484c56afa9616f18b3463f2f659`
-
-## R2 accepted implementation
-
-Worker branch:
-
-`p3/checkpoint2r-all-markets-back-focus`
-
-Worker commit:
-
-`dee3f17919b21dec1fbe701e069103c064f05dd4`
-
-Worker tree:
-
-`495d14862b0996766b5376358b99382124df9916`
-
-Sole base:
-
-`9cedbeb9c9e5e59ad634123a3b2d6217555a5c96`
-
-Exact effective diff:
+Accepted effective diff:
 
 - `web/src/pages/DashboardPage.tsx` — +15 / -3
 - `web/src/pages/DashboardPage.popup.test.tsx` — +87 / -1
-- aggregate: two modified files, +102 / -4; no added/deleted/renamed files
+- aggregate: exactly two modified files, +102 / -4; no added/deleted/renamed files
 
-Implementation report:
+Synthetic merge:
 
-- `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-R2-FOCUS/dee3f17919b21dec1fbe701e069103c064f05dd4.md`
-- commit: `a27293855077fe86ef9569bdf61c007228b9095d`
-- blob: `491bc80bbbda68dd9e6fbe345d9f9dd466b4ca2a`
-- status: `P3_CHECKPOINT_2R_R2_FOCUS_COMPLETE`
+- SHA: `2b66fa6e4aec329aa2d9bdc3999419f954891a3c`
+- tree: `495d14862b0996766b5376358b99382124df9916`
+- parents: `9cedbeb9c9e5e59ad634123a3b2d6217555a5c96`, then `dee3f17919b21dec1fbe701e069103c064f05dd4`
 
-Independent review:
+Final merge:
 
-- `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-R2-FOCUS-REVIEW/dee3f17919b21dec1fbe701e069103c064f05dd4.md`
-- commit: `a35b8b1bb8955b4d9295371a2afa194d5724ab49`
-- blob: `66dc5d97bf24ab3bd296382d205ac4a6fc1caa07`
-- status: `P3_CHECKPOINT_2R_R2_FOCUS_ACCEPTED_FOR_INTEGRATION`
+- SHA: `cbf5c543ada8752c273fbb2e91be029c9febc3d3`
+- tree: `495d14862b0996766b5376358b99382124df9916`
+- parents: `9cedbeb9c9e5e59ad634123a3b2d6217555a5c96`, then `dee3f17919b21dec1fbe701e069103c064f05dd4`
 
-Review verified the exact two-file lease, one-commit branch, unchanged target, no PR, controller-local focus restoration, preserved popup/anomaly identities, and targeted real-browser desktop/mobile proof. Worker validation reports 44 frontend files / 614 tests and successful frontend/Rust gates.
+The tested synthetic and final merge trees are identical. Base → final remains exactly the accepted two-file +102 / -4 diff; worker → final has no file-content difference.
 
-The pre-existing automatic `/favicon.ico` 404 remains a separate observation and is not authorized for modification in R2 integration.
+## PR CI evidence
 
-## Current authorization
+Workflow run `31255927646`, attempt 1, concluded success with no rerun.
 
-Only the dedicated GitHub web R2 integration worker is authorized.
+- frontend job `93099145069`: success; decoded log checked out exact synthetic merge `2b66fa6e4aec329aa2d9bdc3999419f954891a3c`; 44/44 test files and 614/614 tests passed; typecheck, zero-warning lint, production build, 25/25 bundle-policy tests and bundle-budget gate passed
+- rust job `93099145047`: success; decoded log checked out exact synthetic merge `2b66fa6e4aec329aa2d9bdc3999419f954891a3c`; formatting, generated API contract, OpenAPI validation, cargo check, Clippy with warnings denied, Cargo tests, replay E2E target discovery, Docker Compose and shell syntax gates passed
+
+Bundle measurements and unchanged limits:
+
+- initial JS: 389599 / 409600 bytes
+- largest JS: 389599 / 409600 bytes
+- total JS: 389599 / 414720 bytes
+
+## Integration publication
+
+Authoritative report:
+
+- path: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-R2-INTEGRATION/cbf5c543ada8752c273fbb2e91be029c9febc3d3.md`
+- connector commit: `ff6ac3026f0332a7360d63c14baa0c8c482efeb5`
+- blob: `84970533900d0f2687cfa7498701f9f8dcc8b64a`
+- status: `P3_CHECKPOINT_2R_R2_INTEGRATION_COMPLETE`
 
 Integration contract:
 
-- path: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-R2-INTEGRATION.md`
 - connector commit: `ed877174a86ac49c9e355ce6e57af00bc4447fa8`
 - blob: `6f329fa6644faf8e4f006a2f012acaaba1b560d9`
 - status: `P3_CHECKPOINT_2R_R2_INTEGRATION_AUTHORIZED`
 
-Required integration:
+Independent review:
 
-- exact target/worker identity verification;
-- exactly one non-draft PR;
-- exact synthetic merge tree and ordered-parent verification;
-- Frontend and Rust CI success on the exact synthetic merge ref;
-- normal merge commit only;
-- final tree identical to tested synthetic tree;
-- connector integration report and final post-merge control publication.
+- connector commit: `a35b8b1bb8955b4d9295371a2afa194d5724ab49`
+- blob: `66dc5d97bf24ab3bd296382d205ac4a6fc1caa07`
+- status: `P3_CHECKPOINT_2R_R2_FOCUS_ACCEPTED_FOR_INTEGRATION`
 
 ## Authorization boundary
 
-Not authorized until R2 integration completes and a later full Checkpoint 2R rerun is independently accepted:
+The integration worker completed R2 integration and did not execute a Checkpoint 2R rerun.
 
-- product changes outside the accepted R2 diff;
-- Checkpoint 2R rerun inside the integration worker;
-- P3-W4-BRIDGE01;
-- P3-W4-BRIDGE02;
-- Wave 4 P3-MP21…P3-MP30;
-- favicon/static-asset cleanup;
-- dialogs/accessibility, routing/loading/performance, responsive/final, or Phase 4 work.
+No Checkpoint 2R rerun is authorized by the current control state. A separate orchestrator step must first publish a new full rerun contract pinned to:
+
+- commit: `cbf5c543ada8752c273fbb2e91be029c9febc3d3`
+- tree: `495d14862b0996766b5376358b99382124df9916`
+
+Until a later full Checkpoint 2R rerun is independently accepted, do not begin:
+
+- `P3-W4-BRIDGE01`;
+- `P3-W4-BRIDGE02`;
+- P3-MP21…P3-MP30 / semantic Wave 4;
+- favicon/static-asset work;
+- dialogs/accessibility, routing/loading/performance, responsive/final, Phase 4 or later work.
 
 ## Binding continuation
 
@@ -132,8 +124,8 @@ MP18R integrated
 → Checkpoint 2R rerun BLOCKED on All Markets Back focus
 → R2 implementation COMPLETE
 → independent R2 review COMPLETE
-→ R2 PR CI + integration                    [current]
-→ new full Checkpoint 2R rerun contract
+→ R2 PR CI + integration COMPLETE
+→ new full Checkpoint 2R rerun contract          [next orchestrator step; not yet authorized]
 → full Checkpoint 2R rerun
 → independent checkpoint acceptance
 → P3-W4-BRIDGE01
@@ -152,4 +144,4 @@ MP18R integrated
 - Standalone detail pages and URL-backed modal state remain forbidden.
 - Demo/Live isolation, public-Replay prohibition, ticker ownership, accessibility/focus guarantees, backend `/anomalies`, and bundle budgets remain protected.
 
-Terminal state: `P3_CHECKPOINT_2R_R2_INTEGRATION_AUTHORIZED`
+Terminal state: `P3_CHECKPOINT_2R_R2_INTEGRATED_CHECKPOINT_RERUN_NOT_AUTHORIZED`
