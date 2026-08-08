@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `P3_CHECKPOINT_2R_LOCAL_VALIDATION_AUTHORIZED`
+Current state: `P3_CHECKPOINT_2R_R1_WEB_IMPLEMENTATION_AUTHORIZED`
 
 ## Mandatory current entry point
 
@@ -8,83 +8,102 @@ Read first:
 
 `signalguard-rs/phase-3/control/CURRENT_EXECUTION.md`
 
-Current execution identity:
+Current execution publication:
 
-- connector commit: `4682385ac874aaca715dfb035ef6d6759227d600`
-- status: `P3_CHECKPOINT_2R_LOCAL_VALIDATION_AUTHORIZED`
-
-The recovered roadmap and historical sequencing remain authoritative except where the current execution file records accepted integrations and later authorization state.
-
-## Authoritative roadmap
-
-- product repository: `progeranna/signalguard-rs`
-- target branch: `refactor/dashboard-modules`
-- roadmap: `signalguard-rs/phase-3/control/EXECUTION_PLAN.md`
-- product-owner overrides: `signalguard-rs/phase-3/control/RESUMPTION_PLAN.md`
-- recovered ledger: `signalguard-rs/phase-3/control/MICRO_PHASE_LEDGER.md`
-- recovered sequence: `signalguard-rs/phase-3/control/IMPLEMENTATION_SEQUENCE.md`
+- connector commit: `f463724ca592686a70c2fdce092e4045f889992c`
+- blob: `0b4fd3973fffd5414261f64199ae504f50d27638`
+- status: `P3_CHECKPOINT_2R_R1_WEB_IMPLEMENTATION_AUTHORIZED`
 
 ## Accepted integrated product
 
-Exact target identity:
+Product repository: `progeranna/signalguard-rs`
+
+Target branch: `refactor/dashboard-modules`
+
+Exact target identity remains:
 
 - commit: `8bbef01d7d9979c4996954171a0e7c3748f02538`
 - tree: `d8f9e71e7aec5fcf7b472011a68247a6df42bbac`
 
-Integrated work:
+The target branch was independently reverified identical to this commit after the inactive period.
 
-### P3-MP18R
+Integrated recovery work:
 
-- PR: `#69`
-- final merge: `6142ec7004b75cda077a49ab37bcfdca01f7f8e8`
-- integration report: `signalguard-rs/phase-3/reports/P3-MP18R-INTEGRATION/6142ec7004b75cda077a49ab37bcfdca01f7f8e8.md`
+- P3-MP18R: PR `#69`, final merge `6142ec7004b75cda077a49ab37bcfdca01f7f8e8`.
+- P3-MP20R: PR `#70`, final merge `8bbef01d7d9979c4996954171a0e7c3748f02538`.
 
-### P3-MP20R
+MP18R and MP20R must not be rerun or reintegrated.
 
-- PR: `#70`
-- worker commit: `1b09f69d79333872eeed47b00407b6ae09727822`
-- final merge: `8bbef01d7d9979c4996954171a0e7c3748f02538`
-- final tree: `d8f9e71e7aec5fcf7b472011a68247a6df42bbac`
-- CI run: `30844622613`, success
-- tested synthetic merge: `9dd56162af7a23cc18a21dab8fe83428d521d667`
-- integration report: `signalguard-rs/phase-3/reports/P3-MP20R-INTEGRATION/8bbef01d7d9979c4996954171a0e7c3748f02538.md`
-- terminal correction: `signalguard-rs/phase-3/reports/P3-MP20R-INTEGRATION-TERMINAL-CORRECTION/8bbef01d7d9979c4996954171a0e7c3748f02538.md`
+## Checkpoint 2R execution result
 
-The contradictory MP20R chat marker is superseded by durable product, CI and connector evidence. Do not rerun or reintegrate MP20R.
+The local Codex validation worker did execute the authorized checkpoint.
 
-## Current authorization
+Blocker report:
 
-Only this checkpoint is authorized:
+`signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-BLOCKER/8bbef01d7d9979c4996954171a0e7c3748f02538.md`
 
-`P3-CHECKPOINT-2R — combined modal-only recovery validation`
+Result:
+
+`P3_CHECKPOINT_2R_BLOCKED`
+
+Passed before the blocker:
+
+- frontend test suite, typecheck, lint, production build and bundle policy;
+- Rust formatting, API contract, OpenAPI validation, cargo check, Clippy and Cargo tests;
+- Docker Compose and shell syntax gates;
+- accepted PR CI identity verification;
+- clean detached checkout and unchanged bundle/manifest/lockfile identities.
+
+Blocking browser condition:
+
+- deterministic Demo contains exactly 7 markets and 3 recent anomalies;
+- Dashboard Market Health and Recent Anomalies `View all` actions currently render only when `preview.hasMore` is true;
+- therefore real Demo renders no `View all` controls;
+- mandatory All Markets and All Anomalies Checkpoint 2R flows are unreachable.
+
+No product modification was made by the checkpoint worker.
+
+## Authorized R1 recovery
 
 Contract:
 
-- path: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-LOCAL.md`
-- connector commit: `4a33c95993a8b9791883848e2c096f7d80ec0515`
-- blob: `72467c9adae47853586fc4665cbffe93dabfbebd`
-- worker type: local Codex validation worker
-- product write lease: `NONE`
-- success: `P3_CHECKPOINT_2R_COMPLETE`
-- blocker: `P3_CHECKPOINT_2R_BLOCKED`
+`signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-R1-WEB.md`
 
-This checkpoint requires local commands, production preview, real browser automation, focus verification and screenshot hashes. A GitHub-only web worker is not sufficient.
+Contract publication commit:
+
+`62e6f7d193699b27112720d1968dee79ce3e2fee`
+
+Status:
+
+`P3_CHECKPOINT_2R_R1_WEB_IMPLEMENTATION_AUTHORIZED`
+
+Assigned product branch:
+
+`p3/checkpoint2r-view-all-reachability`
+
+The branch was created at the exact accepted base before authorization publication and contains no product commit or file change yet.
+
+Exact writable lease:
+
+- `web/src/pages/DashboardPage.tsx`
+- `web/src/pages/DashboardPage.test.tsx`
+- `web/src/pages/DashboardPage.popup.test.tsx`
+
+The recovery may only change Dashboard action reachability so the existing All Markets and All Anomalies modals can be opened whenever their corresponding collection is non-empty. It must not change preview limits, Demo data cardinality, modal identity, routing, CSS, API/data ownership or Wave 4 semantics.
 
 ## Current authorization boundary
 
 Authorized:
 
-- read-only validation of the exact integrated product commit;
-- full frontend and repository gates;
-- Demo/Live × BTC/ETH × desktop/mobile browser matrix;
-- connector checkpoint report publication.
+- one GitHub web implementation worker for the exact R1 contract;
+- exactly one three-file product commit on the assigned recovery branch;
+- connector implementation report publication.
 
 Not authorized:
 
-- any product modification;
-- product branch, commit or PR creation;
-- defect fixes discovered during checkpoint validation;
-- semantic Bridge 01 or Bridge 02;
+- recovery PR or merge before independent review;
+- Checkpoint 2R rerun before R1 integration;
+- Semantic Bridge 01/02;
 - Wave 4 `P3-MP21…P3-MP30`;
 - dialogs/accessibility;
 - routing/loading/performance;
@@ -94,17 +113,17 @@ Not authorized:
 ## Binding continuation
 
 ```text
-P3-MP18R integrated
-→ P3-MP20R integrated
-→ P3-CHECKPOINT-2R local validation      [current]
-→ independent GitHub web acceptance
-→ P3-W4-BRIDGE01
-→ P3-W4-BRIDGE02
-→ P3-MP21…P3-MP30 and Checkpoint 3
-→ dialogs/accessibility
-→ routing/loading/performance
-→ responsive/final smoke
-→ only then a new product Phase 4
+MP18R integrated
+→ MP20R integrated
+→ Checkpoint 2R BLOCKED
+→ Checkpoint 2R R1 web implementation     [current]
+→ independent review
+→ PR CI + integration
+→ rerun Checkpoint 2R locally
+→ independent checkpoint acceptance
+→ Bridge 01
+→ Bridge 02
+→ semantic Wave 4
 ```
 
 ## Permanent product direction
@@ -118,4 +137,4 @@ P3-MP18R integrated
 - Standalone detail pages and URL-backed modal state remain forbidden.
 - Demo/Live isolation, public-Replay prohibition, ticker ownership, accessibility/focus guarantees, backend `/anomalies`, and bundle budgets remain protected.
 
-Terminal state: `P3_CHECKPOINT_2R_LOCAL_VALIDATION_AUTHORIZED`
+Terminal state: `P3_CHECKPOINT_2R_R1_WEB_IMPLEMENTATION_AUTHORIZED`
