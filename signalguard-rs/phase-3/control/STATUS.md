@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `P3_CHECKPOINT_2R_R3_FAVICON_IMPLEMENTATION_AUTHORIZED`
+Current state: `P3_CHECKPOINT_2R_R3_INTEGRATION_AUTHORIZED`
 
 ## Mandatory current entry point
 
@@ -10,9 +10,9 @@ Read first:
 
 Current execution publication:
 
-- connector commit: `6ee3c4d4d2800ea42a627b69452790101315ae51`
-- blob: `d4243d6263a66d53603b9685d33e2f1fa1e1ad64`
-- status: `P3_CHECKPOINT_2R_R3_FAVICON_IMPLEMENTATION_AUTHORIZED`
+- connector commit: `567515e1d143cae83793407fcba587df446366e3`
+- blob: `d2d475764e28f86e2b0780a9a8c89be3f9d931d2`
+- status: `P3_CHECKPOINT_2R_R3_INTEGRATION_AUTHORIZED`
 
 ## Current accepted product
 
@@ -32,78 +32,83 @@ Integrated work:
 - Checkpoint 2R R1 reachability recovery: PR #71
 - Checkpoint 2R R2 All Markets Back-focus recovery: PR #72
 
-Independent remote verification after the latest checkpoint blocker publication confirms the target is unchanged at this exact accepted identity.
+The target was independently rechecked after R3 implementation and remains identical to this accepted identity.
 
-## Latest Checkpoint 2R blocker
+## Checkpoint blocker and R3 disposition
 
-Full rerun after R2 returned:
+The latest full Checkpoint 2R rerun was blocked by one deterministic unexpected browser console error from an automatic missing `/favicon.ico` request. Automated gates had already passed, and the worker correctly stopped the remaining browser matrix without product writes.
 
-`P3_CHECKPOINT_2R_RERUN_AFTER_R2_BLOCKED`
+Independent review accepted this as a separate pre-existing static-document defect, not an R1/R2 regression.
 
-Blocker report:
+R3 worker:
 
-- path: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-RERUN-AFTER-R2-BLOCKER/cbf5c543ada8752c273fbb2e91be029c9febc3d3.md`
-- connector commit: `974512cb1b9e934c25d5ccfc2c3874767dbf631d`
-- blob: `ce613b9d93d5062088d26d735af3fc7919498dbd`
+- branch: `p3/checkpoint2r-favicon-console`
+- commit: `778b23b6a9dbb4e1b652e7a31349a35b707f3373`
+- tree: `d5ca241f173f2733d6699283084bf7435c0e9259`
+- message: `fix(ui): prevent missing favicon request`
+- parent/merge base: exact target base `cbf5c543ada8752c273fbb2e91be029c9febc3d3`
+- branch relation: exactly one commit ahead, zero behind
+- effective diff: exactly `web/index.html`, +1 / -0
 
-Automated gates passed before the browser blocker:
+The exact prescribed embedded data favicon is the only change. No external favicon/static asset was added.
 
-- frontend: 44/44 files, 614/614 tests, typecheck/lint/build/bundle pass
-- Rust/global gates: pass
-- bundle: 389599 bytes initial/largest/total under unchanged limits
-- worktree cleanup and immutable-file audit: pass
+Implementation report:
 
-Fresh production Chrome then produced exactly one unexpected console error from an automatic `/favicon.ico` request returning HTTP 404. Page errors and unhandled rejections were zero.
+- connector commit: `b82c112c28eb81f1abe82750b39ebf6e808ec9a8`
+- path: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-R3-FAVICON/778b23b6a9dbb4e1b652e7a31349a35b707f3373.md`
+- status: `P3_CHECKPOINT_2R_R3_FAVICON_COMPLETE`
 
-The browser matrix correctly stopped at this first deterministic failure; unexecuted R1/R2/matrix cells were not claimed successful.
+Focused fresh Chrome evidence on `/dashboard` and `/` recorded:
 
-## Independent blocker review
+- `/favicon.ico` requests: 0;
+- console errors: 0;
+- page errors: 0;
+- unhandled rejections: 0;
+- real Demo resources: success;
+- no interception, mocking or favicon-specific suppression.
+
+Automated R3 validation also passed 44/44 frontend files and 614/614 tests, typecheck/lint/build/bundle, all prescribed Rust/global gates, and unchanged bundle measurements of 389599 bytes under the existing limits.
+
+No PR or merge has yet been created for R3.
+
+## Independent R3 review
 
 Review:
 
-- path: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-RERUN-AFTER-R2-BLOCKER-REVIEW/cbf5c543ada8752c273fbb2e91be029c9febc3d3.md`
-- connector commit: `688678a91806db7dc3bc3e588d25a4e0d3999f3b`
-- blob: `e3a80bb083377e12600afbd7d0ea030e617097d5`
-- status: `P3_CHECKPOINT_2R_RERUN_AFTER_R2_BLOCKER_ACCEPTED_R3_REQUIRED`
+- path: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-R3-FAVICON-REVIEW/778b23b6a9dbb4e1b652e7a31349a35b707f3373.md`
+- connector commit: `d58a9af0ec2fd78724011b6095828bd754909d5d`
+- blob: `8a48f027a1e8632541d853c12641d9a303c59267`
+- status: `P3_CHECKPOINT_2R_R3_FAVICON_ACCEPTED_FOR_INTEGRATION`
 
-Independent accepted-tree inspection confirmed `web/index.html` has no favicon declaration and no favicon asset exists at `web/public/favicon.ico` or root `favicon.ico`.
-
-The blocker is accepted as a separate pre-existing static-document/browser-console defect, not an R1/R2 regression. No diagnostic phase is required.
+Independent review confirmed exact ancestry, exact one-file patch, unchanged target, absence of an existing R3 PR, and no identity/scope/browser-evidence/automated-gate/bundle blocker.
 
 ## Current authorization
 
-Only this implementation is authorized:
+Only R3 integration is authorized.
 
-`P3-CHECKPOINT-2R-R3 — Prevent missing favicon browser request`
+Integration contract:
 
-Contract:
+- path: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-R3-INTEGRATION.md`
+- connector commit: `b232b248ae7af39fadf27e5de84115b7b1936a80`
+- blob: `a92ee1fbe7ddebed488ef8481c4b56818278eb2c`
+- status: `P3_CHECKPOINT_2R_R3_INTEGRATION_AUTHORIZED`
 
-- path: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-R3-FAVICON.md`
-- connector commit: `7c61374ed4218a307de128b2c56fdb2d4a6a2461`
-- blob: `983de2d122aa36083c862455d4e694d7f52cdb17`
-- status: `P3_CHECKPOINT_2R_R3_FAVICON_IMPLEMENTATION_AUTHORIZED`
-- worker type: local Codex implementation worker
-- immutable base: `cbf5c543ada8752c273fbb2e91be029c9febc3d3`
-- immutable tree: `495d14862b0996766b5376358b99382124df9916`
-- assigned branch: `p3/checkpoint2r-favicon-console`
-- commit message: `fix(ui): prevent missing favicon request`
-- exact writable lease: `web/index.html` only
-- success marker: `P3_CHECKPOINT_2R_R3_FAVICON_COMPLETE`
-- blocker marker: `P3_CHECKPOINT_2R_R3_FAVICON_BLOCKED`
+Exact integration identities:
 
-R3 must insert only the exact embedded favicon declaration prescribed by the contract, add no asset file, prove `/favicon.ico` is not requested in fresh production Chrome, prove zero browser console/page/unhandled errors, and pass the unchanged full automated gate suite.
+- target base: `cbf5c543ada8752c273fbb2e91be029c9febc3d3`
+- target tree: `495d14862b0996766b5376358b99382124df9916`
+- worker: `778b23b6a9dbb4e1b652e7a31349a35b707f3373`
+- worker tree: `d5ca241f173f2733d6699283084bf7435c0e9259`
+- accepted diff: exactly `web/index.html`, +1 / -0
+
+The GitHub web integration worker must use one PR, exact synthetic-merge identity, successful first-attempt `frontend` and `rust` CI with exact synthetic checkout, normal merge commit only, final identity verification, and connector report/control publication.
 
 ## Authorization boundary
 
 Not authorized now:
 
-- any product path other than `web/index.html`;
-- any Dashboard/modal/R1/R2 change;
-- routes/API/resources/CSS/ticker work;
-- dependency/lock/budget/Vite changes;
-- `web/public/*` or new static assets;
-- R3 integration before independent review;
-- new full Checkpoint 2R rerun before R3 integration;
+- any additional product modification;
+- a full Checkpoint 2R rerun before R3 integration completes and a new rerun contract is published;
 - P3-W4-BRIDGE01 or P3-W4-BRIDGE02;
 - P3-MP21…P3-MP30 / semantic Wave 4;
 - dialogs/accessibility, routing/loading/performance, responsive/final, Phase 4 or later work.
@@ -117,11 +122,11 @@ MP18R integrated
 → R1 integrated
 → Checkpoint 2R rerun BLOCKED on All Markets Back focus
 → R2 integrated
-→ full Checkpoint 2R rerun after R2 BLOCKED on favicon console 404
-→ R3 favicon recovery implementation                   [current]
-→ independent R3 review
-→ R3 PR CI + integration
-→ full Checkpoint 2R rerun
+→ Checkpoint 2R rerun BLOCKED on favicon console 404
+→ R3 favicon implementation COMPLETE
+→ independent R3 review COMPLETE
+→ R3 PR CI + integration                     [current]
+→ new full Checkpoint 2R rerun
 → independent checkpoint acceptance
 → P3-W4-BRIDGE01
 → P3-W4-BRIDGE02
@@ -139,4 +144,4 @@ MP18R integrated
 - Standalone detail pages and URL-backed modal state remain forbidden.
 - Demo/Live isolation, public-Replay prohibition, ticker ownership, accessibility/focus guarantees, backend `/anomalies`, and bundle budgets remain protected.
 
-Terminal state: `P3_CHECKPOINT_2R_R3_FAVICON_IMPLEMENTATION_AUTHORIZED`
+Terminal state: `P3_CHECKPOINT_2R_R3_INTEGRATION_AUTHORIZED`
