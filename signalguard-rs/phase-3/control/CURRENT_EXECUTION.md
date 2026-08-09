@@ -2,6 +2,20 @@
 
 Status: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_LOCAL_VALIDATION_AUTHORIZED`
 
+## Orchestrator restart handoff
+
+New or resumed orchestrators must read the durable handoff before issuing or accepting any worker action:
+
+`signalguard-rs/phase-3/control/ORCHESTRATOR_HANDOFF.md`
+
+Handoff publication:
+
+- connector commit: `2ce2381b197f6f996ba2449d23fc2d99534dab7e`
+- blob: `b73ac74fe9265bf3784ca86200f9db41145d1349`
+- recorded state: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_LOCAL_VALIDATION_AUTHORIZED`
+
+The handoff is a restart/context index. This file, `STATUS.md`, and the exact current contract remain the live execution authority if later control state supersedes details in the handoff.
+
 ## Current accepted product
 
 - repository: `progeranna/signalguard-rs`
