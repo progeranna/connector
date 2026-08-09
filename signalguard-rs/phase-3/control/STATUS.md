@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `P3_CHECKPOINT_2R_R3_INTEGRATED_CHECKPOINT_RERUN_NOT_AUTHORIZED`
+Current state: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_LOCAL_VALIDATION_AUTHORIZED`
 
 ## Mandatory current entry point
 
@@ -10,9 +10,9 @@ Read first:
 
 Current execution publication:
 
-- connector commit: `d12ab602386a9d3bb7e78c1a126fc72da65b4609`
-- blob: `7a1b0237d0f8ddf6c62a1a7e38a62b23f95ecbf8`
-- status: `P3_CHECKPOINT_2R_R3_INTEGRATED_CHECKPOINT_RERUN_NOT_AUTHORIZED`
+- connector commit: `86e21bc4927ece1ae615bee6c9ba813eaa575ba5`
+- blob: `39ae09143d2d26659fa23af70183ee944ef9ef15`
+- status: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_LOCAL_VALIDATION_AUTHORIZED`
 
 ## Current accepted product
 
@@ -33,74 +33,57 @@ Integrated work:
 - Checkpoint 2R R2 All Markets Back-focus recovery: PR #72
 - Checkpoint 2R R3 favicon recovery: PR #73
 
-## R3 integration record
+R3 integration is independently verified complete:
 
-Accepted worker:
+- synthetic merge `3b949b7e94f7a7ebe3d5e2b8e2bd2c8e10e59514`
+- CI run `31309410396`, attempt 1, success, no rerun
+- frontend job `93234775362`: exact synthetic checkout; 44/44 files, 614/614 tests; typecheck/lint/build/bundle passed
+- rust job `93234775345`: exact synthetic checkout; all configured repository gates passed
+- final normal merge `7dab5647d322339f5bd9d0514e5178522d5181c0`
+- final tree `d5ca241f173f2733d6699283084bf7435c0e9259`
+- exact effective R3 diff: `web/index.html`, +1 / -0
+- integration report commit `60ac20579fa1b51901fb0b3850e273989fdcf77f`, blob `2ece1d96dc4b471ffe972bd4be7282a1dd753625`
 
-- branch: `p3/checkpoint2r-favicon-console`
-- commit: `778b23b6a9dbb4e1b652e7a31349a35b707f3373`
-- tree: `d5ca241f173f2733d6699283084bf7435c0e9259`
-- message: `fix(ui): prevent missing favicon request`
-- direct base: `cbf5c543ada8752c273fbb2e91be029c9febc3d3`
-- accepted effective diff: exactly `web/index.html`, +1 / -0
+## Current authorization
 
-Independent acceptance:
+Only the full read-only Checkpoint 2R rerun after R3 is authorized.
 
-- review commit: `d58a9af0ec2fd78724011b6095828bd754909d5d`
-- review blob: `8a48f027a1e8632541d853c12641d9a303c59267`
-- status: `P3_CHECKPOINT_2R_R3_FAVICON_ACCEPTED_FOR_INTEGRATION`
+Contract:
 
-Integration authority:
+- path: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-RERUN-AFTER-R3-LOCAL.md`
+- connector commit: `846b9b456e9577e4e50b3ed2123b50af15c6b8de`
+- blob: `8e9097eae024b004f9a794d6a65cb821eae9a397`
+- status: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_LOCAL_VALIDATION_AUTHORIZED`
+- worker type: local Codex validation worker
+- product write lease: `NONE`
+- success marker: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_COMPLETE`
+- blocker marker: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_BLOCKED`
 
-- contract commit: `b232b248ae7af39fadf27e5de84115b7b1936a80`
-- contract blob: `a92ee1fbe7ddebed488ef8481c4b56818278eb2c`
-- status: `P3_CHECKPOINT_2R_R3_INTEGRATION_AUTHORIZED`
+The rerun must complete the full command/browser matrix from the integrated R3 head and explicitly revalidate:
 
-Integration evidence:
-
-- PR: #73, non-draft, closed and merged
-- synthetic merge: `3b949b7e94f7a7ebe3d5e2b8e2bd2c8e10e59514`
-- synthetic tree: `d5ca241f173f2733d6699283084bf7435c0e9259`
-- synthetic ordered parents: accepted target base first, accepted worker second
-- exact-ref CI run: `31309410396`, run number 326, attempt 1, success
-- `frontend` job `93234775362`: success on exact synthetic checkout
-- `rust` job `93234775345`: success on exact synthetic checkout
-- frontend: 44/44 files, 614/614 tests, typecheck, zero-warning lint, production build, 25/25 bundle-policy tests, bundle budget passed
-- bundle measurements: 389599 / 389599 / 389599 bytes under unchanged 409600 / 409600 / 414720 limits
-- Rust/global formatting, generated API/OpenAPI, check, Clippy, test, replay, Docker and shell gates: passed
-- no CI rerun was used
-
-Final normal merge:
-
-- commit: `7dab5647d322339f5bd9d0514e5178522d5181c0`
-- tree: `d5ca241f173f2733d6699283084bf7435c0e9259`
-- ordered parent 1: `cbf5c543ada8752c273fbb2e91be029c9febc3d3`
-- ordered parent 2: `778b23b6a9dbb4e1b652e7a31349a35b707f3373`
-- old target base → final: exactly two commits ahead, zero behind
-- effective diff: exactly `web/index.html`, +1 / -0
-- worker → final file diff: empty
-- synthetic tree equals final tree
-- worker branch remains unchanged
-
-Integration report:
-
-- path: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-R3-INTEGRATION/7dab5647d322339f5bd9d0514e5178522d5181c0.md`
-- connector commit: `60ac20579fa1b51901fb0b3850e273989fdcf77f`
-- status: `P3_CHECKPOINT_2R_R3_INTEGRATION_COMPLETE`
+- R1 View-all reachability on real Demo data;
+- R2 exact two-step Back focus on desktop and mobile;
+- R3 embedded favicon behavior with zero `/favicon.ico` requests;
+- Demo/Live × BTCUSDT/ETHUSDT × desktop/mobile flows;
+- pointer/keyboard/focus containment and close lifecycle;
+- stale mode/symbol replacement protection;
+- compatibility redirects and modal-only URL invariants;
+- zero unexpected browser console errors/page errors/unhandled rejections;
+- at least 16 deterministic screenshot artifacts with hashes.
 
 ## Authorization boundary
 
-R3 integration is complete, but the next full Checkpoint 2R rerun is not authorized by this control state.
+Not authorized until independent acceptance of the full rerun:
 
-A separate orchestrator action must publish a new explicit full Checkpoint 2R rerun contract before that validation rerun starts.
-
-Not authorized now:
-
-- additional product mutation under R3;
-- self-authorizing or executing the new full Checkpoint 2R rerun;
-- `P3-W4-BRIDGE01` or `P3-W4-BRIDGE02`;
-- P3-MP21…P3-MP30 / semantic Wave 4;
-- dialogs/accessibility, routing/loading/performance, responsive/final, Phase 4, or later work.
+- any product modification or defect fix;
+- additional favicon/static-asset work;
+- P3-W4-BRIDGE01;
+- P3-W4-BRIDGE02;
+- Wave 4 P3-MP21…P3-MP30;
+- dialogs/accessibility;
+- routing/loading/performance;
+- responsive/final work;
+- Phase 4 or later work.
 
 ## Binding continuation
 
@@ -112,11 +95,8 @@ MP18R integrated
 → Checkpoint 2R rerun BLOCKED on All Markets Back focus
 → R2 integrated
 → Checkpoint 2R rerun BLOCKED on favicon console 404
-→ R3 favicon implementation COMPLETE
-→ independent R3 review COMPLETE
-→ R3 PR CI + integration COMPLETE
-→ new full Checkpoint 2R rerun contract                     [not authorized; orchestrator publication required]
-→ new full Checkpoint 2R rerun
+→ R3 integrated
+→ full Checkpoint 2R rerun after R3             [current]
 → independent checkpoint acceptance
 → P3-W4-BRIDGE01
 → P3-W4-BRIDGE02
@@ -134,4 +114,4 @@ MP18R integrated
 - Standalone detail pages and URL-backed modal state remain forbidden.
 - Demo/Live isolation, public-Replay prohibition, ticker ownership, accessibility/focus guarantees, backend `/anomalies`, and bundle budgets remain protected.
 
-Terminal state: `P3_CHECKPOINT_2R_R3_INTEGRATED_CHECKPOINT_RERUN_NOT_AUTHORIZED`
+Terminal state: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_LOCAL_VALIDATION_AUTHORIZED`
