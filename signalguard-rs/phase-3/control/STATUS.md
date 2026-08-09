@@ -10,9 +10,21 @@ Read first:
 
 Current execution publication:
 
-- connector commit: `86e21bc4927ece1ae615bee6c9ba813eaa575ba5`
-- blob: `39ae09143d2d26659fa23af70183ee944ef9ef15`
+- connector commit: `930e3978a3cbd620a9356ea6547f438e681c301e`
+- blob: `6b3bc10bc79fe9afb748c66a0754a958ab47134c`
 - status: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_LOCAL_VALIDATION_AUTHORIZED`
+
+New/resumed orchestrators must also read the durable restart handoff before acting:
+
+`signalguard-rs/phase-3/control/ORCHESTRATOR_HANDOFF.md`
+
+Handoff publication:
+
+- connector commit: `2ce2381b197f6f996ba2449d23fc2d99534dab7e`
+- blob: `b73ac74fe9265bf3784ca86200f9db41145d1349`
+- recorded state: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_LOCAL_VALIDATION_AUTHORIZED`
+
+The handoff is a context/index document. `CURRENT_EXECUTION.md`, this status file, and the exact current contract remain the live authority if later state changes.
 
 ## Current accepted product
 
