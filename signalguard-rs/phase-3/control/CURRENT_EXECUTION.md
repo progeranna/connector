@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Current Execution
 
-Status: `P3_CHECKPOINT_2R_R4_REVIEW_AUTHORIZED`
+Status: `P3_CHECKPOINT_2R_R4_INTEGRATION_AUTHORIZED`
 
 ## Current accepted product
 
@@ -9,35 +9,18 @@ Status: `P3_CHECKPOINT_2R_R4_REVIEW_AUTHORIZED`
 - exact integrated commit: `7dab5647d322339f5bd9d0514e5178522d5181c0`
 - exact integrated tree: `d5ca241f173f2733d6699283084bf7435c0e9259`
 
-Independent remote verification after R4 implementation confirms the target branch is still identical to this accepted base: zero commits ahead, zero behind, zero changed files.
+Independent verification after R4 review confirms the target branch is still identical to this accepted base.
 
-## Completed R4 implementation candidate
+## Accepted R4 candidate
 
-Worker branch:
+Worker branch: `p3/checkpoint2r-selected-symbol-ownership`
 
-`p3/checkpoint2r-selected-symbol-ownership`
-
-Worker commit:
-
-`79abb161e7a731df7077d49b44481eaaf25bf762`
-
-Worker tree:
-
-`d8c0289a05b3646b3abc7056bd269b927e61d5c4`
-
-Worker relation to accepted base:
-
-- exactly one commit ahead;
-- zero behind;
-- merge base exactly `7dab5647d322339f5bd9d0514e5178522d5181c0`;
-- direct parent exactly the accepted base;
-- required message: `fix(ui): reconcile modal symbol on mode change`.
-
-Exact base-to-worker diff:
-
-- `web/src/pages/DashboardPage.tsx`: 26 additions / 14 deletions;
-- `web/src/pages/DashboardPage.popup.test.tsx`: 119 additions / 0 deletions;
-- no other path.
+- commit: `79abb161e7a731df7077d49b44481eaaf25bf762`
+- tree: `d8c0289a05b3646b3abc7056bd269b927e61d5c4`
+- direct parent: `7dab5647d322339f5bd9d0514e5178522d5181c0`
+- message: `fix(ui): reconcile modal symbol on mode change`
+- relation: exactly one commit ahead / zero behind accepted base
+- diff: exactly `web/src/pages/DashboardPage.tsx` and `web/src/pages/DashboardPage.popup.test.tsx`, 145 additions / 14 deletions total
 
 Implementation report:
 
@@ -46,56 +29,63 @@ Implementation report:
 - blob: `85d797bc99bc92608097302757403d16da1827a3`
 - status: `P3_CHECKPOINT_2R_R4_SELECTED_SYMBOL_COMPLETE`
 
-The implementation report records 32/32 focused popup tests, 44/44 frontend files and 615/615 tests, complete frontend/Rust/global gates, unchanged bundle budgets, and focused desktop/mobile browser recovery evidence. Browser artifacts live outside GitHub and are not independently available to a GitHub-only reviewer. The local harness transcript also records `net::ERR_ABORTED` request cancellations being classified as expected; concrete folded cancellation URLs are not available to the orchestrator from the transcript. This limitation must be stated, not hidden, in the independent review.
+Independent review report:
+
+- path: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-R4-REVIEW/79abb161e7a731df7077d49b44481eaaf25bf762.md`
+- publication commit: `a1ab9cec75892d837d7b8514181c4fed807d4093`
+- blob: `6b7d5b73f1e2b38cad6a34e5e5c6cf08ca6ea607`
+- status: `P3_CHECKPOINT_2R_R4_REVIEW_ACCEPTED`
+
+The review independently accepted the exact source correction, composed regression, two existing-test seed changes, branch identity and adjacent-scope protection. It explicitly retained the local `/tmp` evidence boundary and known `net::ERR_ABORTED` harness-classification limitation for later clean local verification.
 
 ## Current authorized action
 
 Only this action is authorized:
 
-`P3-CHECKPOINT-2R-R4 — Independent implementation review`
+`P3-CHECKPOINT-2R-R4 — GitHub-web integration`
 
 Contract:
 
-- path: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-R4-REVIEW.md`
-- connector publication commit: `280a333bc944aff66a990f17fd646c4f6f61de3b`
-- blob: `8eed2c95d741fc28e44a87b1b99979da1c7efb8d`
-- status: `P3_CHECKPOINT_2R_R4_REVIEW_AUTHORIZED`
-- worker type: dedicated independent GitHub web review worker
-- product write lease: `NONE`
-- connector write lease: exactly the review report path authorized by the contract
-- success marker: `P3_CHECKPOINT_2R_R4_REVIEW_ACCEPTED`
-- blocker marker: `P3_CHECKPOINT_2R_R4_REVIEW_BLOCKED`
+- path: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-R4-INTEGRATION.md`
+- publication commit: `2b6580b7090061a66a9a0ce3a0a27cd3a1bc016f`
+- blob: `def37ed176bb6f9bc0455fc343c811d6c0211323`
+- status: `P3_CHECKPOINT_2R_R4_INTEGRATION_AUTHORIZED`
+- worker type: dedicated GitHub web integration worker using connected GitHub tools only
+- exact target base: `7dab5647d322339f5bd9d0514e5178522d5181c0`
+- exact worker commit: `79abb161e7a731df7077d49b44481eaaf25bf762`
+- expected synthetic/final tree: `d8c0289a05b3646b3abc7056bd269b927e61d5c4`
+- success marker: `P3_CHECKPOINT_2R_R4_INTEGRATION_COMPLETE`
+- blocker marker: `P3_CHECKPOINT_2R_R4_INTEGRATION_BLOCKED_BY_IDENTITY_SCOPE_OR_CI`
 
-The reviewer must independently verify immutable identities, the exact two-file diff, source semantics, new regression coverage, the two existing test-seed edits, adjacent-scope protection, absence of an R4 PR/merge, and the implementation-report evidence boundary. It must not implement, integrate, or update control files.
+The worker must create exactly one non-draft PR, verify the exact synthetic merge identity, require first-attempt exact-ref frontend+rust CI success, merge only by normal merge commit, verify the final merge identity and exact two-file effective diff, publish the integration report, and update control files to `P3_CHECKPOINT_2R_R4_INTEGRATED_LOCALHOST_USER_VERIFICATION_REQUIRED`.
 
 ## Current prohibitions
 
-Until independent R4 review is accepted and a separate integration contract is published:
+Until R4 integration completes:
 
-- no product modification or worker rewrite;
-- no R4 PR creation or merge;
-- no target-branch modification;
-- no localhost product-owner acceptance yet;
+- no direct target-branch modification outside the authorized normal PR merge;
+- no worker rewrite, squash, rebase, amend or force-push;
+- no product change outside the accepted two-file worker commit;
+- no localhost/product-owner verification yet;
 - no full Checkpoint 2R rerun yet;
-- no Bridge01/Bridge02, semantic Wave 4, dialogs/accessibility, routing/loading/performance, responsive/final, Phase 4, or later work.
+- no Bridge01/Bridge02 or semantic Wave 4;
+- no dialogs/accessibility, routing/loading/performance, responsive/final, Phase 4 or later work.
 
 ## Binding continuation
 
 ```text
-full Checkpoint 2R rerun after R3 BLOCKED
-→ independent blocker review ACCEPTED
-→ R4 implementation COMPLETE
-→ independent R4 review                                  [current]
-→ GitHub-web R4 integration
+R4 implementation COMPLETE
+→ independent R4 review ACCEPTED
+→ GitHub-web R4 integration                              [current]
 → manual localhost user verification of integrated UI behavior
 → full Checkpoint 2R rerun from new integrated head
 → independent checkpoint acceptance
 → P3-W4-BRIDGE01
 → P3-W4-BRIDGE02
-→ semantic Wave 4 P3-MP21…P3-MP30
+→ P3-MP21…P3-MP30
 → Checkpoint 3
 ```
 
-Permanent product direction remains unchanged: `/` and `/dashboard` are the only visual console pages; compatibility routes redirect; modal state is local/ephemeral; Demo/Live isolation, exact UUID ownership, ticker ownership, accessibility/focus guarantees, backend `/anomalies`, and bundle budgets remain protected.
+The localhost step is mandatory product-owner verification after user-observable UI behavior changes. CI success does not itself mark the UI accepted.
 
-Terminal state: `P3_CHECKPOINT_2R_R4_REVIEW_AUTHORIZED`
+Terminal state: `P3_CHECKPOINT_2R_R4_INTEGRATION_AUTHORIZED`
