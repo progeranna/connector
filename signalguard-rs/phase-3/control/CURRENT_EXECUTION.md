@@ -1,20 +1,6 @@
 # SignalGuard RS Phase 3 — Current Execution
 
-Status: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_LOCAL_VALIDATION_AUTHORIZED`
-
-## Orchestrator restart handoff
-
-New or resumed orchestrators must read the durable handoff before issuing or accepting any worker action:
-
-`signalguard-rs/phase-3/control/ORCHESTRATOR_HANDOFF.md`
-
-Handoff publication:
-
-- connector commit: `2ce2381b197f6f996ba2449d23fc2d99534dab7e`
-- blob: `b73ac74fe9265bf3784ca86200f9db41145d1349`
-- recorded state: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_LOCAL_VALIDATION_AUTHORIZED`
-
-The handoff is a restart/context index. This file, `STATUS.md`, and the exact current contract remain the live execution authority if later control state supersedes details in the handoff.
+Status: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_BLOCKER_REVIEW_AUTHORIZED`
 
 ## Current accepted product
 
@@ -22,80 +8,55 @@ The handoff is a restart/context index. This file, `STATUS.md`, and the exact cu
 - target branch: `refactor/dashboard-modules`
 - exact integrated commit: `7dab5647d322339f5bd9d0514e5178522d5181c0`
 - exact integrated tree: `d5ca241f173f2733d6699283084bf7435c0e9259`
-- integrated: P3-MP18R through PR #69; P3-MP20R through PR #70; Checkpoint 2R R1 through PR #71; R2 through PR #72; R3 through PR #73
+- integrated: P3-MP18R PR #69; P3-MP20R PR #70; Checkpoint 2R R1 PR #71; R2 PR #72; R3 PR #73
 
-Independent remote verification after R3 integration confirms `refactor/dashboard-modules` is still exactly this accepted identity.
+Independent remote compare immediately before this authorization proved `refactor/dashboard-modules` is still identical to the accepted commit: zero commits ahead, zero behind, zero changed files.
 
-## Accepted R3 integration
+## Latest Checkpoint result
 
-R3 worker:
+The dedicated local full Checkpoint 2R rerun after R3 ended blocked.
 
-- branch: `p3/checkpoint2r-favicon-console`
-- commit: `778b23b6a9dbb4e1b652e7a31349a35b707f3373`
-- tree: `d5ca241f173f2733d6699283084bf7435c0e9259`
-- message: `fix(ui): prevent missing favicon request`
-- accepted diff: exactly `web/index.html`, +1 / -0
+Blocker report:
 
-PR #73:
+- path: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-RERUN-AFTER-R3-BLOCKER/7dab5647d322339f5bd9d0514e5178522d5181c0.md`
+- publication commit: `e83b4cfeb5c6b334eb94b833c39e666dc27450e7`
+- blob: `e4e222259996fafac7c8fc8a20b3f4630772a255`
+- status: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_BLOCKED`
 
-- base: `cbf5c543ada8752c273fbb2e91be029c9febc3d3`
-- head: `778b23b6a9dbb4e1b652e7a31349a35b707f3373`
-- synthetic merge: `3b949b7e94f7a7ebe3d5e2b8e2bd2c8e10e59514`
-- synthetic/final tree: `d5ca241f173f2733d6699283084bf7435c0e9259`
-- exact-ref CI run: `31309410396`, attempt 1, success, no rerun
-- frontend job `93234775362`: success on exact synthetic checkout; 44/44 files, 614/614 tests, typecheck, zero-warning lint, build, 25/25 bundle-policy tests, bundle budget passed
-- rust job `93234775345`: success on exact synthetic checkout; formatting, generated API/OpenAPI, cargo check, Clippy, tests, replay discovery, Docker and shell gates passed
-- bundle: 389599 / 389599 / 389599 bytes under unchanged 409600 / 409600 / 414720 limits
+All prescribed frontend and Rust/global command gates passed. R1 View-all reachability, R2 Back/Back focus, R3 favicon/console behavior, and all eight core Demo/Live × BTCUSDT/ETHUSDT × desktop/mobile cells passed before the first deterministic failure.
 
-Final normal merge:
-
-- commit: `7dab5647d322339f5bd9d0514e5178522d5181c0`
-- tree: `d5ca241f173f2733d6699283084bf7435c0e9259`
-- ordered parents: accepted prior target base first, accepted R3 worker second
-- effective diff: exactly `web/index.html`, +1 / -0
-- worker → final file diff: empty
-- synthetic tree equals final merge tree
-
-Integration report:
-
-- path: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-R3-INTEGRATION/7dab5647d322339f5bd9d0514e5178522d5181c0.md`
-- connector commit: `60ac20579fa1b51901fb0b3850e273989fdcf77f`
-- blob: `2ece1d96dc4b471ffe972bd4be7282a1dd753625`
-- status: `P3_CHECKPOINT_2R_R3_INTEGRATION_COMPLETE`
+Blocking behavior: during `Demo/BTCUSDT → Live/BTCUSDT → Live/ETHUSDT → Demo` with nested modal state open, the header resolves back to Demo-selected `BTCUSDT` and the stale Live anomaly UUID clears, but the open Symbol Detail parent remains owned by `ETHUSDT`. The validation worker classified this as an MP18R stale mode/symbol replacement and selected-symbol ownership regression and made no product modification.
 
 ## Current authorized action
 
 Only this action is authorized:
 
-`P3-CHECKPOINT-2R-RERUN-AFTER-R3 — Full combined modal-only recovery validation`
+`P3-CHECKPOINT-2R-RERUN-AFTER-R3 — Independent blocker review`
 
 Contract:
 
-- path: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-RERUN-AFTER-R3-LOCAL.md`
-- connector commit: `846b9b456e9577e4e50b3ed2123b50af15c6b8de`
-- blob: `8e9097eae024b004f9a794d6a65cb821eae9a397`
-- status: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_LOCAL_VALIDATION_AUTHORIZED`
-- worker type: dedicated local Codex validation worker
+- path: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-RERUN-AFTER-R3-BLOCKER-REVIEW.md`
+- connector publication commit: `ee2d45773d605ad80c51ae82dbcafd44e7743c11`
+- blob: `f97112bc848693186c955b450be9098ffcf07e4d`
+- status: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_BLOCKER_REVIEW_AUTHORIZED`
+- worker type: dedicated independent GitHub web review worker
 - product write lease: `NONE`
-- immutable product commit: `7dab5647d322339f5bd9d0514e5178522d5181c0`
-- immutable tree: `d5ca241f173f2733d6699283084bf7435c0e9259`
-- success marker: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_COMPLETE`
-- blocker marker: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_BLOCKED`
+- connector write lease: exactly the review report path authorized by the contract
+- accepted marker: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_BLOCKER_ACCEPTED_R4_REQUIRED`
+- blocked marker: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_BLOCKER_REVIEW_BLOCKED`
 
-The rerun must execute the complete automated command suite and the full real-browser Demo/Live × BTCUSDT/ETHUSDT × desktop/mobile matrix. It must explicitly regression-test R1 View-all reachability, R2 two-step Back focus restoration, and R3 zero-favicon-request/zero-console behavior, then complete all pointer/keyboard/focus/close/body-lock/stale-replacement/redirect/URL invariants with at least 16 deterministic screenshots.
+The reviewer must independently verify product identity, blocker evidence, accepted source/test logic, causal classification, and the smallest safe recovery lease. It must not fix the product or update control files.
 
 ## Current prohibitions
 
-Until this rerun is independently accepted:
+Until the blocker review is independently accepted and the orchestrator publishes a separate R4 implementation contract:
 
-- no product modification, branch, commit, push, PR, or merge;
-- no defect repair from the validation worker;
-- no additional favicon/static-asset work;
-- do not begin P3-W4-BRIDGE01;
-- do not begin P3-W4-BRIDGE02;
+- no product modification, implementation branch, commit, push, PR, or merge;
+- no local/browser repair attempt;
+- no expansion into routes, CSS, ticker, API/resources, R2 focus logic, favicon/static assets, dependencies, lockfiles, bundle budgets, or backend;
+- do not begin P3-W4-BRIDGE01 or P3-W4-BRIDGE02;
 - do not begin P3-MP21…P3-MP30 / semantic Wave 4;
-- do not begin dialogs/accessibility, routing/loading/performance, responsive/final, Phase 4, or later work;
-- preserve modal-only routes, exact UUID ownership, Demo/Live isolation, ticker ownership, API/resource identity, and bundle budgets.
+- do not begin dialogs/accessibility, routing/loading/performance, responsive/final, Phase 4, or later work.
 
 ## Binding continuation
 
@@ -104,20 +65,23 @@ P3-MP18R integrated
 → P3-MP20R integrated
 → Checkpoint 2R BLOCKED
 → R1 integrated
-→ Checkpoint 2R rerun BLOCKED on All Markets Back focus
+→ rerun BLOCKED on All Markets Back focus
 → R2 integrated
-→ Checkpoint 2R rerun BLOCKED on favicon console 404
+→ rerun BLOCKED on favicon console 404
 → R3 integrated
-→ full Checkpoint 2R rerun after R3                 [current]
-→ independent GitHub web checkpoint acceptance
+→ full rerun after R3 BLOCKED on mode/symbol modal ownership
+→ independent blocker review                              [current]
+→ if accepted: authorize P3-CHECKPOINT-2R-R4 narrow recovery
+→ R4 independent review
+→ R4 GitHub web integration
+→ full Checkpoint 2R rerun from new integrated head
+→ independent checkpoint acceptance
 → P3-W4-BRIDGE01
 → P3-W4-BRIDGE02
 → semantic Wave 4 P3-MP21…P3-MP30
 → Checkpoint 3
 ```
 
-On `P3_CHECKPOINT_2R_RERUN_AFTER_R3_COMPLETE`, a separate GitHub web acceptance worker must independently verify the report and exact product identity before Bridge 01 can be authorized.
+Permanent product direction remains unchanged: `/` and `/dashboard` are the only visual console pages; compatibility routes redirect; modal state is local/ephemeral; Demo/Live isolation, exact UUID ownership, ticker ownership, accessibility/focus guarantees, backend `/anomalies`, and bundle budgets remain protected.
 
-On `P3_CHECKPOINT_2R_RERUN_AFTER_R3_BLOCKED`, no fix is authorized until the blocker report is independently reviewed and a narrow recovery contract is published.
-
-Terminal state: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_LOCAL_VALIDATION_AUTHORIZED`
+Terminal state: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_BLOCKER_REVIEW_AUTHORIZED`
