@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_REVIEW_AUTHORIZED`
+Current state: `P3_W4_BRIDGE01_IMPLEMENTATION_AUTHORIZED`
 
 ## Mandatory current entry point
 
@@ -10,59 +10,64 @@ Read first:
 
 Expected current-execution blob:
 
-`e05312c766f175e085b84f7fe0613bc2d3be22a0`
+`be9e6e88bc0310176c3f360dea6bedaca27fa65d`
 
-## Current integrated product
+## Exact accepted product
 
 Repository: `progeranna/signalguard-rs`
 
 Target branch: `refactor/dashboard-modules`
 
-Exact integrated identity:
+Immutable Bridge01 base:
 
 - commit: `23656c9b93a24bfc20ba8f417275564bb5b5d240`
 - tree: `d8c0289a05b3646b3abc7056bd269b927e61d5c4`
-- PR: `#74`
-- target compare: identical to exact integrated commit, zero ahead/behind, zero changed files
+- target compare immediately before authorization: identical, zero ahead/behind, zero changed files.
 
-## Completed Checkpoint rerun
+## Checkpoint 2R closure
 
-- contract: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-RERUN-AFTER-R4.md`
-- contract commit/blob: `e49bb785ff753a78c9c274689365a573d44f695b` / `cee0cac364ef38f0e52947006392227dbc38a9ec`
-- report: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-RERUN-AFTER-R4/23656c9b93a24bfc20ba8f417275564bb5b5d240.md`
-- report commit/blob: `378783556646bc414a0cd16548aa6bda6ae9c503` / `a5a171385f5c902f8128168e763293d13c071109`
-- status: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_COMPLETE`
+Independent acceptance report:
+
+- path: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-RERUN-AFTER-R4-REVIEW/23656c9b93a24bfc20ba8f417275564bb5b5d240.md`
+- publication commit: `c7a5be7aa935f952fc386d373c380b2220da8fe1`
+- blob: `96d5e3c2d7cf6b0965f69954f1f8249678b44dce`
+- status: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_ACCEPTED`
+
+Checkpoint 2R is closed and independently accepted.
 
 ## Current authorization
 
-Only the independent GitHub-web Checkpoint 2R acceptance review is authorized.
+Only `P3-W4-BRIDGE01 — Backend semantic health facts` is authorized.
 
-Review contract:
+Contract:
 
-- path: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-RERUN-AFTER-R4-REVIEW.md`
-- publication commit: `43fcd00c899d01dbf13f1e4b7f0d69735d6d0fbb`
-- blob: `44702b5fee9a34ea25d9372d9b6726ff027fb1cd`
-- status: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_REVIEW_AUTHORIZED`
-- product write lease: `NONE`
-- connector write lease: exact review report only
-- success marker: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_ACCEPTED`
-- blocker marker: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_REVIEW_BLOCKED`
+- path: `signalguard-rs/phase-3/prompts/P3-W4-BRIDGE01-SEMANTIC-HEALTH-FACTS.md`
+- publication commit: `05d2543c8cc7c430faecfc69821a0d84be09fe91`
+- blob: `52936cf0d3105ca9d3e5e99e5db72e27f206126a`
+- status: `P3_W4_BRIDGE01_IMPLEMENTATION_AUTHORIZED`
+- branch: `p3/w4-bridge01-semantic-health-facts`
+- required commit: `feat(api): expose semantic health facts`
+- product write lease: exact backend/API/OpenAPI lease in the contract; no frontend or detector source writes
+- success marker: `P3_W4_BRIDGE01_COMPLETE`
+- blocker marker: `P3_W4_BRIDGE01_BLOCKED_BY_SCOPE_OR_IDENTITY`
 
-The reviewer must not claim local command/browser evidence as independently rerun. It must verify durable report completeness, exact product/connector state, current relevant source/test consistency, and absence of GitHub-verifiable contradiction.
+The implementation worker must produce exactly one product commit, run the full backend-contract plus frontend regression gates, publish the required connector implementation report, and must not create a PR, merge, or update connector control files.
 
 ## Continuation boundary
 
-Bridge01 remains unauthorized until the review report is published with acceptance and the orchestrator verifies it and performs the next control transition.
+Bridge02 remains blocked until Bridge01 is implemented, independently reviewed and integrated.
 
-No Bridge01, Bridge02, semantic Wave 4, dialogs/accessibility, routing/loading/performance, responsive/final, Phase 4, or broader product modification is authorized.
+No semantic Wave 4 UI work, dialogs/accessibility, routing/loading/performance, responsive/final or Phase 4 work is authorized.
 
 ```text
-full Checkpoint 2R rerun after R4 COMPLETE
-→ independent checkpoint acceptance review          [current]
-→ P3-W4-BRIDGE01
-→ P3-W4-BRIDGE02
-→ P3-MP21…P3-MP30
-→ Checkpoint 3
+Checkpoint 2R ACCEPTED
+→ Bridge01 implementation                         [current]
+→ independent Bridge01 review
+→ Bridge01 integration
+→ Bridge02
+→ independent Bridge02 review + integration
+→ P3-MP21 / P3-MP22 / P3-MP24
+→ Checkpoint 3 sequence
 ```
 
-Terminal state: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_REVIEW_AUTHORIZED`
+Terminal state: `P3_W4_BRIDGE01_IMPLEMENTATION_AUTHORIZED`
