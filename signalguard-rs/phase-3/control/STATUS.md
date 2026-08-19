@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `P3_CHECKPOINT_2R_R4_INTEGRATED_LOCALHOST_USER_VERIFICATION_REQUIRED`
+Current state: `P3_CHECKPOINT_2R_R4_LOCALHOST_USER_VERIFICATION_AUTHORIZED`
 
 ## Mandatory current entry point
 
@@ -10,7 +10,7 @@ Read first:
 
 Expected current-execution blob:
 
-`c7e61f8e4cf4c1067d33aebce82f697e9ca45e0c`
+`f167474568b629914be3886e856791478265396f`
 
 ## Current integrated product
 
@@ -18,51 +18,40 @@ Repository: `progeranna/signalguard-rs`
 
 Target branch: `refactor/dashboard-modules`
 
-Exact integrated R4 identity:
+Exact integrated identity:
 
-- merge commit: `23656c9b93a24bfc20ba8f417275564bb5b5d240`
+- commit: `23656c9b93a24bfc20ba8f417275564bb5b5d240`
 - tree: `d8c0289a05b3646b3abc7056bd269b927e61d5c4`
-- ordered parent 1: `7dab5647d322339f5bd9d0514e5178522d5181c0`
-- ordered parent 2: `79abb161e7a731df7077d49b44481eaaf25bf762`
-- PR: `https://github.com/progeranna/signalguard-rs/pull/74`
+- PR: `#74`
 - integration status: `P3_CHECKPOINT_2R_R4_INTEGRATION_COMPLETE`
 
-Accepted worker branch remains unchanged:
-
-- branch: `p3/checkpoint2r-selected-symbol-ownership`
-- commit: `79abb161e7a731df7077d49b44481eaaf25bf762`
-- tree: `d8c0289a05b3646b3abc7056bd269b927e61d5c4`
-
-The final effective diff remains exactly the accepted two-file R4 scope:
-
-- `web/src/pages/DashboardPage.tsx`: +26 / -14
-- `web/src/pages/DashboardPage.popup.test.tsx`: +119 / -0
-- aggregate: +145 / -14
-
-Integration report:
-
-- path: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-R4-INTEGRATION/23656c9b93a24bfc20ba8f417275564bb5b5d240.md`
-- publication commit: `f2189063dba447bd0dca4a83ee16120e4f31959e`
+Remote target remains identical to this exact integrated merge after integration publication.
 
 ## Current authorization
 
-The next orchestration step is a separate dedicated localhost/product-owner verification contract against exact integrated merge:
+Only the dedicated localhost/product-owner verification is authorized.
 
-`23656c9b93a24bfc20ba8f417275564bb5b5d240`
+Contract:
 
-That verification must be completed and explicitly accepted by the user/orchestrator before a clean full Checkpoint 2R rerun is authorized.
+- path: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-R4-LOCALHOST-USER-VERIFICATION.md`
+- publication commit: `b68ef92ef152e0c0a3064dbf01932313ab26dfbd`
+- blob: `8e3e1ac6e087e61ab9f9f746d84a70e5dd238757`
+- status: `P3_CHECKPOINT_2R_R4_LOCALHOST_USER_VERIFICATION_AUTHORIZED`
+- product write lease: `NONE`
+- success marker: `P3_CHECKPOINT_2R_R4_LOCALHOST_READY_FOR_USER`
+- blocker marker: `P3_CHECKPOINT_2R_R4_LOCALHOST_VERIFICATION_BLOCKED`
 
-The full Checkpoint 2R rerun is not authorized from the current state.
+The worker must leave the successful exact integrated localhost running and return the concrete URL for the user's manual inspection. READY is not acceptance; the user/orchestrator must explicitly accept the UI/behavior.
 
-No Bridge01, Bridge02, semantic Wave 4, dialogs/accessibility, routing/loading/performance, responsive/final, Phase 4, or later work is authorized.
+## Continuation boundary
 
-## Binding continuation
+The full Checkpoint 2R rerun remains unauthorized until explicit user acceptance of the localhost verification.
+
+No Bridge01, Bridge02, semantic Wave 4, dialogs/accessibility, routing/loading/performance, responsive/final, Phase 4, or broader product modification is authorized.
 
 ```text
-R4 implementation COMPLETE
-→ independent R4 review ACCEPTED
-→ R4 integration COMPLETE
-→ manual localhost/product-owner verification             [current]
+R4 integration COMPLETE
+→ localhost product-owner verification                 [current]
 → full Checkpoint 2R rerun
 → independent checkpoint acceptance
 → P3-W4-BRIDGE01
@@ -71,4 +60,4 @@ R4 implementation COMPLETE
 → Checkpoint 3
 ```
 
-Terminal state: `P3_CHECKPOINT_2R_R4_INTEGRATED_LOCALHOST_USER_VERIFICATION_REQUIRED`
+Terminal state: `P3_CHECKPOINT_2R_R4_LOCALHOST_USER_VERIFICATION_AUTHORIZED`
