@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_AUTHORIZED`
+Current state: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_REVIEW_AUTHORIZED`
 
 ## Mandatory current entry point
 
@@ -10,7 +10,7 @@ Read first:
 
 Expected current-execution blob:
 
-`9482e6814e67e59897ec41e2efe245b21c7f26a0`
+`e05312c766f175e085b84f7fe0613bc2d3be22a0`
 
 ## Current integrated product
 
@@ -23,45 +23,46 @@ Exact integrated identity:
 - commit: `23656c9b93a24bfc20ba8f417275564bb5b5d240`
 - tree: `d8c0289a05b3646b3abc7056bd269b927e61d5c4`
 - PR: `#74`
-- integration status: `P3_CHECKPOINT_2R_R4_INTEGRATION_COMPLETE`
+- target compare: identical to exact integrated commit, zero ahead/behind, zero changed files
 
-## Localhost product-owner acceptance
+## Completed Checkpoint rerun
 
-- report: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-R4-LOCALHOST-USER-ACCEPTANCE/23656c9b93a24bfc20ba8f417275564bb5b5d240.md`
-- publication commit: `74e3fc339036c3fd2c8676adc3f508005c723e0d`
-- blob: `0b817619bb820f82b7482bc9b62eb386e6807d4c`
-- status: `P3_CHECKPOINT_2R_R4_LOCALHOST_USER_ACCEPTED`
+- contract: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-RERUN-AFTER-R4.md`
+- contract commit/blob: `e49bb785ff753a78c9c274689365a573d44f695b` / `cee0cac364ef38f0e52947006392227dbc38a9ec`
+- report: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-RERUN-AFTER-R4/23656c9b93a24bfc20ba8f417275564bb5b5d240.md`
+- report commit/blob: `378783556646bc414a0cd16548aa6bda6ae9c503` / `a5a171385f5c902f8128168e763293d13c071109`
+- status: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_COMPLETE`
 
 ## Current authorization
 
-Only the full local Checkpoint 2R rerun after R4 is authorized.
+Only the independent GitHub-web Checkpoint 2R acceptance review is authorized.
 
-Contract:
+Review contract:
 
-- path: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-RERUN-AFTER-R4.md`
-- publication commit: `e49bb785ff753a78c9c274689365a573d44f695b`
-- blob: `cee0cac364ef38f0e52947006392227dbc38a9ec`
-- status: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_AUTHORIZED`
+- path: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-RERUN-AFTER-R4-REVIEW.md`
+- publication commit: `43fcd00c899d01dbf13f1e4b7f0d69735d6d0fbb`
+- blob: `44702b5fee9a34ea25d9372d9b6726ff027fb1cd`
+- status: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_REVIEW_AUTHORIZED`
 - product write lease: `NONE`
-- success marker: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_COMPLETE`
-- blocker marker: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_BLOCKED`
+- connector write lease: exact review report only
+- success marker: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_ACCEPTED`
+- blocker marker: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_REVIEW_BLOCKED`
 
-The rerun must be a fresh read-only validation of the exact integrated product and must explicitly cover the full browser matrix plus all R1–R4 recovery regressions. Every `net::ERR_ABORTED` requires concrete URL-level disposition; `/favicon.ico` request count must remain zero.
+The reviewer must not claim local command/browser evidence as independently rerun. It must verify durable report completeness, exact product/connector state, current relevant source/test consistency, and absence of GitHub-verifiable contradiction.
 
 ## Continuation boundary
 
-A successful local rerun does not authorize Bridge work. It must be independently accepted by a separate GitHub-web checkpoint review worker first.
+Bridge01 remains unauthorized until the review report is published with acceptance and the orchestrator verifies it and performs the next control transition.
 
 No Bridge01, Bridge02, semantic Wave 4, dialogs/accessibility, routing/loading/performance, responsive/final, Phase 4, or broader product modification is authorized.
 
 ```text
-localhost product-owner verification ACCEPTED
-→ full Checkpoint 2R rerun after R4                    [current]
-→ independent checkpoint acceptance
+full Checkpoint 2R rerun after R4 COMPLETE
+→ independent checkpoint acceptance review          [current]
 → P3-W4-BRIDGE01
 → P3-W4-BRIDGE02
 → P3-MP21…P3-MP30
 → Checkpoint 3
 ```
 
-Terminal state: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_AUTHORIZED`
+Terminal state: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_REVIEW_AUTHORIZED`
