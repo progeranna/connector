@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Status
 
-Current state: `P3_CHECKPOINT_2R_R4_SELECTED_SYMBOL_IMPLEMENTATION_AUTHORIZED`
+Current state: `P3_CHECKPOINT_2R_R4_REVIEW_AUTHORIZED`
 
 ## Mandatory current entry point
 
@@ -10,7 +10,7 @@ Read first:
 
 Expected current-execution blob:
 
-`d4680bde169805a04f34f2b4e8a3c85847022e32`
+`3a22eca7086c5665c3db46c1e5389c30f99233f9`
 
 ## Current accepted product
 
@@ -23,55 +23,44 @@ Exact integrated identity:
 - commit: `7dab5647d322339f5bd9d0514e5178522d5181c0`
 - tree: `d5ca241f173f2733d6699283084bf7435c0e9259`
 
-Latest independent remote compare before this state transition: identical to the accepted commit, zero commits ahead, zero behind, zero changed files.
+Target remains identical to this accepted identity after R4 implementation delivery.
 
-## Latest Checkpoint disposition
+## R4 implementation candidate
 
-The full local Checkpoint 2R rerun after R3 is blocked on stale selected-symbol/modal ownership.
+- branch: `p3/checkpoint2r-selected-symbol-ownership`
+- commit: `79abb161e7a731df7077d49b44481eaaf25bf762`
+- tree: `d8c0289a05b3646b3abc7056bd269b927e61d5c4`
+- relation: exactly one commit ahead / zero behind accepted base
+- exact changed paths: `web/src/pages/DashboardPage.tsx`, `web/src/pages/DashboardPage.popup.test.tsx`
+- implementation report commit: `7b9159bcfebf226bac852fdcdd68407ed2fd33de`
+- implementation report blob: `85d797bc99bc92608097302757403d16da1827a3`
+- implementation status: `P3_CHECKPOINT_2R_R4_SELECTED_SYMBOL_COMPLETE`
 
-Blocker authority:
-
-- report: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-RERUN-AFTER-R3-BLOCKER/7dab5647d322339f5bd9d0514e5178522d5181c0.md`
-- publication commit: `e83b4cfeb5c6b334eb94b833c39e666dc27450e7`
-- blob: `e4e222259996fafac7c8fc8a20b3f4630772a255`
-- status: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_BLOCKED`
-
-Independent review authority:
-
-- report: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-RERUN-AFTER-R3-BLOCKER-REVIEW/7dab5647d322339f5bd9d0514e5178522d5181c0.md`
-- publication commit: `e24851c157c0708c1a44641d462d924206aa1847`
-- blob: `1a1ae7eb5829591b051e58afb8d69cd4418467fd`
-- status: `P3_CHECKPOINT_2R_RERUN_AFTER_R3_BLOCKER_ACCEPTED_R4_REQUIRED`
-
-The review independently confirmed the MP18R modal identity reconciliation defect and the exact two-file recovery surface.
+No R4 PR or merge is authorized at this state.
 
 ## Current authorization
 
-Only R4 selected-symbol ownership implementation is authorized.
+Only independent GitHub-web R4 implementation review is authorized.
 
 Contract:
 
-- path: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-R4-SELECTED-SYMBOL.md`
-- publication commit: `9ac409bbbd5e2ac8d0cb6bfdc49935b6b7712101`
-- blob: `e0553a4cf90eeb907eb50bff665174d1917add55`
-- status: `P3_CHECKPOINT_2R_R4_SELECTED_SYMBOL_IMPLEMENTATION_AUTHORIZED`
-- worker type: local Codex implementation worker using `$rust-development`
-- immutable product base: `7dab5647d322339f5bd9d0514e5178522d5181c0`
-- worker branch: `p3/checkpoint2r-selected-symbol-ownership`
-- writable product lease: exactly `web/src/pages/DashboardPage.tsx` and `web/src/pages/DashboardPage.popup.test.tsx`
-- success marker: `P3_CHECKPOINT_2R_R4_SELECTED_SYMBOL_COMPLETE`
-- blocker marker: `P3_CHECKPOINT_2R_R4_SELECTED_SYMBOL_BLOCKED`
+- path: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-R4-REVIEW.md`
+- publication commit: `280a333bc944aff66a990f17fd646c4f6f61de3b`
+- blob: `8eed2c95d741fc28e44a87b1b99979da1c7efb8d`
+- status: `P3_CHECKPOINT_2R_R4_REVIEW_AUTHORIZED`
+- product write lease: `NONE`
+- connector write lease: review report only
+- success marker: `P3_CHECKPOINT_2R_R4_REVIEW_ACCEPTED`
+- blocker marker: `P3_CHECKPOINT_2R_R4_REVIEW_BLOCKED`
 
-The worker must create exactly one product commit, push only the assigned worker branch, publish the connector implementation report, and must not open a PR or merge.
+The reviewer must explicitly distinguish GitHub-verifiable facts from local `/tmp` browser evidence and must record the known `ERR_ABORTED` harness-classification limitation without claiming access to unavailable external bytes.
 
 ## Binding continuation
 
 ```text
-full Checkpoint 2R rerun after R3 BLOCKED
-→ independent blocker review ACCEPTED
-→ P3-CHECKPOINT-2R-R4 implementation               [current]
-→ independent R4 review
-→ GitHub-web R4 integration
+R4 implementation COMPLETE
+→ independent R4 review                              [current]
+→ GitHub-web R4 integration if accepted
 → manual localhost user verification
 → full Checkpoint 2R rerun
 → independent checkpoint acceptance
@@ -81,6 +70,6 @@ full Checkpoint 2R rerun after R3 BLOCKED
 → Checkpoint 3
 ```
 
-No Bridge work, semantic Wave 4, dialogs/accessibility, routing/loading/performance, responsive/final work, Phase 4, or broader product modification is authorized.
+No R4 integration, target merge, localhost acceptance, Checkpoint rerun, Bridge work, semantic Wave 4, dialogs/accessibility, routing/loading/performance, responsive/final work, Phase 4, or broader product modification is authorized yet.
 
-Terminal state: `P3_CHECKPOINT_2R_R4_SELECTED_SYMBOL_IMPLEMENTATION_AUTHORIZED`
+Terminal state: `P3_CHECKPOINT_2R_R4_REVIEW_AUTHORIZED`
