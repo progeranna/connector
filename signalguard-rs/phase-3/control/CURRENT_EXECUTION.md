@@ -1,6 +1,6 @@
 # SignalGuard RS Phase 3 — Current Execution
 
-Status: `P3_CHECKPOINT_2R_R4_LOCALHOST_USER_VERIFICATION_AUTHORIZED`
+Status: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_AUTHORIZED`
 
 Date: 2026-08-19
 
@@ -10,7 +10,7 @@ Repository: `progeranna/signalguard-rs`
 
 Target branch: `refactor/dashboard-modules`
 
-Exact integrated merge:
+Exact integrated identity:
 
 - commit: `23656c9b93a24bfc20ba8f417275564bb5b5d240`
 - tree: `d8c0289a05b3646b3abc7056bd269b927e61d5c4`
@@ -18,55 +18,52 @@ Exact integrated merge:
 - ordered parent 2: `79abb161e7a731df7077d49b44481eaaf25bf762`
 - PR: `#74`
 
-Independent remote compare after integration proves `refactor/dashboard-modules` is still identical to exact integrated merge `23656c9b93a24bfc20ba8f417275564bb5b5d240` with zero commits ahead, zero behind, and zero changed files.
+The remote target remained on this exact integrated identity immediately before this authorization.
 
-Integration report:
+## Completed localhost product-owner acceptance
 
-- path: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-R4-INTEGRATION/23656c9b93a24bfc20ba8f417275564bb5b5d240.md`
-- publication commit: `f2189063dba447bd0dca4a83ee16120e4f31959e`
-- blob: `6a2a94ed57e01635d8fdaa4809170400bb572c65`
-- status: `P3_CHECKPOINT_2R_R4_INTEGRATION_COMPLETE`
+Acceptance report:
+
+- path: `signalguard-rs/phase-3/reports/P3-CHECKPOINT-2R-R4-LOCALHOST-USER-ACCEPTANCE/23656c9b93a24bfc20ba8f417275564bb5b5d240.md`
+- publication commit: `74e3fc339036c3fd2c8676adc3f508005c723e0d`
+- blob: `0b817619bb820f82b7482bc9b62eb386e6807d4c`
+- status: `P3_CHECKPOINT_2R_R4_LOCALHOST_USER_ACCEPTED`
+
+The product owner manually inspected the integrated localhost, clarified the intended per-mode selected-symbol persistence behavior, explicitly confirmed the observed UI behavior was correct, and instructed the orchestrator to continue.
 
 ## Current authorized action
 
 Only this action is authorized:
 
-`P3-CHECKPOINT-2R-R4 — Localhost product-owner verification`
+`P3-CHECKPOINT-2R — Full rerun after R4`
 
 Contract:
 
-- path: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-R4-LOCALHOST-USER-VERIFICATION.md`
-- publication commit: `b68ef92ef152e0c0a3064dbf01932313ab26dfbd`
-- blob: `8e3e1ac6e087e61ab9f9f746d84a70e5dd238757`
-- status: `P3_CHECKPOINT_2R_R4_LOCALHOST_USER_VERIFICATION_AUTHORIZED`
-- worker type: dedicated local Codex localhost-handoff worker
+- path: `signalguard-rs/phase-3/prompts/P3-CHECKPOINT-2R-RERUN-AFTER-R4.md`
+- publication commit: `e49bb785ff753a78c9c274689365a573d44f695b`
+- blob: `cee0cac364ef38f0e52947006392227dbc38a9ec`
+- status: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_AUTHORIZED`
+- worker type: dedicated local Codex validation worker using `$rust-development`
 - product write lease: `NONE`
-- success marker: `P3_CHECKPOINT_2R_R4_LOCALHOST_READY_FOR_USER`
-- blocker marker: `P3_CHECKPOINT_2R_R4_LOCALHOST_VERIFICATION_BLOCKED`
+- exact product commit: `23656c9b93a24bfc20ba8f417275564bb5b5d240`
+- exact product tree: `d8c0289a05b3646b3abc7056bd269b927e61d5c4`
+- success marker: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_COMPLETE`
+- blocker marker: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_BLOCKED`
 
-The local worker must prove the exact integrated identity, use a fresh detached clean worktree, start isolated real PostgreSQL/Redis/backend/production-preview services, perform only the narrow readiness/R4 smoke required by the contract, leave the successful localhost running, and hand the exact URL to the user.
-
-The worker must not claim user acceptance and must not fix defects.
-
-## User acceptance boundary
-
-After the worker returns `P3_CHECKPOINT_2R_R4_LOCALHOST_READY_FOR_USER`, the user must personally open the supplied localhost URL and manually inspect the integrated UI behavior.
-
-Only an explicit user/orchestrator acceptance may complete this step.
-
-CI success, automated local smoke, or the worker's READY marker alone do not constitute product-owner acceptance.
+The rerun must use a fresh detached worktree, complete frontend and Rust/global gates, the full 8-cell browser matrix, explicit R1/R2/R3/R4 recovery regressions, desktop and mobile composed mode/symbol ownership sequences, screenshot/hash evidence, and a strict console/request audit that does not blanket-ignore `net::ERR_ABORTED`.
 
 ## Current prohibitions
 
-Until the user explicitly accepts the running integrated localhost:
+Until the rerun report is published and independently accepted:
 
 - no product modification or defect repair;
-- no branch/commit/push/PR/merge;
-- no full Checkpoint 2R rerun;
-- no independent checkpoint acceptance;
-- no P3-W4-BRIDGE01 or P3-W4-BRIDGE02;
+- no product branch/commit/push/PR/merge;
+- no Bridge01;
+- no Bridge02;
 - no P3-MP21…P3-MP30 / semantic Wave 4;
-- no dialogs/accessibility, routing/loading/performance, responsive/final, Phase 4, or later work.
+- no dialogs/accessibility, routing/loading/performance, responsive/final or Phase 4 work.
+
+A successful local rerun is not independent checkpoint acceptance.
 
 ## Binding continuation
 
@@ -74,13 +71,13 @@ Until the user explicitly accepts the running integrated localhost:
 R4 implementation COMPLETE
 → independent R4 review ACCEPTED
 → R4 integration COMPLETE
-→ localhost handoff + user product-owner verification        [current]
-→ full Checkpoint 2R rerun from exact integrated head
+→ localhost product-owner verification ACCEPTED
+→ full Checkpoint 2R rerun after R4                         [current]
 → independent checkpoint acceptance
 → P3-W4-BRIDGE01
 → P3-W4-BRIDGE02
-→ P3-MP21…P3-MP30
+→ semantic Wave 4 P3-MP21…P3-MP30
 → Checkpoint 3
 ```
 
-Terminal state: `P3_CHECKPOINT_2R_R4_LOCALHOST_USER_VERIFICATION_AUTHORIZED`
+Terminal state: `P3_CHECKPOINT_2R_RERUN_AFTER_R4_AUTHORIZED`
